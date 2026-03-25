@@ -42,7 +42,7 @@ export async function getSearchVolume(
   });
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 3000);
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
 
   try {
     const response = await fetch(
@@ -103,7 +103,7 @@ async function naverSearchCount(
   type: "blog" | "shop" | "news" | "cafearticle" | "webkr"
 ): Promise<number | null> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 3000);
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
 
   try {
     const response = await fetch(

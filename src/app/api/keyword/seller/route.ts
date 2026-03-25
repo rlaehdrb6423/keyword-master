@@ -50,8 +50,8 @@ export async function POST(request: Request) {
 
   if (!volumeData) {
     return NextResponse.json<ApiErrorResponse>(
-      { error: "검색량 데이터를 가져올 수 없습니다. 잠시 후 다시 시도해주세요.", code: "TIMEOUT" },
-      { status: 503 }
+      { error: `"${keyword}"의 검색량 데이터가 없습니다. 검색량이 너무 적거나 등록되지 않은 키워드입니다. 다른 키워드를 시도해주세요.`, code: "NO_DATA" },
+      { status: 404 }
     );
   }
 

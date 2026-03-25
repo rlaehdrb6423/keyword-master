@@ -53,7 +53,7 @@ export interface KeywordVolume {
 
 export interface ApiErrorResponse {
   error: string;
-  code: "API_LIMIT" | "TIMEOUT" | "INVALID_INPUT" | "SERVER_ERROR";
+  code: "API_LIMIT" | "TIMEOUT" | "INVALID_INPUT" | "SERVER_ERROR" | "NO_DATA";
 }
 
 export interface BulkRequest {

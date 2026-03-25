@@ -3,7 +3,7 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { BulkRequest, BulkResponse, ApiErrorResponse } from "@/types/keyword";
 
 const BULK_MAX = 10;
-const CONCURRENCY = 3;
+const CONCURRENCY = 5;
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
