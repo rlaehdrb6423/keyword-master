@@ -109,11 +109,29 @@ export default function Home() {
                   <span className="text-sm text-gray-800 dark:text-gray-200 flex-1">
                     {item.keyword}
                   </span>
-                  {item.traffic && (
-                    <span className="text-xs text-gray-400 dark:text-gray-500">
-                      {item.traffic}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    {item.traffic && (
+                      <span className="text-xs text-gray-400 dark:text-gray-500 mr-1">
+                        {item.traffic}
+                      </span>
+                    )}
+                    <a
+                      href={`https://search.naver.com/search.naver?query=${encodeURIComponent(item.keyword)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2 py-0.5 text-xs rounded bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60 transition-colors"
+                    >
+                      N
+                    </a>
+                    <a
+                      href={`https://www.google.com/search?q=${encodeURIComponent(item.keyword)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60 transition-colors"
+                    >
+                      G
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
