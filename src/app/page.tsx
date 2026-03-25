@@ -208,12 +208,6 @@ export default function Home() {
         <Comments />
       </section>
 
-      {/* 푸터 */}
-      <footer className="text-center pb-8">
-        <p className="text-xs text-gray-300 dark:text-gray-700">
-          KeywordView &middot; 네이버 검색광고 API + 검색 API 기반 &middot; 모든 기능 무료
-        </p>
-      </footer>
     </div>
   );
 }

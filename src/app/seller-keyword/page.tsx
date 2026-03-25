@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import KeywordInput from "@/components/KeywordInput";
+import ShareButtons from "@/components/ShareButtons";
 import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -39,7 +41,19 @@ export default function SellerKeywordPage() {
   const [compareResult, setCompareResult] = useState<SellerKeywordResult | null>(null);
   const [compareLoading, setCompareLoading] = useState(false);
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && !result && !loading) {
+      handleSearch(q);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   const handleSearch = async (keyword: string) => {
+    router.replace(`/seller-keyword?q=${encodeURIComponent(keyword)}`, { scroll: false });
     setLoading(true);
     setError(null);
     setResult(null);
@@ -263,6 +277,17 @@ export default function SellerKeywordPage() {
             <ResultTable
               columns={columns}
               data={allResults as unknown as Record<string, unknown>[]}
+            />
+          </div>
+
+          <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              &ldquo;{result.keyword}&rdquo; 분석 결과 공유하기
+            </span>
+            <ShareButtons
+              title={`"${result.keyword}" 셀러 키워드 분석 - KeywordView`}
+              description={`검색량 ${result.totalVolume.toLocaleString()} · 종합경쟁 ${result.competitionLabel}`}
+              path={`/seller-keyword?q=${encodeURIComponent(result.keyword)}`}
             />
           </div>
         </>
