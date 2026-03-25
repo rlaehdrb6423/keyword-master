@@ -1,29 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import KeywordInput from "@/components/KeywordInput";
-import GradeBadge from "@/components/GradeBadge";
+import { useState, FormEvent } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
-import type { SellerKeywordResult } from "@/types/keyword";
 
-interface IndexEntry extends SellerKeywordResult {
-  indexScore: number;
+interface StoreLevelResult {
+  storeId: string;
+  storeName: string;
+  totalProducts: number;
+  recentProducts: { title: string; link: string }[];
+  searchVisibility: number;
+  level: number;
+  levelLabel: string;
+  tips: string[];
 }
 
+const levelColors = [
+  "bg-gray-400", "bg-gray-500", "bg-yellow-500", "bg-yellow-400",
+  "bg-green-400", "bg-green-500", "bg-blue-400", "bg-blue-500",
+  "bg-purple-400", "bg-purple-500", "bg-red-500",
+];
+
 export default function SellerIndexPage() {
-  const [entries, setEntries] = useState<IndexEntry[]>([]);
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState<StoreLevelResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async (keyword: string) => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const trimmed = input.trim();
+    if (!trimmed) return;
+
     setLoading(true);
     setError(null);
+    setResult(null);
 
     try {
-      const res = await fetch("/api/keyword/seller", {
+      const res = await fetch("/api/store-level", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ keyword }),
+        body: JSON.stringify({ storeId: trimmed }),
       });
 
       if (!res.ok) {
@@ -31,21 +47,8 @@ export default function SellerIndexPage() {
         throw new Error(err.error || "분석에 실패했습니다.");
       }
 
-      const data: SellerKeywordResult = await res.json();
-      const indexScore =
-        data.naverProductCount > 0
-          ? (data.totalVolume / data.naverProductCount) * 100
-          : data.totalVolume >= 10
-          ? 9999
-          : 0;
-
-      setEntries((prev) => {
-        const filtered = prev.filter((e) => e.keyword !== data.keyword);
-        return [
-          { ...data, indexScore: Math.round(indexScore * 100) / 100 },
-          ...filtered,
-        ];
-      });
+      const data: StoreLevelResult = await res.json();
+      setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
@@ -58,16 +61,41 @@ export default function SellerIndexPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">셀러 지수</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          키워드별 시장 진입 가능성을 점수와 등급으로 표시합니다.
+          네이버 스마트스토어의 기본 지수 확인과 함께 상품별 상세 분석이 가능합니다.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+          smartstore.naver.com/storeId 형식 또는 storeId만 입력 가능합니다.
         </p>
       </div>
 
       <div className="card p-6 mb-6">
-        <KeywordInput
-          onSearch={handleSearch}
-          loading={loading}
-          placeholder="셀러 지수를 확인할 상품 키워드 입력"
-        />
+        <form onSubmit={handleSubmit} className="flex gap-3">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="스토어 ID 또는 URL (예: smartstore.naver.com/myStore)"
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            disabled={loading || !input.trim()}
+            className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors dark:disabled:bg-gray-700 dark:disabled:text-gray-500"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                분석중
+              </span>
+            ) : (
+              "분석"
+            )}
+          </button>
+        </form>
       </div>
 
       {error && (
@@ -76,65 +104,104 @@ export default function SellerIndexPage() {
         </div>
       )}
 
-      {/* 등급 안내 */}
+      {/* 레벨 등급 안내 */}
       <div className="card p-4 mb-6">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">등급 기준</h3>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
-          <div className="flex items-center gap-2">
-            <GradeBadge grade="A" /> <span className="text-gray-600 dark:text-gray-400">블루오션 (30+)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <GradeBadge grade="B" /> <span className="text-gray-600 dark:text-gray-400">유망 (10~30)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <GradeBadge grade="C" /> <span className="text-gray-600 dark:text-gray-400">보통 (3~10)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <GradeBadge grade="D" /> <span className="text-gray-600 dark:text-gray-400">레드오션 (3 미만)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <GradeBadge grade="N/A" /> <span className="text-gray-600 dark:text-gray-400">데이터 부족</span>
-          </div>
-        </div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">※ 임계값은 초기 추정치이며 조정 예정</p>
-      </div>
-
-      {/* 지수 카드 */}
-      {entries.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {entries.map((entry) => (
-            <div key={entry.keyword} className="card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-gray-900 dark:text-white text-lg">
-                  {entry.keyword}
-                </h3>
-                <GradeBadge grade={entry.grade} />
-              </div>
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                {entry.grade === "N/A"
-                  ? "-"
-                  : entry.indexScore === 9999
-                  ? "NEW"
-                  : entry.indexScore}
-              </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{entry.gradeLabel}</p>
-              <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <div>
-                  <span className="text-gray-400 dark:text-gray-500">검색량</span>
-                  <div className="font-medium">
-                    {entry.totalVolume.toLocaleString()}
-                  </div>
-                </div>
-                <div>
-                  <span className="text-gray-400 dark:text-gray-500">네이버 상품</span>
-                  <div className="font-medium">
-                    {entry.naverProductCount.toLocaleString()}
-                  </div>
-                </div>
-              </div>
+        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">셀러 지수 등급 (11단계)</h3>
+        <div className="flex flex-wrap gap-2">
+          {Array.from({ length: 11 }, (_, i) => (
+            <div key={i} className="flex items-center gap-1">
+              <span className={`inline-block w-8 h-6 rounded text-xs font-bold text-white flex items-center justify-center ${levelColors[i]}`}>
+                {i}
+              </span>
             </div>
           ))}
         </div>
+        <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <p>셀러 지수를 올리기 위해서는 꾸준한 상품 등록과 키워드 최적화가 중요합니다.</p>
+          <p>리뷰 관리와 상품명 SEO는 검색 노출에 핵심적인 요소입니다.</p>
+        </div>
+      </div>
+
+      {result && (
+        <>
+          {/* 레벨 결과 카드 */}
+          <div className="card p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{result.storeName}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">@{result.storeId}</p>
+              </div>
+              <div className="text-center">
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ${levelColors[result.level]}`}>
+                  {result.level}
+                </div>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">{result.levelLabel}</p>
+              </div>
+            </div>
+
+            {/* 레벨 바 */}
+            <div className="mb-6">
+              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mb-1">
+                <span>Level 0</span>
+                <span>Level 10</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full transition-all ${levelColors[result.level]}`}
+                  style={{ width: `${(result.level / 10) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* 상세 지표 */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{result.totalProducts}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">총 상품수</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.searchVisibility}%</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 팁 */}
+          <div className="card p-5 mb-6">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">분석 및 추천</h3>
+            <ul className="space-y-2">
+              {result.tips.map((tip, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-primary-500 mt-0.5">*</span>
+                  {tip}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 최근 상품 */}
+          {result.recentProducts.length > 0 && (
+            <div className="card overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 className="font-semibold text-gray-900 dark:text-white">등록 상품</h3>
+              </div>
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                {result.recentProducts.map((product, i) => (
+                  <div key={i} className="px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <a
+                      href={product.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
+                    >
+                      {product.title}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
