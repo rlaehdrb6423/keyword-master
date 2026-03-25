@@ -1,6 +1,6 @@
 "use client";
 
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
 
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#a855f7", "#f97316"];
 
@@ -117,6 +117,83 @@ export function CompareBarChart({ data, name1, name2 }: CompareBarChartProps) {
           />
           <Bar dataKey="value1" name={name1} fill="#3b82f6" radius={[4, 4, 0, 0]} />
           <Bar dataKey="value2" name={name2} fill="#f97316" radius={[4, 4, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+interface CompetitionRadarProps {
+  blogCount: number;
+  newsCount: number;
+  cafeCount: number;
+  webDocCount: number;
+  totalVolume: number;
+}
+
+export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount, totalVolume }: CompetitionRadarProps) {
+  if (totalVolume === 0) return null;
+
+  const normalize = (count: number) => Math.min(Math.round((count / totalVolume) * 100), 100);
+
+  const data = [
+    { subject: "블로그", value: normalize(blogCount) },
+    { subject: "뉴스", value: normalize(newsCount) },
+    { subject: "카페", value: normalize(cafeCount) },
+    { subject: "웹문서", value: normalize(webDocCount) },
+  ];
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <RadarChart data={data}>
+          <PolarGrid stroke="#e5e7eb" />
+          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: "#9ca3af" }} />
+          <Radar dataKey="value" stroke="#6366f1" fill="#6366f1" fillOpacity={0.3} />
+          <Tooltip
+            contentStyle={{ backgroundColor: "rgba(17,24,39,0.9)", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
+            formatter={(value: number) => [`${value}`, "경쟁도"]}
+          />
+        </RadarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+const GRADE_COLORS: Record<string, string> = {
+  A: "#3b82f6",
+  B: "#22c55e",
+  C: "#eab308",
+  D: "#ef4444",
+};
+
+interface KeywordBubbleProps {
+  keywords: { keyword: string; totalVolume: number; grade: string }[];
+}
+
+export function KeywordBubbleChart({ keywords }: KeywordBubbleProps) {
+  if (keywords.length === 0) return null;
+
+  const data = keywords.map((k, i) => ({ ...k, index: i }));
+
+  return (
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16, top: 4, bottom: 4 }}>
+          <XAxis type="number" tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => v.toLocaleString()} />
+          <YAxis type="category" dataKey="keyword" tick={{ fontSize: 10, fill: "#9ca3af" }} width={60} />
+          <Tooltip
+            contentStyle={{ backgroundColor: "rgba(17,24,39,0.9)", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
+            formatter={(value: number, _name: string, props: { payload?: { grade?: string } }) => [
+              value.toLocaleString(),
+              `검색량 (${props.payload?.grade ?? ""})`,
+            ]}
+          />
+          <Bar dataKey="totalVolume" radius={[0, 4, 4, 0]}>
+            {data.map((entry, i) => (
+              <Cell key={i} fill={GRADE_COLORS[entry.grade] ?? "#6b7280"} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

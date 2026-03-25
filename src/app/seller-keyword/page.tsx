@@ -8,7 +8,7 @@ import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
 import SearchHistory, { addToHistory } from "@/components/SearchHistory";
-import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
+import { PcMobileChart, ChannelShareChart, CompareBarChart, CompetitionRadar, KeywordBubbleChart } from "@/components/KeywordCharts";
 import SkeletonTable from "@/components/SkeletonTable";
 import GradeGuide from "@/components/GradeGuide";
 import TagGenerator from "@/components/TagGenerator";
@@ -173,6 +173,26 @@ export default function SellerKeywordPage() {
                 newsCount={result.newsCount}
                 cafeCount={result.cafeCount}
                 webDocCount={result.naverProductCount}
+              />
+            </div>
+          </div>
+
+          {/* 추가 시각화 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">채널별 경쟁도</h3>
+              <CompetitionRadar
+                blogCount={result.blogCount}
+                newsCount={result.newsCount}
+                cafeCount={result.cafeCount}
+                webDocCount={result.naverProductCount}
+                totalVolume={result.totalVolume}
+              />
+            </div>
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">관련 키워드 검색량</h3>
+              <KeywordBubbleChart
+                keywords={allResults.map((r) => ({ keyword: r.keyword, totalVolume: r.totalVolume, grade: r.grade }))}
               />
             </div>
           </div>
