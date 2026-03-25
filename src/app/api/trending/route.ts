@@ -6,6 +6,8 @@ interface TrendingItem {
   traffic: string;
 }
 
+export const revalidate = 600; // 10분 캐시
+
 export async function GET() {
   try {
     const controller = new AbortController();
@@ -13,7 +15,7 @@ export async function GET() {
 
     const response = await fetch(
       "https://trends.google.co.kr/trending/rss?geo=KR",
-      { signal: controller.signal, next: { revalidate: 600 } }
+      { signal: controller.signal }
     );
 
     clearTimeout(timeoutId);
@@ -24,29 +26,28 @@ export async function GET() {
 
     const xml = await response.text();
 
-    // XML에서 트렌딩 키워드 추출
+    // <item> 블록 추출
     const items: TrendingItem[] = [];
-    const titleRegex = /<title><!\[CDATA\[(.+?)\]\]><\/title>/g;
-    const trafficRegex = /<ht:approx_traffic><!\[CDATA\[(.+?)\]\]><\/ht:approx_traffic>/g;
+    const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+    let itemMatch;
+    let rank = 0;
 
-    const titles: string[] = [];
-    const traffics: string[] = [];
+    while ((itemMatch = itemRegex.exec(xml)) !== null && rank < 20) {
+      const block = itemMatch[1];
 
-    let match;
-    while ((match = titleRegex.exec(xml)) !== null) {
-      titles.push(match[1]);
-    }
-    while ((match = trafficRegex.exec(xml)) !== null) {
-      traffics.push(match[1]);
-    }
+      // title 추출 (CDATA 또는 일반 텍스트)
+      const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
+      // traffic 추출
+      const trafficMatch = block.match(/<ht:approx_traffic>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:approx_traffic>/);
 
-    // 첫 번째 title은 피드 제목이므로 skip
-    for (let i = 1; i < titles.length && i <= 20; i++) {
-      items.push({
-        rank: i,
-        keyword: titles[i],
-        traffic: traffics[i - 1] || "",
-      });
+      if (titleMatch && titleMatch[1]) {
+        rank++;
+        items.push({
+          rank,
+          keyword: titleMatch[1].trim(),
+          traffic: trafficMatch ? trafficMatch[1].trim() : "",
+        });
+      }
     }
 
     return NextResponse.json({ items });
