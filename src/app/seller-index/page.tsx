@@ -201,8 +201,12 @@ export default function SellerIndexPage() {
           {/* 상품 SEO 분석 */}
           {result.recentProducts.length > 0 && (
             <div className="card overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <h3 className="font-semibold text-gray-900 dark:text-white">상품명 SEO 분석</h3>
+                <span className="text-xs text-primary-500 dark:text-primary-400 animate-pulse flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
+                  클릭하면 SEO 개선 팁을 확인할 수 있어요
+                </span>
               </div>
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {result.recentProducts.map((product, i) => (
