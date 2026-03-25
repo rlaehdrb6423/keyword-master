@@ -8,11 +8,12 @@ const redis = new Redis({
 
 const COMMENTS_KEY = "kv:comments";
 const MAX_COMMENTS = 50;
+const ADMIN_CODE = process.env.ADMIN_CODE || "keywordview2026";
 
 interface Comment {
   id: string;
-  nickname: string;
   message: string;
+  isAdmin: boolean;
   createdAt: string;
 }
 
@@ -26,24 +27,24 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  let body: { nickname?: string; message?: string };
+  let body: { message?: string; adminCode?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const nickname = body.nickname?.trim().slice(0, 20);
   const message = body.message?.trim().slice(0, 500);
-
-  if (!nickname || !message) {
-    return NextResponse.json({ error: "닉네임과 댓글을 입력해주세요." }, { status: 400 });
+  if (!message) {
+    return NextResponse.json({ error: "댓글을 입력해주세요." }, { status: 400 });
   }
+
+  const isAdmin = body.adminCode === ADMIN_CODE;
 
   const comment: Comment = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    nickname,
     message,
+    isAdmin,
     createdAt: new Date().toISOString(),
   };
 

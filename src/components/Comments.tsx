@@ -4,15 +4,16 @@ import { useState, useEffect, FormEvent } from "react";
 
 interface Comment {
   id: string;
-  nickname: string;
   message: string;
+  isAdmin: boolean;
   createdAt: string;
 }
 
 export default function Comments() {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
+  const [adminCode, setAdminCode] = useState("");
+  const [showAdmin, setShowAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,14 +25,14 @@ export default function Comments() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!nickname.trim() || !message.trim()) return;
+    if (!message.trim()) return;
 
     setLoading(true);
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nickname: nickname.trim(), message: message.trim() }),
+        body: JSON.stringify({ message: message.trim(), adminCode: adminCode || undefined }),
       });
 
       if (res.ok) {
@@ -67,14 +68,6 @@ export default function Comments() {
         <div className="flex gap-2 mb-2">
           <input
             type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="닉네임"
-            maxLength={20}
-            className="w-32 px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-          />
-          <input
-            type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="댓글을 입력하세요"
@@ -83,11 +76,30 @@ export default function Comments() {
           />
           <button
             type="submit"
-            disabled={loading || !nickname.trim() || !message.trim()}
+            disabled={loading || !message.trim()}
             className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors dark:disabled:bg-gray-700"
           >
             {loading ? "..." : "등록"}
           </button>
+        </div>
+        {/* 운영자 모드 (숨김) */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAdmin(!showAdmin)}
+            className="text-xs text-gray-300 dark:text-gray-700 hover:text-gray-400 dark:hover:text-gray-600"
+          >
+            •
+          </button>
+          {showAdmin && (
+            <input
+              type="password"
+              value={adminCode}
+              onChange={(e) => setAdminCode(e.target.value)}
+              placeholder="운영자 코드"
+              className="px-2 py-1 border border-gray-200 rounded text-xs w-32 outline-none dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+            />
+          )}
         </div>
       </form>
 
@@ -100,16 +112,26 @@ export default function Comments() {
           comments.map((comment) => (
             <div
               key={comment.id}
-              className="flex gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800"
+              className={`flex gap-3 p-3 rounded-lg ${
+                comment.isAdmin
+                  ? "bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800"
+                  : "bg-gray-50 dark:bg-gray-800"
+              }`}
             >
-              <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center text-sm font-bold text-primary-600 dark:text-primary-400 flex-shrink-0">
-                {comment.nickname[0]}
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                comment.isAdmin
+                  ? "bg-primary-500 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+              }`}>
+                {comment.isAdmin ? "★" : "?"}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                    {comment.nickname}
-                  </span>
+                  {comment.isAdmin ? (
+                    <span className="text-sm font-bold text-primary-600 dark:text-primary-400">운영자</span>
+                  ) : (
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">익명</span>
+                  )}
                   <span className="text-xs text-gray-400 dark:text-gray-500">
                     {timeAgo(comment.createdAt)}
                   </span>
