@@ -15,6 +15,8 @@ export default function Comments() {
   const [adminCode, setAdminCode] = useState("");
   const [showAdmin, setShowAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editMessage, setEditMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/comments")
@@ -47,6 +49,43 @@ export default function Comments() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!adminCode) return;
+    try {
+      const res = await fetch("/api/comments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, adminCode, action: "delete" }),
+      });
+      if (res.ok) {
+        setComments((prev) => prev.filter((c) => c.id !== id));
+      }
+    } catch {
+      // 무시
+    }
+  };
+
+  const handleEdit = async (id: string) => {
+    if (!adminCode || !editMessage.trim()) return;
+    try {
+      const res = await fetch("/api/comments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, adminCode, action: "edit", message: editMessage.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setComments((prev) =>
+          prev.map((c) => (c.id === id ? { ...c, message: data.message } : c))
+        );
+        setEditingId(null);
+        setEditMessage("");
+      }
+    } catch {
+      // 무시
+    }
+  };
+
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
@@ -57,6 +96,8 @@ export default function Comments() {
     const days = Math.floor(hours / 24);
     return `${days}일 전`;
   };
+
+  const isAdminMode = showAdmin && adminCode.length > 0;
 
   return (
     <div className="card p-6">
@@ -82,7 +123,6 @@ export default function Comments() {
             {loading ? "..." : "등록"}
           </button>
         </div>
-        {/* 운영자 모드 (숨김) */}
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -135,10 +175,52 @@ export default function Comments() {
                   <span className="text-xs text-gray-400 dark:text-gray-500">
                     {timeAgo(comment.createdAt)}
                   </span>
+                  {isAdminMode && (
+                    <div className="flex gap-1 ml-auto">
+                      <button
+                        onClick={() => {
+                          setEditingId(comment.id);
+                          setEditMessage(comment.message);
+                        }}
+                        className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-600 hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleDelete(comment.id)}
+                        className="text-xs px-2 py-0.5 rounded bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5 break-words">
-                  {comment.message}
-                </p>
+                {editingId === comment.id ? (
+                  <div className="flex gap-2 mt-1">
+                    <input
+                      type="text"
+                      value={editMessage}
+                      onChange={(e) => setEditMessage(e.target.value)}
+                      className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    />
+                    <button
+                      onClick={() => handleEdit(comment.id)}
+                      className="text-xs px-2 py-1 bg-primary-600 text-white rounded hover:bg-primary-700"
+                    >
+                      저장
+                    </button>
+                    <button
+                      onClick={() => { setEditingId(null); setEditMessage(""); }}
+                      className="text-xs px-2 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-300"
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5 break-words">
+                    {comment.message}
+                  </p>
+                )}
               </div>
             </div>
           ))
