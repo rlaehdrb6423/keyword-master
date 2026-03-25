@@ -208,41 +208,107 @@ export default function Home() {
 
       {/* 사용 가이드 */}
       <section className="mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-            <div className="absolute top-5 right-5 text-4xl font-black text-gray-100 dark:text-gray-800">01</div>
-            <div className="relative">
-              <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
-                <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-1 text-sm">키워드 입력</h3>
-              <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-                분석하고 싶은 키워드를 입력하면 검색량과 경쟁도를 바로 확인할 수 있습니다.
-              </p>
-            </div>
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+            <h2 className="font-bold text-gray-900 dark:text-white text-sm">사용 방법</h2>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">3단계로 끝나는 키워드 분석</p>
           </div>
-          <div className="relative p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-            <div className="absolute top-5 right-5 text-4xl font-black text-gray-100 dark:text-gray-800">02</div>
-            <div className="relative">
-              <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-3">
-                <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+          <div className="p-6">
+            {/* 3단계 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+                <div>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">키워드 입력</h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+                    위 검색창에 분석하고 싶은 키워드를 입력하세요. 블로그/셀러 탭을 선택할 수 있습니다.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-1 text-sm">데이터 분석</h3>
-              <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-                채널별 경쟁도, PC/모바일 비율, 관련 키워드를 차트와 함께 분석합니다.
-              </p>
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold">2</div>
+                <div>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">결과 확인</h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+                    PC/모바일 검색량, 채널별 경쟁도, 관련 키워드 10개를 한눈에 확인하세요.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold">3</div>
+                <div>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">등급으로 판단</h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+                    A~D 등급을 보고 키워드 전략을 바로 세울 수 있습니다.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="relative p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-            <div className="absolute top-5 right-5 text-4xl font-black text-gray-100 dark:text-gray-800">03</div>
-            <div className="relative">
-              <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-3">
-                <svg className="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+
+            {/* 등급 해석 */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-6">
+              <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-3">등급 해석 가이드</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">A</span>
+                    <span className="text-xs font-medium text-blue-700 dark:text-blue-300">추천</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">경쟁 낮음. 바로 글을 쓰세요!</p>
+                </div>
+                <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">B</span>
+                    <span className="text-xs font-medium text-green-700 dark:text-green-300">양호</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">충실한 콘텐츠로 경쟁 가능</p>
+                </div>
+                <div className="p-3 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-yellow-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300">C</span>
+                    <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">보통</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">롱테일 키워드로 세분화 추천</p>
+                </div>
+                <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300">D</span>
+                    <span className="text-xs font-medium text-red-700 dark:text-red-300">경쟁 치열</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">다른 키워드를 찾아보세요</p>
+                </div>
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-white mb-1 text-sm">전략 수립</h3>
-              <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-                경쟁이 낮은 A등급 키워드를 찾아 블로그와 스토어에 바로 활용하세요.
-              </p>
+            </div>
+
+            {/* 활용 팁 */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-6 mt-6">
+              <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-3">활용 팁</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                  <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-white">블로거</strong> — A등급 키워드로 글을 쓰면 상위 노출 확률이 높아집니다. 관련 키워드에서 추가 글감을 찾아보세요.
+                  </p>
+                </div>
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                  <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-white">셀러</strong> — 상품 등록 전에 셀러 키워드로 검색량 대비 상품수를 확인하세요. 경쟁이 적은 틈새 키워드가 매출의 핵심입니다.
+                  </p>
+                </div>
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                  <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-white">태그 복사</strong> — 분석 결과에서 관련 키워드를 해시태그 형식으로 바로 복사할 수 있습니다.
+                  </p>
+                </div>
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                  <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-white">엑셀 저장</strong> — 분석 결과를 엑셀 파일로 다운로드해서 키워드 목록을 관리하세요.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
