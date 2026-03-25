@@ -36,17 +36,14 @@ export async function getSearchVolume(
   const uri = "/keywordstool";
   const signature = generateSignature(timestamp, method, uri);
 
-  const params = new URLSearchParams({
-    hintKeywords: keyword,
-    showDetail: "1",
-  });
+  const cleanKeyword = keyword.replace(/\s+/g, "");
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 8000);
 
   try {
     const response = await fetch(
-      `https://api.naver.com/keywordstool?${params}`,
+      `https://api.naver.com/keywordstool?hintKeywords=${encodeURIComponent(cleanKeyword)}&showDetail=1`,
       {
         method: "GET",
         headers: {
@@ -62,14 +59,18 @@ export async function getSearchVolume(
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      console.error(`네이버 검색광고 API 에러: ${response.status}`);
+      const errorBody = await response.text().catch(() => "");
+      console.error(`네이버 검색광고 API 에러: ${response.status}`, errorBody);
       return null;
     }
 
     const data = await response.json();
     const items: RelKwdStatItem[] = data.keywordList || [];
 
-    if (items.length === 0) return null;
+    if (items.length === 0) {
+      console.error(`네이버 검색광고 API 결과 없음: keyword="${keyword}"`, JSON.stringify(data).slice(0, 500));
+      return null;
+    }
 
     // 첫 번째 항목이 입력 키워드 자체
     const main = items[0];
