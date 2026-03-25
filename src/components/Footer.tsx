@@ -48,15 +48,11 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">안내</h4>
             <ul className="space-y-2">
-              <li>
-                <Link href="/terms" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                  이용약관
-                </Link>
+              <li className="text-xs text-gray-400 dark:text-gray-500">
+                회원가입 없이 모든 기능 무료
               </li>
-              <li>
-                <Link href="/privacy" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                  개인정보처리방침
-                </Link>
+              <li className="text-xs text-gray-400 dark:text-gray-500">
+                개인정보를 수집하지 않습니다
               </li>
               <li>
                 <a href="mailto:keywordview.kr@gmail.com" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
