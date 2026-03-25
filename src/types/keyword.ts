@@ -28,6 +28,11 @@ export interface BlogKeywordResult {
   compIdx: string;
   avgClickCnt: number;
   avgCtr: number;
+  platformCount: {
+    naver: number;
+    tistory: number;
+    wordpress: number;
+  };
 }
 
 export interface SellerKeywordResult {

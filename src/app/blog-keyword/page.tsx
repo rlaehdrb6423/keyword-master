@@ -259,6 +259,43 @@ export default function BlogKeywordPage() {
             </div>
           </div>
 
+          {/* 플랫폼별 노출 현황 */}
+          <div className="card p-5 mb-6">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              플랫폼별 노출 현황 <span className="text-xs font-normal text-gray-400">(상위 20개 결과 기준)</span>
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{result.platformCount.naver}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">네이버 블로그</div>
+                <div className="mt-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-full bg-green-500 rounded-full" style={{ width: `${(result.platformCount.naver / 20) * 100}%` }} />
+                </div>
+              </div>
+              <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.platformCount.tistory}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">티스토리</div>
+                <div className="mt-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-full bg-orange-500 rounded-full" style={{ width: `${(result.platformCount.tistory / 20) * 100}%` }} />
+                </div>
+              </div>
+              <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{result.platformCount.wordpress}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">워드프레스/기타</div>
+                <div className="mt-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full" style={{ width: `${(result.platformCount.wordpress / 20) * 100}%` }} />
+                </div>
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 dark:text-gray-600 mt-2 text-center">
+              {result.platformCount.naver > result.platformCount.tistory && result.platformCount.naver > result.platformCount.wordpress
+                ? "네이버 블로그가 우세합니다. 네이버 블로그로 공략하면 유리합니다."
+                : result.platformCount.tistory > result.platformCount.naver
+                ? "티스토리가 우세합니다. 티스토리로 공략하면 경쟁에 참여할 수 있습니다."
+                : "다양한 플랫폼이 노출됩니다. 어떤 플랫폼이든 기회가 있습니다."}
+            </p>
+          </div>
+
           {/* 키워드 비교 */}
           <div className="card p-5 mb-6">
             <div className="flex items-center justify-between mb-3">

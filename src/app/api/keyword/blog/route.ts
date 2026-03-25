@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSearchVolume, getBlogDocCount, getNewsCount, getCafeCount, getWebDocCount } from "@/lib/naver-api";
+import { getSearchVolume, getBlogDocCount, getNewsCount, getCafeCount, getWebDocCount, getBlogPlatformCount } from "@/lib/naver-api";
 import { calculateBlogIndex } from "@/lib/index-calculator";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
@@ -57,12 +57,13 @@ export async function POST(request: Request) {
   }
 
   // 네이버 API 병렬 호출 (채널별 경쟁도 포함)
-  const [volumeData, blogDocCount, newsCount, cafeCount, webDocCount] = await Promise.all([
+  const [volumeData, blogDocCount, newsCount, cafeCount, webDocCount, platformCount] = await Promise.all([
     getSearchVolume(keyword),
     getBlogDocCount(keyword),
     getNewsCount(keyword),
     getCafeCount(keyword),
     getWebDocCount(keyword),
+    getBlogPlatformCount(keyword),
   ]);
 
   if (!volumeData) {
@@ -116,6 +117,11 @@ export async function POST(request: Request) {
     compIdx: volumeData.compIdx,
     avgClickCnt: volumeData.avgClickCnt,
     avgCtr: volumeData.avgCtr,
+    platformCount: {
+      naver: platformCount.naver,
+      tistory: platformCount.tistory,
+      wordpress: platformCount.wordpress,
+    },
   };
 
   await setCache(cacheKey, result);

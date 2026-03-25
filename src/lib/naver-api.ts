@@ -166,3 +166,51 @@ export async function getShoppingProductCount(
 ): Promise<number | null> {
   return naverSearchCount(keyword, "shop");
 }
+
+// ===== 블로그 플랫폼별 노출 현황 =====
+
+export interface PlatformCount {
+  naver: number;
+  tistory: number;
+  wordpress: number;
+  other: number;
+}
+
+export async function getBlogPlatformCount(keyword: string): Promise<PlatformCount> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+  try {
+    const response = await fetch(
+      `https://openapi.naver.com/v1/search/blog?query=${encodeURIComponent(keyword)}&display=20&sort=sim`,
+      {
+        headers: {
+          "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID!,
+          "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET!,
+        },
+        signal: controller.signal,
+      }
+    );
+    clearTimeout(timeoutId);
+
+    if (!response.ok) return { naver: 0, tistory: 0, wordpress: 0, other: 0 };
+
+    const data = await response.json();
+    const items: { link: string; bloggerlink: string }[] = data.items || [];
+
+    let naver = 0, tistory = 0, wordpress = 0, other = 0;
+
+    for (const item of items) {
+      const link = (item.link || item.bloggerlink || "").toLowerCase();
+      if (link.includes("blog.naver.com")) naver++;
+      else if (link.includes("tistory.com")) tistory++;
+      else if (link.includes("wordpress.com") || link.includes("/wp-content/") || link.includes("wp-json")) wordpress++;
+      else other++;
+    }
+
+    return { naver, tistory, wordpress: wordpress + other, other: 0 };
+  } catch {
+    clearTimeout(timeoutId);
+    return { naver: 0, tistory: 0, wordpress: 0, other: 0 };
+  }
+}
