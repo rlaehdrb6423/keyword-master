@@ -100,7 +100,7 @@ interface NaverSearchResponse {
 
 async function naverSearchCount(
   query: string,
-  type: "blog" | "shop"
+  type: "blog" | "shop" | "news" | "cafearticle" | "webkr"
 ): Promise<number | null> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 3000);
