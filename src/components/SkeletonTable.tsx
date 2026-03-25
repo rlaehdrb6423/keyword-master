@@ -3,11 +3,22 @@
 interface SkeletonTableProps {
   rows?: number;
   cols?: number;
+  statusText?: string;
 }
 
-export default function SkeletonTable({ rows = 5, cols = 6 }: SkeletonTableProps) {
+export default function SkeletonTable({ rows = 5, cols = 6, statusText }: SkeletonTableProps) {
   return (
     <div className="card overflow-hidden animate-pulse">
+      {statusText && (
+        <div className="px-6 pt-4 flex items-center gap-1 text-sm text-primary-600 dark:text-primary-400 font-medium">
+          <span>{statusText}</span>
+          <span className="flex gap-0.5 ml-0.5">
+            <span className="inline-block w-1 h-1 rounded-full bg-current animate-[bounce_1s_0ms_infinite]" />
+            <span className="inline-block w-1 h-1 rounded-full bg-current animate-[bounce_1s_200ms_infinite]" />
+            <span className="inline-block w-1 h-1 rounded-full bg-current animate-[bounce_1s_400ms_infinite]" />
+          </span>
+        </div>
+      )}
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
         <div className="h-3 w-56 bg-gray-100 dark:bg-gray-800 rounded mt-2" />

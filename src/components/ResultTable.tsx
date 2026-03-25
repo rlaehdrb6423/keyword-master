@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
+import * as XLSX from "xlsx";
 import GradeBadge from "./GradeBadge";
 import type { Grade } from "@/types/keyword";
 
@@ -34,6 +35,29 @@ function getSortValue(value: unknown): number | string {
     return value.toLowerCase();
   }
   return 0;
+}
+
+function handleExcelDownload(columns: Column[], data: Record<string, unknown>[]) {
+  const headers = columns.map((col) => col.label);
+  const rows = data.map((row) =>
+    columns.map((col) => {
+      const val = row[col.key];
+      if (val === null || val === undefined) return "";
+      if (typeof val === "number") return val;
+      return String(val);
+    })
+  );
+
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "분석결과");
+
+  const today = new Date();
+  const dateStr =
+    String(today.getFullYear()) +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    String(today.getDate()).padStart(2, "0");
+  XLSX.writeFile(wb, `keywordview_분석결과_${dateStr}.xlsx`);
 }
 
 export default function ResultTable({
@@ -80,6 +104,15 @@ export default function ResultTable({
   }
 
   return (
+    <div>
+      <div className="flex justify-end px-4 py-2">
+        <button
+          onClick={() => handleExcelDownload(columns, sortedData)}
+          className="text-xs px-3 py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
+        >
+          엑셀 다운로드
+        </button>
+      </div>
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-800">
@@ -136,6 +169,7 @@ export default function ResultTable({
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

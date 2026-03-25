@@ -11,6 +11,7 @@ import SearchHistory, { addToHistory } from "@/components/SearchHistory";
 import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
 import SkeletonTable from "@/components/SkeletonTable";
 import GradeGuide from "@/components/GradeGuide";
+import TagGenerator from "@/components/TagGenerator";
 import type { SellerKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
@@ -36,6 +37,7 @@ export default function SellerKeywordPage() {
   const [result, setResult] = useState<SellerKeywordResult | null>(null);
   const [relatedResults, setRelatedResults] = useState<SellerKeywordResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [compareMode, setCompareMode] = useState(false);
   const [compareResult, setCompareResult] = useState<SellerKeywordResult | null>(null);
@@ -55,6 +57,7 @@ export default function SellerKeywordPage() {
   const handleSearch = async (keyword: string) => {
     router.replace(`/seller-keyword?q=${encodeURIComponent(keyword)}`, { scroll: false });
     setLoading(true);
+    setLoadingStatus("검색량 확인 중");
     setError(null);
     setResult(null);
     setRelatedResults([]);
@@ -75,6 +78,7 @@ export default function SellerKeywordPage() {
 
       const data: SellerKeywordResult = await res.json();
       setResult(data);
+      setLoadingStatus("관련 키워드 분석 중");
 
       if (data.relatedKeywords && data.relatedKeywords.length > 0) {
         try {
@@ -96,6 +100,7 @@ export default function SellerKeywordPage() {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
       setLoading(false);
+      setLoadingStatus("");
     }
   };
 
@@ -145,7 +150,7 @@ export default function SellerKeywordPage() {
         <SearchHistory type="seller" onSelect={handleSearch} />
       </div>
 
-      {loading && <SkeletonTable rows={5} cols={7} />}
+      {loading && <SkeletonTable rows={5} cols={7} statusText={loadingStatus} />}
 
       {error && (
         <div className="mb-6">
@@ -264,6 +269,8 @@ export default function SellerKeywordPage() {
               </div>
             </div>
           )}
+
+          <TagGenerator keywords={result.relatedKeywords ?? []} />
 
           <GradeGuide />
 

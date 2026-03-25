@@ -11,6 +11,7 @@ import SearchHistory, { addToHistory } from "@/components/SearchHistory";
 import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
 import SkeletonTable from "@/components/SkeletonTable";
 import GradeGuide from "@/components/GradeGuide";
+import TagGenerator from "@/components/TagGenerator";
 import type { BlogKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
@@ -37,6 +38,7 @@ export default function BlogKeywordPage() {
   const [result, setResult] = useState<BlogKeywordResult | null>(null);
   const [relatedResults, setRelatedResults] = useState<BlogKeywordResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [compareMode, setCompareMode] = useState(false);
   const [compareResult, setCompareResult] = useState<BlogKeywordResult | null>(null);
@@ -56,6 +58,7 @@ export default function BlogKeywordPage() {
   const handleSearch = async (keyword: string) => {
     router.replace(`/blog-keyword?q=${encodeURIComponent(keyword)}`, { scroll: false });
     setLoading(true);
+    setLoadingStatus("검색량 확인 중");
     setError(null);
     setResult(null);
     setRelatedResults([]);
@@ -76,6 +79,7 @@ export default function BlogKeywordPage() {
 
       const data: BlogKeywordResult = await res.json();
       setResult(data);
+      setLoadingStatus("관련 키워드 분석 중");
 
       if (data.relatedKeywords.length > 0) {
         try {
@@ -97,6 +101,7 @@ export default function BlogKeywordPage() {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
       setLoading(false);
+      setLoadingStatus("");
     }
   };
 
@@ -146,7 +151,7 @@ export default function BlogKeywordPage() {
         <SearchHistory type="blog" onSelect={handleSearch} />
       </div>
 
-      {loading && <SkeletonTable rows={5} cols={8} />}
+      {loading && <SkeletonTable rows={5} cols={8} statusText={loadingStatus} />}
 
       {error && (
         <div className="mb-6">
@@ -268,6 +273,8 @@ export default function BlogKeywordPage() {
               </div>
             </div>
           )}
+
+          <TagGenerator keywords={result.relatedKeywords} />
 
           <GradeGuide />
 
