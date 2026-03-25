@@ -4,6 +4,7 @@ import TrendingKeywords from "@/components/TrendingKeywords";
 import TrustBadges from "@/components/TrustBadges";
 import Comments from "@/components/Comments";
 import ShareButtons from "@/components/ShareButtons";
+import AnalysisCounter from "@/components/AnalysisCounter";
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -75,6 +76,7 @@ export default function Home() {
 
       {/* 신뢰 배지 */}
       <TrustBadges />
+      <AnalysisCounter />
 
       {/* 기능 카드 */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">

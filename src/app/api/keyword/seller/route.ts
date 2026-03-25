@@ -99,5 +99,12 @@ export async function POST(request: Request) {
 
   await setCache(cacheKey, result, false);
 
+  // 카운터 증가 (실패 무시)
+  try {
+    const { Redis } = await import("@upstash/redis");
+    const counterRedis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL!, token: process.env.UPSTASH_REDIS_REST_TOKEN! });
+    await counterRedis.incr("kv:analysis-count");
+  } catch {}
+
   return NextResponse.json(result);
 }
