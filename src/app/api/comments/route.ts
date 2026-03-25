@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -17,6 +18,17 @@ interface Comment {
   createdAt: string;
 }
 
+// XSS 방지: HTML 태그 제거 및 특수문자 이스케이프
+function sanitize(input: string): string {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .replace(/\//g, "&#x2F;");
+}
+
 export async function GET() {
   try {
     const comments = await redis.lrange<Comment>(COMMENTS_KEY, 0, MAX_COMMENTS - 1);
@@ -27,6 +39,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  // Rate limit: 댓글은 분당 5회로 제한
+  const ip = getClientIp(request);
+  const { success } = await checkRateLimit(ip);
+  if (!success) {
+    return NextResponse.json(
+      { error: "너무 많은 요청입니다. 잠시 후 다시 시도해주세요." },
+      { status: 429 }
+    );
+  }
+
   let body: { message?: string; adminCode?: string };
   try {
     body = await request.json();
@@ -34,11 +56,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  const message = body.message?.trim().slice(0, 500);
-  if (!message) {
-    return NextResponse.json({ error: "댓글을 입력해주세요." }, { status: 400 });
+  const rawMessage = body.message?.trim();
+  if (!rawMessage || rawMessage.length < 2) {
+    return NextResponse.json({ error: "댓글을 2자 이상 입력해주세요." }, { status: 400 });
   }
 
+  if (rawMessage.length > 500) {
+    return NextResponse.json({ error: "댓글은 500자까지 가능합니다." }, { status: 400 });
+  }
+
+  // URL 스팸 필터
+  const urlPattern = /https?:\/\/[^\s]+/gi;
+  if (urlPattern.test(rawMessage)) {
+    return NextResponse.json({ error: "댓글에 링크를 포함할 수 없습니다." }, { status: 400 });
+  }
+
+  const message = sanitize(rawMessage.slice(0, 500));
   const isAdmin = body.adminCode === ADMIN_CODE;
 
   const comment: Comment = {
