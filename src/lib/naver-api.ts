@@ -139,6 +139,18 @@ export async function getBlogDocCount(keyword: string): Promise<number | null> {
   return naverSearchCount(keyword, "blog");
 }
 
+export async function getNewsCount(keyword: string): Promise<number | null> {
+  return naverSearchCount(keyword, "news");
+}
+
+export async function getCafeCount(keyword: string): Promise<number | null> {
+  return naverSearchCount(keyword, "cafearticle");
+}
+
+export async function getWebDocCount(keyword: string): Promise<number | null> {
+  return naverSearchCount(keyword, "webkr");
+}
+
 export async function getShoppingProductCount(
   keyword: string
 ): Promise<number | null> {

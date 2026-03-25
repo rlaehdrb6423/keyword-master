@@ -14,6 +14,12 @@ export interface BlogKeywordResult {
   mobileVolume: number;
   totalVolume: number;
   blogDocCount: number;
+  newsCount: number;
+  cafeCount: number;
+  webDocCount: number;
+  totalCompetition: number;
+  competitionGrade: string;
+  competitionLabel: string;
   ratio: number;
   grade: Grade;
   gradeLabel: string;
