@@ -55,6 +55,11 @@ export default function Footer() {
                 개인정보를 수집하지 않습니다
               </li>
               <li>
+                <a href="https://igetmindset.com" target="_blank" rel="noopener noreferrer" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  블로그
+                </a>
+              </li>
+              <li>
                 <a href="mailto:keywordview.kr@gmail.com" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
                   문의: keywordview.kr@gmail.com
                 </a>
