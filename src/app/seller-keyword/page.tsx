@@ -4,6 +4,7 @@ import { useState } from "react";
 import KeywordInput from "@/components/KeywordInput";
 import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import ErrorMessage from "@/components/ErrorMessage";
+import SearchHistory, { addToHistory } from "@/components/SearchHistory";
 import type { SellerKeywordResult } from "@/types/keyword";
 
 const columns = [
@@ -24,6 +25,7 @@ export default function SellerKeywordPage() {
     setError(null);
 
     try {
+      addToHistory(keyword, "seller");
       const res = await fetch("/api/keyword/seller", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -64,6 +66,7 @@ export default function SellerKeywordPage() {
           loading={loading}
           placeholder="분석할 상품 키워드를 입력하세요 (예: 텀블러)"
         />
+        <SearchHistory type="seller" onSelect={handleSearch} />
       </div>
 
       {error && (

@@ -144,14 +144,45 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 댓글 섹션 */}
+      {/* 사용 가이드 */}
       <div className="mt-12 max-w-4xl mx-auto">
+        <div className="card p-6">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+            이렇게 사용하세요
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="text-2xl mb-2">1</div>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">키워드 분석</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                "다이어트", "텀블러" 같은 키워드를 입력하면 검색량, 경쟁도, 등급을 한눈에 볼 수 있어요.
+              </p>
+            </div>
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <div className="text-2xl mb-2">2</div>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">지수 확인</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                블로그 ID나 스마트스토어 ID를 입력하면 11단계 레벨과 SEO 점수를 분석해줍니다.
+              </p>
+            </div>
+            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+              <div className="text-2xl mb-2">3</div>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">전략 수립</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                A등급 키워드를 찾아 블로그 포스팅이나 상품 등록에 활용하세요. 경쟁이 낮을수록 유리합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 댓글 섹션 */}
+      <div className="mt-8 max-w-4xl mx-auto">
         <Comments />
       </div>
 
-      <div className="mt-12 text-center text-sm text-gray-400 dark:text-gray-500">
-        <p>네이버 검색광고 API + 네이버 검색 API 기반</p>
-        <p className="mt-1">※ 지수 등급 임계값은 초기 추정치이며, 실데이터 기반으로 조정 예정</p>
+      <div className="mt-8 text-center text-sm text-gray-400 dark:text-gray-500">
+        <p>네이버 검색광고 API + 네이버 검색 API 기반 | 모든 기능 무료</p>
       </div>
     </div>
   );

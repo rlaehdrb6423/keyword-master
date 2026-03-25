@@ -5,6 +5,7 @@ import KeywordInput from "@/components/KeywordInput";
 import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
+import SearchHistory, { addToHistory } from "@/components/SearchHistory";
 import type { BlogKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
@@ -41,6 +42,7 @@ export default function BlogKeywordPage() {
     setRelatedResults([]);
 
     try {
+      addToHistory(keyword, "blog");
       const res = await fetch("/api/keyword/blog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,6 +102,7 @@ export default function BlogKeywordPage() {
           loading={loading}
           placeholder="분석할 키워드를 입력하세요 (예: 다이어트)"
         />
+        <SearchHistory type="blog" onSelect={handleSearch} />
       </div>
 
       {error && (
