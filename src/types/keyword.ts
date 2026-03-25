@@ -18,7 +18,6 @@ export interface BlogKeywordResult {
   grade: Grade;
   gradeLabel: string;
   relatedKeywords: string[];
-  dataSources: string[];
 }
 
 export interface SellerKeywordResult {
@@ -27,12 +26,9 @@ export interface SellerKeywordResult {
   mobileVolume: number;
   totalVolume: number;
   naverProductCount: number;
-  coupangProductCount: number | null;
   naverRatio: number;
-  coupangRatio: number | null;
   grade: Grade;
   gradeLabel: string;
-  dataSources: string[];
 }
 
 export interface KeywordVolume {
@@ -44,7 +40,7 @@ export interface KeywordVolume {
 
 export interface ApiErrorResponse {
   error: string;
-  code: "API_LIMIT" | "TIMEOUT" | "INVALID_INPUT" | "SCRAPE_FAILED" | "SERVER_ERROR";
+  code: "API_LIMIT" | "TIMEOUT" | "INVALID_INPUT" | "SERVER_ERROR";
 }
 
 export interface BulkRequest {

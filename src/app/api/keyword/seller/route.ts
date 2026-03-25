@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getSearchVolume, getShoppingProductCount } from "@/lib/naver-api";
-import { getCoupangProductCount } from "@/lib/coupang-scraper";
 import { calculateSellerIndex } from "@/lib/index-calculator";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
@@ -41,13 +40,11 @@ export async function POST(request: Request) {
     return NextResponse.json(cached);
   }
 
-  // 네이버 API + 쿠팡 병렬 호출 (쿠팡은 실패해도 OK)
-  const [volumeData, naverProductCount, coupangProductCount] =
-    await Promise.all([
-      getSearchVolume(keyword),
-      getShoppingProductCount(keyword),
-      getCoupangProductCount(keyword).catch(() => null),
-    ]);
+  // 네이버 API 병렬 호출
+  const [volumeData, naverProductCount] = await Promise.all([
+    getSearchVolume(keyword),
+    getShoppingProductCount(keyword),
+  ]);
 
   if (!volumeData) {
     return NextResponse.json<ApiErrorResponse>(
@@ -58,19 +55,9 @@ export async function POST(request: Request) {
 
   const totalVolume = volumeData.pcVolume + volumeData.mobileVolume;
   const naverCount = naverProductCount ?? 0;
-  const coupangCount = coupangProductCount ?? null;
-
   const naverRatio = naverCount > 0 ? totalVolume / naverCount : 0;
-  const coupangRatio =
-    coupangCount !== null && coupangCount > 0
-      ? totalVolume / coupangCount
-      : null;
 
-  // 셀러 지수는 네이버쇼핑 기준
   const indexResult = calculateSellerIndex(totalVolume, naverCount);
-
-  const dataSources = coupangCount !== null ? ["naver", "coupang"] : ["naver"];
-  const isPartial = coupangCount === null;
 
   const result: SellerKeywordResult = {
     keyword: volumeData.keyword,
@@ -78,16 +65,12 @@ export async function POST(request: Request) {
     mobileVolume: volumeData.mobileVolume,
     totalVolume,
     naverProductCount: naverCount,
-    coupangProductCount: coupangCount,
     naverRatio: Math.round(naverRatio * 100) / 100,
-    coupangRatio:
-      coupangRatio !== null ? Math.round(coupangRatio * 100) / 100 : null,
     grade: indexResult.grade,
     gradeLabel: indexResult.label,
-    dataSources,
   };
 
-  await setCache(cacheKey, result, isPartial);
+  await setCache(cacheKey, result, false);
 
   return NextResponse.json(result);
 }

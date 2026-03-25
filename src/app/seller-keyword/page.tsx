@@ -4,36 +4,14 @@ import { useState } from "react";
 import KeywordInput from "@/components/KeywordInput";
 import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import ErrorMessage from "@/components/ErrorMessage";
-import DataSourceBadge from "@/components/DataSourceBadge";
 import type { SellerKeywordResult } from "@/types/keyword";
 
 const columns = [
   { key: "keyword", label: "키워드", align: "left" as const },
   { key: "totalVolume", label: "총 검색량", align: "right" as const },
   { key: "naverProductCount", label: "네이버 상품수", align: "right" as const },
-  {
-    key: "coupangProductCount",
-    label: "쿠팡 상품수",
-    align: "right" as const,
-    render: (value: unknown) =>
-      value !== null ? Number(value).toLocaleString("ko-KR") : "N/A",
-  },
-  { key: "naverRatio", label: "네이버 비율", align: "right" as const },
-  {
-    key: "coupangRatio",
-    label: "쿠팡 비율",
-    align: "right" as const,
-    render: (value: unknown) => (value !== null ? String(value) : "N/A"),
-  },
+  { key: "naverRatio", label: "비율", align: "right" as const },
   gradeColumn,
-  {
-    key: "dataSources",
-    label: "데이터 소스",
-    align: "center" as const,
-    render: (value: unknown) => (
-      <DataSourceBadge sources={value as string[]} />
-    ),
-  },
 ];
 
 export default function SellerKeywordPage() {
@@ -76,7 +54,7 @@ export default function SellerKeywordPage() {
           셀러 키워드 분석
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          네이버쇼핑/쿠팡 상품수 대비 검색량을 분석하여 시장 진입 가능성을 평가합니다.
+          네이버쇼핑 상품수 대비 검색량을 분석하여 시장 진입 가능성을 평가합니다.
         </p>
       </div>
 
@@ -98,9 +76,6 @@ export default function SellerKeywordPage() {
         <div className="card overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              셀러 지수는 네이버쇼핑 데이터 기준입니다. 쿠팡 데이터는 참고용입니다.
-            </p>
           </div>
           <ResultTable
             columns={columns}

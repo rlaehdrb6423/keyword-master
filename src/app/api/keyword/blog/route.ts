@@ -68,7 +68,6 @@ export async function POST(request: Request) {
     grade: indexResult.grade,
     gradeLabel: indexResult.label,
     relatedKeywords: volumeData.relatedKeywords,
-    dataSources: ["naver"],
   };
 
   await setCache(cacheKey, result);

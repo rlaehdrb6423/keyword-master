@@ -3,7 +3,6 @@
 import { useState } from "react";
 import KeywordInput from "@/components/KeywordInput";
 import GradeBadge from "@/components/GradeBadge";
-import DataSourceBadge from "@/components/DataSourceBadge";
 import ErrorMessage from "@/components/ErrorMessage";
 import type { SellerKeywordResult } from "@/types/keyword";
 
@@ -119,7 +118,7 @@ export default function SellerIndexPage() {
                   : entry.indexScore}
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{entry.gradeLabel}</p>
-              <div className="grid grid-cols-3 gap-2 text-sm text-gray-600 dark:text-gray-400 mb-3">
+              <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <div>
                   <span className="text-gray-400 dark:text-gray-500">검색량</span>
                   <div className="font-medium">
@@ -132,16 +131,7 @@ export default function SellerIndexPage() {
                     {entry.naverProductCount.toLocaleString()}
                   </div>
                 </div>
-                <div>
-                  <span className="text-gray-400 dark:text-gray-500">쿠팡 상품</span>
-                  <div className="font-medium">
-                    {entry.coupangProductCount !== null
-                      ? entry.coupangProductCount.toLocaleString()
-                      : "N/A"}
-                  </div>
-                </div>
               </div>
-              <DataSourceBadge sources={entry.dataSources} />
             </div>
           ))}
         </div>
