@@ -7,6 +7,8 @@ import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
 import SearchHistory, { addToHistory } from "@/components/SearchHistory";
 import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
+import SkeletonTable from "@/components/SkeletonTable";
+import GradeGuide from "@/components/GradeGuide";
 import type { SellerKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
@@ -132,6 +134,8 @@ export default function SellerKeywordPage() {
         <SearchHistory type="seller" onSelect={handleSearch} />
       </div>
 
+      {loading && <SkeletonTable rows={5} cols={7} />}
+
       {error && (
         <div className="mb-6">
           <ErrorMessage message={error} />
@@ -249,6 +253,8 @@ export default function SellerKeywordPage() {
               </div>
             </div>
           )}
+
+          <GradeGuide />
 
           <div className="card overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">

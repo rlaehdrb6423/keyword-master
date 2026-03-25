@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Comments from "@/components/Comments";
 import ShareButtons from "@/components/ShareButtons";
+import TrustBadges from "@/components/TrustBadges";
 
 interface TrendingItem {
   rank: number;
@@ -42,6 +43,9 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* 신뢰 배지 */}
+      <TrustBadges />
 
       {/* 기능 카드 */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
