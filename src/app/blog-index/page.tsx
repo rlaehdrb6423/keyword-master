@@ -1,19 +1,31 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import ErrorMessage from "@/components/ErrorMessage";
+
+interface PostInfo {
+  title: string;
+  link: string;
+  pubDate: string;
+  descriptionLength: number;
+  seoScore: number;
+  seoTips: string[];
+  hasVolume: boolean;
+}
 
 interface BlogLevelResult {
   blogId: string;
   blogTitle: string;
   totalPosts: number;
-  recentPosts: { title: string; link: string; pubDate: string; descriptionLength: number }[];
+  recentPosts: PostInfo[];
   postingFrequency: number;
   avgPostLength: number;
   searchVisibility: number;
   level: number;
   levelLabel: string;
   tips: string[];
+  postingTimeline: { week: string; count: number }[];
 }
 
 const levelColors = [
@@ -22,11 +34,24 @@ const levelColors = [
   "bg-purple-400", "bg-purple-500", "bg-red-500",
 ];
 
+function seoScoreColor(score: number) {
+  if (score >= 80) return "text-green-600 dark:text-green-400";
+  if (score >= 50) return "text-yellow-600 dark:text-yellow-400";
+  return "text-red-600 dark:text-red-400";
+}
+
+function seoScoreBg(score: number) {
+  if (score >= 80) return "bg-green-100 dark:bg-green-900/30";
+  if (score >= 50) return "bg-yellow-100 dark:bg-yellow-900/30";
+  return "bg-red-100 dark:bg-red-900/30";
+}
+
 export default function BlogIndexPage() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<BlogLevelResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [expandedPost, setExpandedPost] = useState<number | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -63,7 +88,7 @@ export default function BlogIndexPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">블로그 지수</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          네이버 블로그의 기본 지수 확인과 함께 최근 포스팅별 상세 분석이 가능합니다.
+          네이버 블로그의 기본 지수 확인과 함께 최근 포스팅별 SEO 상세 분석이 가능합니다.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
           blog.naver.com/blogId 형식 또는 blogId만 입력 가능합니다.
@@ -118,10 +143,6 @@ export default function BlogIndexPage() {
             </div>
           ))}
         </div>
-        <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 space-y-1">
-          <p>블로그 지수를 올리기 위해서는 꾸준한 포스팅과 경쟁력 있는 키워드 선정이 중요합니다.</p>
-          <p>SEO에 맞는 키워드 사용은 검색 노출 개선에 중요한 요소입니다.</p>
-        </div>
       </div>
 
       {result && (
@@ -141,7 +162,6 @@ export default function BlogIndexPage() {
               </div>
             </div>
 
-            {/* 레벨 바 */}
             <div className="mb-6">
               <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mb-1">
                 <span>Level 0</span>
@@ -155,7 +175,6 @@ export default function BlogIndexPage() {
               </div>
             </div>
 
-            {/* 상세 지표 */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{result.totalPosts}</div>
@@ -176,6 +195,32 @@ export default function BlogIndexPage() {
             </div>
           </div>
 
+          {/* 포스팅 주기 그래프 */}
+          {result.postingTimeline && (
+            <div className="card p-5 mb-6">
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-4">포스팅 주기 (최근 8주)</h3>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={result.postingTimeline}>
+                    <XAxis dataKey="week" tick={{ fontSize: 12, fill: "#9ca3af" }} />
+                    <YAxis tick={{ fontSize: 12, fill: "#9ca3af" }} allowDecimals={false} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(17,24,39,0.9)",
+                        border: "none",
+                        borderRadius: "8px",
+                        color: "#fff",
+                        fontSize: "12px",
+                      }}
+                      formatter={(value: number) => [`${value}개`, "포스팅"]}
+                    />
+                    <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
           {/* 팁 */}
           <div className="card p-5 mb-6">
             <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">분석 및 추천</h3>
@@ -189,29 +234,53 @@ export default function BlogIndexPage() {
             </ul>
           </div>
 
-          {/* 최근 포스트 */}
+          {/* 최근 포스트 + SEO 점수 */}
           {result.recentPosts.length > 0 && (
             <div className="card overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold text-gray-900 dark:text-white">최근 포스팅</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">최근 포스팅 SEO 분석</h3>
               </div>
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {result.recentPosts.map((post, i) => (
-                  <div key={i} className="px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <a
-                        href={post.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate flex-1"
-                      >
-                        {post.title}
-                      </a>
-                      <div className="flex items-center gap-3 ml-4 text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
-                        <span>{post.descriptionLength}자</span>
-                        <span>{new Date(post.pubDate).toLocaleDateString("ko-KR")}</span>
+                  <div key={i} className="px-6 py-3">
+                    <div
+                      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 -mx-2 px-2 py-1 rounded transition-colors"
+                      onClick={() => setExpandedPost(expandedPost === i ? null : i)}
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold ${seoScoreBg(post.seoScore)} ${seoScoreColor(post.seoScore)}`}>
+                          {post.seoScore}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <a
+                            href={post.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate block"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {post.title}
+                          </a>
+                          <div className="flex gap-3 text-xs text-gray-400 dark:text-gray-500">
+                            <span>{post.descriptionLength}자</span>
+                            <span>{new Date(post.pubDate).toLocaleDateString("ko-KR")}</span>
+                            {post.hasVolume && <span className="text-green-500">검색량 있음</span>}
+                          </div>
+                        </div>
                       </div>
+                      <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedPost === i ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
                     </div>
+                    {expandedPost === i && (
+                      <div className="mt-2 ml-13 pl-13 space-y-1">
+                        {post.seoTips.map((tip, j) => (
+                          <p key={j} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-1">
+                            <span className="text-primary-500">-</span> {tip}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

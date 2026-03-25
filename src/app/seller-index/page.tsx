@@ -3,12 +3,20 @@
 import { useState, FormEvent } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
 
+interface ProductInfo {
+  title: string;
+  link: string;
+  seoScore: number;
+  seoTips: string[];
+}
+
 interface StoreLevelResult {
   storeId: string;
   storeName: string;
   totalProducts: number;
-  recentProducts: { title: string; link: string }[];
+  recentProducts: ProductInfo[];
   searchVisibility: number;
+  avgSeoScore: number;
   level: number;
   levelLabel: string;
   tips: string[];
@@ -20,11 +28,24 @@ const levelColors = [
   "bg-purple-400", "bg-purple-500", "bg-red-500",
 ];
 
+function seoScoreColor(score: number) {
+  if (score >= 80) return "text-green-600 dark:text-green-400";
+  if (score >= 50) return "text-yellow-600 dark:text-yellow-400";
+  return "text-red-600 dark:text-red-400";
+}
+
+function seoScoreBg(score: number) {
+  if (score >= 80) return "bg-green-100 dark:bg-green-900/30";
+  if (score >= 50) return "bg-yellow-100 dark:bg-yellow-900/30";
+  return "bg-red-100 dark:bg-red-900/30";
+}
+
 export default function SellerIndexPage() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<StoreLevelResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [expandedProduct, setExpandedProduct] = useState<number | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,7 +82,7 @@ export default function SellerIndexPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">셀러 지수</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          네이버 스마트스토어의 기본 지수 확인과 함께 상품별 상세 분석이 가능합니다.
+          네이버 스마트스토어의 기본 지수 확인과 함께 상품명 SEO 상세 분석이 가능합니다.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
           smartstore.naver.com/storeId 형식 또는 storeId만 입력 가능합니다.
@@ -116,10 +137,6 @@ export default function SellerIndexPage() {
             </div>
           ))}
         </div>
-        <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 space-y-1">
-          <p>셀러 지수를 올리기 위해서는 꾸준한 상품 등록과 키워드 최적화가 중요합니다.</p>
-          <p>리뷰 관리와 상품명 SEO는 검색 노출에 핵심적인 요소입니다.</p>
-        </div>
       </div>
 
       {result && (
@@ -139,7 +156,6 @@ export default function SellerIndexPage() {
               </div>
             </div>
 
-            {/* 레벨 바 */}
             <div className="mb-6">
               <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mb-1">
                 <span>Level 0</span>
@@ -153,8 +169,7 @@ export default function SellerIndexPage() {
               </div>
             </div>
 
-            {/* 상세 지표 */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{result.totalProducts}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">총 상품수</div>
@@ -162,6 +177,10 @@ export default function SellerIndexPage() {
               <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.searchVisibility}%</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className={`text-2xl font-bold ${seoScoreColor(result.avgSeoScore)}`}>{result.avgSeoScore}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">평균 SEO 점수</div>
               </div>
             </div>
           </div>
@@ -179,23 +198,46 @@ export default function SellerIndexPage() {
             </ul>
           </div>
 
-          {/* 최근 상품 */}
+          {/* 상품 SEO 분석 */}
           {result.recentProducts.length > 0 && (
             <div className="card overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold text-gray-900 dark:text-white">등록 상품</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">상품명 SEO 분석</h3>
               </div>
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {result.recentProducts.map((product, i) => (
-                  <div key={i} className="px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <a
-                      href={product.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
+                  <div key={i} className="px-6 py-3">
+                    <div
+                      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 -mx-2 px-2 py-1 rounded transition-colors"
+                      onClick={() => setExpandedProduct(expandedProduct === i ? null : i)}
                     >
-                      {product.title}
-                    </a>
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold ${seoScoreBg(product.seoScore)} ${seoScoreColor(product.seoScore)}`}>
+                          {product.seoScore}
+                        </div>
+                        <a
+                          href={product.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate flex-1"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {product.title}
+                        </a>
+                      </div>
+                      <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedProduct === i ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    {expandedProduct === i && (
+                      <div className="mt-2 ml-13 space-y-1">
+                        {product.seoTips.map((tip, j) => (
+                          <p key={j} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-1">
+                            <span className="text-primary-500">-</span> {tip}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
