@@ -74,7 +74,7 @@ export async function getSearchVolume(
     // 첫 번째 항목이 입력 키워드 자체
     const main = items[0];
     const relatedKeywords = items
-      .slice(1, 11)
+      .slice(1, 16)
       .map((item) => item.relKeyword);
 
     return {

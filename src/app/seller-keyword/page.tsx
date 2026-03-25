@@ -72,15 +72,15 @@ export default function SellerKeywordPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           셀러 키워드 분석
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           네이버쇼핑/쿠팡 상품수 대비 검색량을 분석하여 시장 진입 가능성을 평가합니다.
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+      <div className="card p-6 mb-6">
         <KeywordInput
           onSearch={handleSearch}
           loading={loading}
@@ -95,10 +95,10 @@ export default function SellerKeywordPage() {
       )}
 
       {results.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">분석 결과</h2>
-            <p className="text-xs text-gray-500 mt-1">
+        <div className="card overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               셀러 지수는 네이버쇼핑 데이터 기준입니다. 쿠팡 데이터는 참고용입니다.
             </p>
           </div>

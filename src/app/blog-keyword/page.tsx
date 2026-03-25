@@ -43,9 +43,9 @@ export default function BlogKeywordPage() {
       const data: BlogKeywordResult = await res.json();
       setResult(data);
 
-      // 관련 키워드도 분석 (상위 5개만)
+      // 관련 키워드도 분석 (상위 15개)
       if (data.relatedKeywords.length > 0) {
-        const relatedPromises = data.relatedKeywords.slice(0, 5).map(async (kw) => {
+        const relatedPromises = data.relatedKeywords.slice(0, 15).map(async (kw) => {
           try {
             const r = await fetch("/api/keyword/blog", {
               method: "POST",
@@ -74,15 +74,15 @@ export default function BlogKeywordPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           블로그 키워드 분석
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           네이버 검색량 대비 블로그 문서수를 분석하여 상위노출 가능성을 평가합니다.
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+      <div className="card p-6 mb-6">
         <KeywordInput
           onSearch={handleSearch}
           loading={loading}
@@ -100,14 +100,14 @@ export default function BlogKeywordPage() {
         <>
           {/* 관련 키워드 태그 */}
           {result.relatedKeywords.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">관련 키워드</h3>
+            <div className="card p-4 mb-6">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">관련 키워드</h3>
               <div className="flex flex-wrap gap-2">
                 {result.relatedKeywords.map((kw) => (
                   <button
                     key={kw}
                     onClick={() => handleSearch(kw)}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition-colors"
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300 transition-colors"
                   >
                     {kw}
                   </button>
@@ -116,9 +116,9 @@ export default function BlogKeywordPage() {
             </div>
           )}
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">분석 결과</h2>
+          <div className="card overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
             </div>
             <ResultTable
               columns={columns}
