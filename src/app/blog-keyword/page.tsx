@@ -6,17 +6,17 @@ import ResultTable, { gradeColumn } from "@/components/ResultTable";
 import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
 import SearchHistory, { addToHistory } from "@/components/SearchHistory";
+import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
 import type { BlogKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
   { key: "keyword", label: "키워드", align: "left" as const },
-  { key: "pcVolume", label: "PC 검색량", align: "right" as const },
-  { key: "mobileVolume", label: "모바일 검색량", align: "right" as const },
+  { key: "pcVolume", label: "PC", align: "right" as const },
+  { key: "mobileVolume", label: "모바일", align: "right" as const },
   { key: "totalVolume", label: "총 검색량", align: "right" as const },
   { key: "blogDocCount", label: "블로그", align: "right" as const },
   { key: "newsCount", label: "뉴스", align: "right" as const },
   { key: "cafeCount", label: "카페", align: "right" as const },
-  { key: "webDocCount", label: "웹문서", align: "right" as const },
   { key: "ratio", label: "비율", align: "right" as const },
   gradeColumn,
   {
@@ -34,12 +34,16 @@ export default function BlogKeywordPage() {
   const [relatedResults, setRelatedResults] = useState<BlogKeywordResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareResult, setCompareResult] = useState<BlogKeywordResult | null>(null);
+  const [compareLoading, setCompareLoading] = useState(false);
 
   const handleSearch = async (keyword: string) => {
     setLoading(true);
     setError(null);
     setResult(null);
     setRelatedResults([]);
+    setCompareResult(null);
 
     try {
       addToHistory(keyword, "blog");
@@ -57,7 +61,6 @@ export default function BlogKeywordPage() {
       const data: BlogKeywordResult = await res.json();
       setResult(data);
 
-      // 관련 키워드도 분석 (상위 15개)
       if (data.relatedKeywords.length > 0) {
         const relatedPromises = data.relatedKeywords.slice(0, 15).map(async (kw) => {
           try {
@@ -83,7 +86,31 @@ export default function BlogKeywordPage() {
     }
   };
 
+  const handleCompare = async (keyword: string) => {
+    setCompareLoading(true);
+    try {
+      const res = await fetch("/api/keyword/blog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keyword }),
+      });
+      if (res.ok) {
+        const data: BlogKeywordResult = await res.json();
+        setCompareResult(data);
+      }
+    } catch {} finally {
+      setCompareLoading(false);
+    }
+  };
+
   const allResults = result ? [result, ...relatedResults] : [];
+
+  const compareData = result && compareResult ? [
+    { label: "총 검색량", value1: result.totalVolume, value2: compareResult.totalVolume },
+    { label: "블로그", value1: result.blogDocCount, value2: compareResult.blogDocCount },
+    { label: "뉴스", value1: result.newsCount, value2: compareResult.newsCount },
+    { label: "카페", value1: result.cafeCount, value2: compareResult.cafeCount },
+  ] : [];
 
   return (
     <div>
@@ -113,47 +140,99 @@ export default function BlogKeywordPage() {
 
       {result && (
         <>
-          {/* 채널별 경쟁도 요약 카드 */}
+          {/* 시각화 카드 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {/* PC/모바일 비율 */}
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">PC / 모바일 비율</h3>
+              <PcMobileChart pcVolume={result.pcVolume} mobileVolume={result.mobileVolume} />
+            </div>
+
+            {/* 채널별 점유율 */}
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">채널별 콘텐츠 점유율</h3>
+              <ChannelShareChart
+                blogCount={result.blogDocCount}
+                newsCount={result.newsCount}
+                cafeCount={result.cafeCount}
+                webDocCount={result.webDocCount}
+              />
+            </div>
+          </div>
+
+          {/* 채널별 경쟁도 숫자 카드 */}
           <div className="card p-5 mb-6">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-              "{result.keyword}" 채널별 경쟁 현황
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {result.blogDocCount.toLocaleString()}
-                </div>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                "{result.keyword}" 종합 경쟁 현황
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
+                <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
+              </div>
+            </div>
+            <div className="grid grid-cols-5 gap-3">
+              <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">{result.blogDocCount.toLocaleString()}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">블로그</div>
               </div>
-              <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <div className="text-lg font-bold text-red-600 dark:text-red-400">
-                  {result.newsCount.toLocaleString()}
-                </div>
+              <div className="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <div className="text-lg font-bold text-red-600 dark:text-red-400">{result.newsCount.toLocaleString()}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">뉴스</div>
               </div>
-              <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-lg font-bold text-green-600 dark:text-green-400">
-                  {result.cafeCount.toLocaleString()}
-                </div>
+              <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-lg font-bold text-green-600 dark:text-green-400">{result.cafeCount.toLocaleString()}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">카페</div>
               </div>
-              <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                  {result.webDocCount.toLocaleString()}
-                </div>
+              <div className="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">{result.webDocCount.toLocaleString()}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">웹문서</div>
               </div>
-              <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                  {result.totalCompetition.toLocaleString()}
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">종합 경쟁</div>
+              <div className="text-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <div className="text-lg font-bold text-orange-600 dark:text-orange-400">{result.totalCompetition.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">합계</div>
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
-              <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
+          </div>
+
+          {/* 키워드 비교 */}
+          <div className="card p-5 mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">키워드 비교</h3>
+              <button
+                onClick={() => setCompareMode(!compareMode)}
+                className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                  compareMode
+                    ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                }`}
+              >
+                {compareMode ? "비교 닫기" : "비교하기"}
+              </button>
             </div>
+            {compareMode && (
+              <div>
+                <div className="flex gap-2 mb-4">
+                  <div className="flex-1">
+                    <div className="text-xs text-blue-500 mb-1">키워드 1: {result.keyword}</div>
+                  </div>
+                  <div className="flex-1">
+                    <KeywordInput
+                      onSearch={handleCompare}
+                      loading={compareLoading}
+                      placeholder="비교할 키워드 입력"
+                    />
+                  </div>
+                </div>
+                {compareResult && (
+                  <CompareBarChart
+                    data={compareData}
+                    name1={result.keyword}
+                    name2={compareResult.keyword}
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {/* 관련 키워드 태그 */}
