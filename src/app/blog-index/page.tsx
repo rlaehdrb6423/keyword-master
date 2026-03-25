@@ -252,15 +252,21 @@ export default function BlogIndexPage() {
                           {post.seoScore}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <a
-                            href={post.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate block"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {post.title}
-                          </a>
+                          {post.link && post.link.startsWith("http") ? (
+                            <a
+                              href={post.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate block"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {post.title}
+                            </a>
+                          ) : (
+                            <span className="text-sm text-gray-800 dark:text-gray-200 truncate block">
+                              {post.title}
+                            </span>
+                          )}
                           <div className="flex gap-3 text-xs text-gray-400 dark:text-gray-500">
                             <span>{post.descriptionLength}자</span>
                             <span>{new Date(post.pubDate).toLocaleDateString("ko-KR")}</span>

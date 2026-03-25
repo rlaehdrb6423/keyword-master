@@ -215,15 +215,21 @@ export default function SellerIndexPage() {
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold ${seoScoreBg(product.seoScore)} ${seoScoreColor(product.seoScore)}`}>
                           {product.seoScore}
                         </div>
-                        <a
-                          href={product.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate flex-1"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {product.title}
-                        </a>
+                        {product.link && product.link.startsWith("http") ? (
+                          <a
+                            href={product.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate flex-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {product.title}
+                          </a>
+                        ) : (
+                          <span className="text-sm text-gray-800 dark:text-gray-200 truncate flex-1">
+                            {product.title}
+                          </span>
+                        )}
                       </div>
                       <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedProduct === i ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
