@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Comments from "@/components/Comments";
+import ShareButtons from "@/components/ShareButtons";
 
 interface TrendingItem {
   rank: number;
@@ -184,6 +185,17 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 공유 */}
+      <section className="mb-10">
+        <div className="flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+          <div>
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-0.5">친구에게 공유하기</h3>
+            <p className="text-xs text-gray-400 dark:text-gray-500">유용하셨다면 공유해 주세요!</p>
+          </div>
+          <ShareButtons />
         </div>
       </section>
 
