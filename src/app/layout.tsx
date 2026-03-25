@@ -3,7 +3,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "KeywordMaster - 키워드 분석 도구",
+  title: "KeywordView - 키워드를 한눈에",
   description: "블로그 키워드, 셀러 키워드 분석 및 지수 계산 도구",
 };
 

@@ -56,10 +56,10 @@ export default function Home() {
     <div>
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
-          KeywordMaster
+          KeywordView
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
-          블로거 & 셀러를 위한 키워드 분석 도구
+          블로거 & 셀러를 위한 키워드를 한눈에
         </p>
       </div>
 
