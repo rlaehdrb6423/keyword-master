@@ -1,4 +1,5 @@
 import { getSearchVolume } from "./naver-api";
+import { fetchBlogRSS } from "./blog-analyzer";
 
 // 간단한 동시성 제한 함수
 function pLimit(concurrency: number) {
@@ -67,38 +68,19 @@ export interface BlogGapAnalysisResult {
   gapTopics: GapTopic[];
 }
 
-// 네이버 검색 API로 특정 블로그의 최근 글 가져오기
+// RSS로 특정 블로그의 최근 글 가져오기 (정확한 데이터)
 async function fetchBlogPosts(blogId: string): Promise<BlogPost[]> {
-  const query = `site:blog.naver.com/${blogId}`;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const rssUrl = `https://rss.blog.naver.com/${blogId}.xml`;
+  const rssData = await fetchBlogRSS(rssUrl);
 
-  try {
-    const response = await fetch(
-      `https://openapi.naver.com/v1/search/blog?query=${encodeURIComponent(query)}&display=50&sort=date`,
-      {
-        headers: {
-          "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID!,
-          "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET!,
-        },
-        signal: controller.signal,
-      }
-    );
+  if (!rssData) return [];
 
-    clearTimeout(timeoutId);
-    if (!response.ok) return [];
-
-    const data = await response.json();
-    return (data.items || []).map((item: { title: string; link: string; bloggername: string; postdate: string }) => ({
-      title: item.title.replace(/<[^>]*>/g, ""),
-      link: item.link,
-      bloggerName: item.bloggername,
-      postdate: item.postdate,
-    }));
-  } catch {
-    clearTimeout(timeoutId);
-    return [];
-  }
+  return rssData.posts.map((post) => ({
+    title: post.title,
+    link: post.link,
+    bloggerName: blogId,
+    postdate: post.pubDate,
+  }));
 }
 
 // 글 제목에서 키워드 추출
