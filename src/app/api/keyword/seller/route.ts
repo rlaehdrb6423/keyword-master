@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSearchVolume, getShoppingProductCount } from "@/lib/naver-api";
+import { getSearchVolume, getShoppingProductCount, getBlogDocCount, getNewsCount, getCafeCount } from "@/lib/naver-api";
 import { calculateSellerIndex } from "@/lib/index-calculator";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
@@ -33,17 +33,19 @@ export async function POST(request: Request) {
     );
   }
 
-  // 캐시 확인
-  const cacheKey = makeCacheKey("seller", keyword);
+  const cacheKey = makeCacheKey("seller2", keyword);
   const cached = await getCached<SellerKeywordResult>(cacheKey);
   if (cached) {
     return NextResponse.json(cached);
   }
 
-  // 네이버 API 병렬 호출
-  const [volumeData, naverProductCount] = await Promise.all([
+  // 네이버 API 병렬 호출 (채널별 경쟁도 포함)
+  const [volumeData, naverProductCount, blogCount, newsCount, cafeCount] = await Promise.all([
     getSearchVolume(keyword),
     getShoppingProductCount(keyword),
+    getBlogDocCount(keyword),
+    getNewsCount(keyword),
+    getCafeCount(keyword),
   ]);
 
   if (!volumeData) {
@@ -55,9 +57,27 @@ export async function POST(request: Request) {
 
   const totalVolume = volumeData.pcVolume + volumeData.mobileVolume;
   const naverCount = naverProductCount ?? 0;
+  const blog = blogCount ?? 0;
+  const news = newsCount ?? 0;
+  const cafe = cafeCount ?? 0;
   const naverRatio = naverCount > 0 ? totalVolume / naverCount : 0;
 
   const indexResult = calculateSellerIndex(totalVolume, naverCount);
+
+  // 종합 경쟁도 (쇼핑 상품 + 블로그 + 뉴스 + 카페)
+  const totalCompetition = naverCount + blog + news + cafe;
+  let competitionGrade: string;
+  let competitionLabel: string;
+  if (totalCompetition === 0) {
+    competitionGrade = "A";
+    competitionLabel = "경쟁 없음";
+  } else {
+    const compRatio = totalVolume / totalCompetition;
+    if (compRatio >= 30) { competitionGrade = "A"; competitionLabel = "매우 낮음"; }
+    else if (compRatio >= 10) { competitionGrade = "B"; competitionLabel = "낮음"; }
+    else if (compRatio >= 3) { competitionGrade = "C"; competitionLabel = "보통"; }
+    else { competitionGrade = "D"; competitionLabel = "높음"; }
+  }
 
   const result: SellerKeywordResult = {
     keyword: volumeData.keyword,
@@ -65,9 +85,16 @@ export async function POST(request: Request) {
     mobileVolume: volumeData.mobileVolume,
     totalVolume,
     naverProductCount: naverCount,
+    blogCount: blog,
+    newsCount: news,
+    cafeCount: cafe,
+    totalCompetition,
+    competitionGrade,
+    competitionLabel,
     naverRatio: Math.round(naverRatio * 100) / 100,
     grade: indexResult.grade,
     gradeLabel: indexResult.label,
+    relatedKeywords: volumeData.relatedKeywords,
   };
 
   await setCache(cacheKey, result, false);

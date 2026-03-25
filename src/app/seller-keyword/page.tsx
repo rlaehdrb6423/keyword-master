@@ -3,26 +3,46 @@
 import { useState } from "react";
 import KeywordInput from "@/components/KeywordInput";
 import ResultTable, { gradeColumn } from "@/components/ResultTable";
+import GradeBadge from "@/components/GradeBadge";
 import ErrorMessage from "@/components/ErrorMessage";
 import SearchHistory, { addToHistory } from "@/components/SearchHistory";
-import type { SellerKeywordResult } from "@/types/keyword";
+import { PcMobileChart, ChannelShareChart, CompareBarChart } from "@/components/KeywordCharts";
+import type { SellerKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
   { key: "keyword", label: "키워드", align: "left" as const },
+  { key: "pcVolume", label: "PC", align: "right" as const },
+  { key: "mobileVolume", label: "모바일", align: "right" as const },
   { key: "totalVolume", label: "총 검색량", align: "right" as const },
-  { key: "naverProductCount", label: "네이버 상품수", align: "right" as const },
+  { key: "naverProductCount", label: "상품수", align: "right" as const },
+  { key: "blogCount", label: "블로그", align: "right" as const },
   { key: "naverRatio", label: "비율", align: "right" as const },
   gradeColumn,
+  {
+    key: "competitionGrade",
+    label: "종합경쟁",
+    align: "center" as const,
+    render: (value: unknown, row: Record<string, unknown>) => (
+      <GradeBadge grade={value as Grade} label={row.competitionLabel as string} />
+    ),
+  },
 ];
 
 export default function SellerKeywordPage() {
-  const [results, setResults] = useState<SellerKeywordResult[]>([]);
+  const [result, setResult] = useState<SellerKeywordResult | null>(null);
+  const [relatedResults, setRelatedResults] = useState<SellerKeywordResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareResult, setCompareResult] = useState<SellerKeywordResult | null>(null);
+  const [compareLoading, setCompareLoading] = useState(false);
 
   const handleSearch = async (keyword: string) => {
     setLoading(true);
     setError(null);
+    setResult(null);
+    setRelatedResults([]);
+    setCompareResult(null);
 
     try {
       addToHistory(keyword, "seller");
@@ -38,16 +58,59 @@ export default function SellerKeywordPage() {
       }
 
       const data: SellerKeywordResult = await res.json();
-      setResults((prev) => {
-        const filtered = prev.filter((r) => r.keyword !== data.keyword);
-        return [data, ...filtered];
-      });
+      setResult(data);
+
+      // 관련 키워드 분석 (상위 10개)
+      if (data.relatedKeywords && data.relatedKeywords.length > 0) {
+        const relatedPromises = data.relatedKeywords.slice(0, 10).map(async (kw) => {
+          try {
+            const r = await fetch("/api/keyword/seller", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ keyword: kw }),
+            });
+            if (r.ok) return r.json();
+            return null;
+          } catch {
+            return null;
+          }
+        });
+
+        const relatedData = await Promise.all(relatedPromises);
+        setRelatedResults(relatedData.filter(Boolean));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleCompare = async (keyword: string) => {
+    setCompareLoading(true);
+    try {
+      const res = await fetch("/api/keyword/seller", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keyword }),
+      });
+      if (res.ok) {
+        const data: SellerKeywordResult = await res.json();
+        setCompareResult(data);
+      }
+    } catch {} finally {
+      setCompareLoading(false);
+    }
+  };
+
+  const allResults = result ? [result, ...relatedResults] : [];
+
+  const compareData = result && compareResult ? [
+    { label: "총 검색량", value1: result.totalVolume, value2: compareResult.totalVolume },
+    { label: "상품수", value1: result.naverProductCount, value2: compareResult.naverProductCount },
+    { label: "블로그", value1: result.blogCount, value2: compareResult.blogCount },
+    { label: "뉴스", value1: result.newsCount, value2: compareResult.newsCount },
+  ] : [];
 
   return (
     <div>
@@ -56,7 +119,7 @@ export default function SellerKeywordPage() {
           셀러 키워드 분석
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          네이버쇼핑 상품수 대비 검색량을 분석하여 시장 진입 가능성을 평가합니다.
+          네이버쇼핑 상품수 대비 검색량과 채널별 경쟁도를 종합 분석합니다.
         </p>
       </div>
 
@@ -75,16 +138,131 @@ export default function SellerKeywordPage() {
         </div>
       )}
 
-      {results.length > 0 && (
-        <div className="card overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
+      {result && (
+        <>
+          {/* 시각화 카드 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">PC / 모바일 비율</h3>
+              <PcMobileChart pcVolume={result.pcVolume} mobileVolume={result.mobileVolume} />
+            </div>
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">채널별 콘텐츠 점유율</h3>
+              <ChannelShareChart
+                blogCount={result.blogCount}
+                newsCount={result.newsCount}
+                cafeCount={result.cafeCount}
+                webDocCount={result.naverProductCount}
+              />
+            </div>
           </div>
-          <ResultTable
-            columns={columns}
-            data={results as unknown as Record<string, unknown>[]}
-          />
-        </div>
+
+          {/* 채널별 경쟁도 숫자 카드 */}
+          <div className="card p-5 mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                "{result.keyword}" 종합 경쟁 현황
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
+                <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
+              </div>
+            </div>
+            <div className="grid grid-cols-5 gap-3">
+              <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-lg font-bold text-green-600 dark:text-green-400">{result.naverProductCount.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">쇼핑 상품</div>
+              </div>
+              <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">{result.blogCount.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">블로그</div>
+              </div>
+              <div className="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <div className="text-lg font-bold text-red-600 dark:text-red-400">{result.newsCount.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">뉴스</div>
+              </div>
+              <div className="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">{result.cafeCount.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">카페</div>
+              </div>
+              <div className="text-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <div className="text-lg font-bold text-orange-600 dark:text-orange-400">{result.totalCompetition.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">합계</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 키워드 비교 */}
+          <div className="card p-5 mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">키워드 비교</h3>
+              <button
+                onClick={() => setCompareMode(!compareMode)}
+                className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                  compareMode
+                    ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                }`}
+              >
+                {compareMode ? "비교 닫기" : "비교하기"}
+              </button>
+            </div>
+            {compareMode && (
+              <div>
+                <div className="flex gap-2 mb-4">
+                  <div className="flex-1">
+                    <div className="text-xs text-blue-500 mb-1">키워드 1: {result.keyword}</div>
+                  </div>
+                  <div className="flex-1">
+                    <KeywordInput
+                      onSearch={handleCompare}
+                      loading={compareLoading}
+                      placeholder="비교할 키워드 입력"
+                    />
+                  </div>
+                </div>
+                {compareResult && (
+                  <CompareBarChart
+                    data={compareData}
+                    name1={result.keyword}
+                    name2={compareResult.keyword}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* 관련 키워드 태그 */}
+          {result.relatedKeywords && result.relatedKeywords.length > 0 && (
+            <div className="card p-4 mb-6">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">관련 키워드</h3>
+              <div className="flex flex-wrap gap-2">
+                {result.relatedKeywords.map((kw) => (
+                  <button
+                    key={kw}
+                    onClick={() => handleSearch(kw)}
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300 transition-colors"
+                  >
+                    {kw}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="card overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                종합경쟁 = 쇼핑상품+블로그+뉴스+카페 대비 검색량 비율
+              </p>
+            </div>
+            <ResultTable
+              columns={columns}
+              data={allResults as unknown as Record<string, unknown>[]}
+            />
+          </div>
+        </>
       )}
     </div>
   );

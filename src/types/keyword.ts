@@ -32,9 +32,16 @@ export interface SellerKeywordResult {
   mobileVolume: number;
   totalVolume: number;
   naverProductCount: number;
+  blogCount: number;
+  newsCount: number;
+  cafeCount: number;
+  totalCompetition: number;
+  competitionGrade: string;
+  competitionLabel: string;
   naverRatio: number;
   grade: Grade;
   gradeLabel: string;
+  relatedKeywords: string[];
 }
 
 export interface KeywordVolume {
