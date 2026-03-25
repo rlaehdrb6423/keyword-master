@@ -11,6 +11,7 @@ const navItems = [
   { href: "/seller-keyword", label: "셀러 키워드" },
   { href: "/blog-index", label: "블로그 지수" },
   { href: "/seller-index", label: "셀러 지수" },
+  { href: "/blog-analysis", label: "블로그 분석", badge: "BETA" },
 ];
 
 export default function Navigation() {
@@ -31,13 +32,18 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
                   pathname === item.href
                     ? "bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                 }`}
               >
                 {item.label}
+                {item.badge && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             ))}
             <ThemeToggle />
@@ -72,13 +78,18 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   pathname === item.href
                     ? "bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                 }`}
               >
                 {item.label}
+                {item.badge && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             ))}
           </div>
