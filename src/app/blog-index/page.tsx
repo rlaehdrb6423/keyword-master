@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import ErrorMessage from "@/components/ErrorMessage";
+import IndexSkeleton from "@/components/IndexSkeleton";
 
 interface PostInfo {
   title: string;
@@ -124,6 +125,8 @@ export default function BlogIndexPage() {
           </button>
         </form>
       </div>
+
+      {loading && !result && <IndexSkeleton />}
 
       {error && (
         <div className="mb-6">

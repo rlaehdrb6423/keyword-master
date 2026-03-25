@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
+import IndexSkeleton from "@/components/IndexSkeleton";
 
 interface ProductInfo {
   title: string;
@@ -118,6 +119,8 @@ export default function SellerIndexPage() {
           </button>
         </form>
       </div>
+
+      {loading && !result && <IndexSkeleton />}
 
       {error && (
         <div className="mb-6">

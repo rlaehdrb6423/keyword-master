@@ -1,43 +1,57 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import HeroSearch from "@/components/HeroSearch";
+import TrendingKeywords from "@/components/TrendingKeywords";
+import TrustBadges from "@/components/TrustBadges";
 import Comments from "@/components/Comments";
 import ShareButtons from "@/components/ShareButtons";
-import TrustBadges from "@/components/TrustBadges";
 
-interface TrendingItem {
-  rank: number;
-  keyword: string;
-  traffic: string;
-}
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "KeywordView는 무료인가요?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "네, 모든 기능을 회원가입 없이 100% 무료로 사용할 수 있습니다.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "A등급 키워드는 무엇인가요?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "검색량 대비 경쟁이 낮아 블로그 글이나 상품 등록 시 상위 노출 가능성이 높은 키워드입니다.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "어떤 데이터를 기반으로 분석하나요?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "네이버 검색광고 API와 네이버 검색 API의 공식 데이터를 실시간으로 분석합니다.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "블로그 지수는 어떻게 측정하나요?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "네이버 블로그 RSS를 분석하여 포스팅 수, 주기, 본문 길이, 검색 노출률을 기반으로 11단계 레벨을 산출합니다.",
+      },
+    },
+  ],
+};
 
 export default function Home() {
-  const router = useRouter();
-  const [trending, setTrending] = useState<TrendingItem[]>([]);
-  const [trendLoading, setTrendLoading] = useState(true);
-  const [heroTab, setHeroTab] = useState<"blog" | "seller">("blog");
-  const [heroQuery, setHeroQuery] = useState("");
-
-  function handleHeroSearch(e: React.FormEvent) {
-    e.preventDefault();
-    const q = heroQuery.trim();
-    if (!q) return;
-    const path = heroTab === "blog" ? "/blog-keyword" : "/seller-keyword";
-    router.push(`${path}?q=${encodeURIComponent(q)}`);
-  }
-
-  useEffect(() => {
-    fetch("/api/trending")
-      .then((res) => res.json())
-      .then((data) => setTrending(data.items || []))
-      .catch(() => setTrending([]))
-      .finally(() => setTrendLoading(false));
-  }, []);
-
   return (
     <div className="max-w-5xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       {/* 히어로 */}
       <section className="relative py-16 mb-10">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-600/5 via-transparent to-purple-600/5 dark:from-primary-400/5 dark:to-purple-400/5 rounded-3xl" />
@@ -54,49 +68,8 @@ export default function Home() {
             검색량, 경쟁도, SEO 점수까지<br className="sm:hidden" /> 블로거와 셀러에게 필요한 데이터를 한곳에서
           </p>
 
-          {/* 히어로 검색 폼 */}
-          <div className="mt-8 max-w-lg mx-auto">
-            <div className="flex gap-1 mb-3 p-1 rounded-xl bg-gray-100 dark:bg-gray-800 w-fit mx-auto">
-              <button
-                type="button"
-                onClick={() => setHeroTab("blog")}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  heroTab === "blog"
-                    ? "bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                }`}
-              >
-                블로그 키워드
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroTab("seller")}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  heroTab === "seller"
-                    ? "bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                }`}
-              >
-                셀러 키워드
-              </button>
-            </div>
-            <form onSubmit={handleHeroSearch} className="flex gap-2">
-              <input
-                type="text"
-                value={heroQuery}
-                onChange={(e) => setHeroQuery(e.target.value)}
-                placeholder={heroTab === "blog" ? "블로그 키워드를 입력하세요" : "셀러 키워드를 입력하세요"}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="px-5 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-sm font-medium transition-colors flex items-center gap-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                분석
-              </button>
-            </form>
-          </div>
+          {/* 히어로 검색 폼 (Client Component) */}
+          <HeroSearch />
         </div>
       </section>
 
@@ -138,73 +111,8 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* 실시간 인기 검색어 */}
-      <section className="mb-10">
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <h2 className="font-bold text-gray-900 dark:text-white text-sm">실시간 인기 검색어</h2>
-            </div>
-            <span className="text-xs text-gray-400 dark:text-gray-600">Google Trends</span>
-          </div>
-          <div className="p-4">
-            {trendLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <svg className="animate-spin h-5 w-5 text-gray-300" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-              </div>
-            ) : trending.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                {trending.map((item) => (
-                  <div
-                    key={item.rank}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                  >
-                    <span className={`text-xs font-bold w-5 text-center ${
-                      item.rank <= 3 ? "text-red-500" : "text-gray-300 dark:text-gray-600"
-                    }`}>
-                      {item.rank}
-                    </span>
-                    <span className="text-sm text-gray-700 dark:text-gray-300 flex-1 truncate">
-                      {item.keyword}
-                    </span>
-                    <div className="flex items-center gap-1 flex-shrink-0">
-                      {item.traffic && (
-                        <span className="text-[10px] text-gray-300 dark:text-gray-600 mr-1">
-                          {item.traffic}
-                        </span>
-                      )}
-                      <a
-                        href={`https://search.naver.com/search.naver?query=${encodeURIComponent(item.keyword)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold bg-green-50 text-green-600 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/40 transition-colors"
-                      >
-                        N
-                      </a>
-                      <a
-                        href={`https://www.google.com/search?q=${encodeURIComponent(item.keyword)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 transition-colors"
-                      >
-                        G
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-gray-400 dark:text-gray-500 py-4 text-sm">
-                트렌딩 데이터를 불러올 수 없습니다.
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
+      {/* 실시간 인기 검색어 (Client Component) */}
+      <TrendingKeywords />
 
       {/* 사용 가이드 */}
       <section className="mb-10">
@@ -329,7 +237,6 @@ export default function Home() {
       <section className="mb-10">
         <Comments />
       </section>
-
     </div>
   );
 }
