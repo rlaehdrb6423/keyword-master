@@ -12,6 +12,7 @@ import { PcMobileChart, ChannelShareChart, CompareBarChart, CompetitionRadar, Ke
 import SkeletonTable from "@/components/SkeletonTable";
 import GradeGuide from "@/components/GradeGuide";
 import TagGenerator from "@/components/TagGenerator";
+import WritingGuide from "@/components/WritingGuide";
 import type { BlogKeywordResult, Grade } from "@/types/keyword";
 
 const columns = [
@@ -407,6 +408,13 @@ export default function BlogKeywordPage() {
           <TagGenerator keywords={result.relatedKeywords} />
 
           <GradeGuide />
+
+          <WritingGuide
+            keyword={result.keyword}
+            grade={result.grade}
+            totalVolume={result.totalVolume}
+            platformCount={result.platformCount}
+          />
 
           <div className="card overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
