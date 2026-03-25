@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Comments from "@/components/Comments";
 
 interface TrendingItem {
   rank: number;
@@ -141,6 +142,11 @@ export default function Home() {
             </p>
           )}
         </div>
+      </div>
+
+      {/* 댓글 섹션 */}
+      <div className="mt-12 max-w-4xl mx-auto">
+        <Comments />
       </div>
 
       <div className="mt-12 text-center text-sm text-gray-400 dark:text-gray-500">
