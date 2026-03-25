@@ -281,22 +281,72 @@ export default function SellerKeywordPage() {
           </div>
 
           {/* 관련 키워드 태그 */}
-          {result.relatedKeywords && result.relatedKeywords.length > 0 && (
-            <div className="card p-4 mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">관련 키워드</h3>
-              <div className="flex flex-wrap gap-2">
-                {result.relatedKeywords.map((kw) => (
-                  <button
-                    key={kw}
-                    onClick={() => handleSearch(kw)}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300 transition-colors"
-                  >
-                    {kw}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {result.relatedKeywords && result.relatedKeywords.length > 0 && (() => {
+            const goldenKeywords = new Set(
+              allResults
+                .filter(r => r.grade === "A" || r.competitionGrade === "A")
+                .map(r => r.keyword)
+            );
+            return (
+              <>
+                <div className="card p-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">관련 키워드</h3>
+                    {goldenKeywords.size > 0 && (
+                      <span className="text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        황금 키워드 {goldenKeywords.size}개 발견
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {result.relatedKeywords.map((kw) => {
+                      const isGolden = goldenKeywords.has(kw);
+                      return (
+                        <button
+                          key={kw}
+                          onClick={() => handleSearch(kw)}
+                          className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                            isGolden
+                              ? "bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:ring-yellow-700 dark:hover:bg-yellow-900/50 font-medium"
+                              : "bg-gray-100 text-gray-700 hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+                          }`}
+                        >
+                          {isGolden && "★ "}{kw}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {goldenKeywords.size > 0 && (
+                  <div className="card p-4 mb-6 border-yellow-200 dark:border-yellow-800 bg-yellow-50/50 dark:bg-yellow-900/10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                      <h3 className="text-sm font-bold text-yellow-800 dark:text-yellow-300">황금 키워드 추천</h3>
+                    </div>
+                    <p className="text-xs text-yellow-700 dark:text-yellow-400 mb-3">
+                      검색량 대비 경쟁이 낮아 상위 노출 가능성이 높은 키워드입니다. 바로 글을 쓰거나 상품을 등록해보세요!
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {allResults.filter(r => r.grade === "A" || r.competitionGrade === "A").map(r => (
+                        <button
+                          key={r.keyword}
+                          onClick={() => handleSearch(r.keyword)}
+                          className="px-3 py-1.5 rounded-lg bg-yellow-100 text-yellow-800 text-sm font-medium hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:hover:bg-yellow-900/50 transition-colors flex items-center gap-1"
+                        >
+                          ★ {r.keyword}
+                          <span className="text-[10px] text-yellow-600 dark:text-yellow-500">
+                            ({r.totalVolume.toLocaleString()})
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })()}
 
           <TagGenerator keywords={result.relatedKeywords ?? []} />
 
