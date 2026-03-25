@@ -24,6 +24,7 @@ export interface BlogKeywordResult {
   grade: Grade;
   gradeLabel: string;
   relatedKeywords: string[];
+  successRate: number;
 }
 
 export interface SellerKeywordResult {
@@ -42,6 +43,7 @@ export interface SellerKeywordResult {
   grade: Grade;
   gradeLabel: string;
   relatedKeywords: string[];
+  successRate: number;
 }
 
 export interface KeywordVolume {

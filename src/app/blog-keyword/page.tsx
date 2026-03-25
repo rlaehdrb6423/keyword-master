@@ -207,9 +207,17 @@ export default function BlogKeywordPage() {
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 "{result.keyword}" 종합 경쟁 현황
               </h3>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
                 <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-900/20">
+                  <svg className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                  <span className="text-xs font-bold text-primary-700 dark:text-primary-300">
+                    상위 노출 확률 {result.successRate}%
+                  </span>
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-5 gap-3">

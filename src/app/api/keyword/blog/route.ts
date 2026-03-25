@@ -5,6 +5,22 @@ import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { BlogKeywordResult, ApiErrorResponse } from "@/types/keyword";
 
+function calculateSuccessRate(totalVolume: number, totalCompetition: number, grade: string): number {
+  if (totalCompetition === 0) return 95;
+  const ratio = totalVolume / totalCompetition;
+
+  let base = 0;
+  if (ratio >= 30) base = 85;
+  else if (ratio >= 10) base = 65;
+  else if (ratio >= 3) base = 40;
+  else base = 15;
+
+  if (totalVolume >= 100 && totalVolume <= 5000) base += 10;
+  else if (totalVolume > 5000) base += 5;
+
+  return Math.min(99, Math.max(5, base));
+}
+
 export async function POST(request: Request) {
   const ip = getClientIp(request);
   const { success } = await checkRateLimit(ip);
@@ -96,6 +112,7 @@ export async function POST(request: Request) {
     grade: indexResult.grade,
     gradeLabel: indexResult.label,
     relatedKeywords: volumeData.relatedKeywords,
+    successRate: calculateSuccessRate(totalVolume, totalCompetition, competitionGrade),
   };
 
   await setCache(cacheKey, result);
