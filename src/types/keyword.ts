@@ -25,6 +25,9 @@ export interface BlogKeywordResult {
   gradeLabel: string;
   relatedKeywords: string[];
   successRate: number;
+  compIdx: string;
+  avgClickCnt: number;
+  avgCtr: number;
 }
 
 export interface SellerKeywordResult {
@@ -44,6 +47,9 @@ export interface SellerKeywordResult {
   gradeLabel: string;
   relatedKeywords: string[];
   successRate: number;
+  compIdx: string;
+  avgClickCnt: number;
+  avgCtr: number;
 }
 
 export interface KeywordVolume {
@@ -51,6 +57,9 @@ export interface KeywordVolume {
   pcVolume: number;
   mobileVolume: number;
   relatedKeywords: string[];
+  compIdx: string;
+  avgClickCnt: number;
+  avgCtr: number;
 }
 
 export interface ApiErrorResponse {

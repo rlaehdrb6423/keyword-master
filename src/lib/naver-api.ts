@@ -18,6 +18,12 @@ interface RelKwdStatItem {
   relKeyword: string;
   monthlyPcQcCnt: number | string;
   monthlyMobileQcCnt: number | string;
+  compIdx: string;
+  monthlyAvePcClkCnt: number;
+  monthlyAveMobileClkCnt: number;
+  monthlyAvePcCtr: number;
+  monthlyAveMobileCtr: number;
+  plAvgDepth: number;
 }
 
 function parseVolume(val: number | string): number {
@@ -83,6 +89,9 @@ export async function getSearchVolume(
       pcVolume: parseVolume(main.monthlyPcQcCnt),
       mobileVolume: parseVolume(main.monthlyMobileQcCnt),
       relatedKeywords,
+      compIdx: main.compIdx || "정보없음",
+      avgClickCnt: (main.monthlyAvePcClkCnt || 0) + (main.monthlyAveMobileClkCnt || 0),
+      avgCtr: Math.round(((main.monthlyAvePcCtr || 0) + (main.monthlyAveMobileCtr || 0)) / 2 * 100) / 100,
     };
   } catch (error) {
     clearTimeout(timeoutId);

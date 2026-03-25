@@ -242,6 +242,21 @@ export default function BlogKeywordPage() {
                 <div className="text-xs text-gray-500 dark:text-gray-400">합계</div>
               </div>
             </div>
+            {/* 광고 경쟁 데이터 */}
+            <div className="grid grid-cols-3 gap-3 mt-3">
+              <div className="text-center p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{result.compIdx}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">광고 경쟁</div>
+              </div>
+              <div className="text-center p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+                <div className="text-lg font-bold text-cyan-600 dark:text-cyan-400">{result.avgClickCnt.toFixed(1)}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">월 평균 클릭</div>
+              </div>
+              <div className="text-center p-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+                <div className="text-lg font-bold text-teal-600 dark:text-teal-400">{result.avgCtr}%</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">평균 클릭률</div>
+              </div>
+            </div>
           </div>
 
           {/* 키워드 비교 */}

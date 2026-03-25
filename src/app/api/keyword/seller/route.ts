@@ -112,6 +112,9 @@ export async function POST(request: Request) {
     gradeLabel: indexResult.label,
     relatedKeywords: volumeData.relatedKeywords,
     successRate: calculateSuccessRate(totalVolume, totalCompetition, competitionGrade),
+    compIdx: volumeData.compIdx,
+    avgClickCnt: volumeData.avgClickCnt,
+    avgCtr: volumeData.avgCtr,
   };
 
   await setCache(cacheKey, result, false);
