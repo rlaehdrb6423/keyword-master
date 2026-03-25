@@ -9,7 +9,7 @@ const redis = new Redis({
 
 const COMMENTS_KEY = "kv:comments";
 const MAX_COMMENTS = 50;
-const ADMIN_CODE = process.env.ADMIN_CODE || "keywordview2026";
+const ADMIN_CODE = process.env.ADMIN_CODE;
 
 interface Comment {
   id: string;
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
   }
 
   const message = sanitize(rawMessage.slice(0, 500));
-  const isAdmin = body.adminCode === ADMIN_CODE;
+  const isAdmin = !!ADMIN_CODE && body.adminCode === ADMIN_CODE;
 
   const comment: Comment = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
@@ -97,7 +97,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  if (body.adminCode !== ADMIN_CODE) {
+  if (!ADMIN_CODE || body.adminCode !== ADMIN_CODE) {
     return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
   }
 

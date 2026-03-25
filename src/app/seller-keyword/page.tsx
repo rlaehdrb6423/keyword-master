@@ -62,24 +62,21 @@ export default function SellerKeywordPage() {
       const data: SellerKeywordResult = await res.json();
       setResult(data);
 
-      // 관련 키워드 분석 (상위 10개)
       if (data.relatedKeywords && data.relatedKeywords.length > 0) {
-        const relatedPromises = data.relatedKeywords.slice(0, 10).map(async (kw) => {
-          try {
-            const r = await fetch("/api/keyword/seller", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ keyword: kw }),
-            });
-            if (r.ok) return r.json();
-            return null;
-          } catch {
-            return null;
+        try {
+          const bulkRes = await fetch("/api/keyword/bulk", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              keywords: data.relatedKeywords.slice(0, 10),
+              type: "seller",
+            }),
+          });
+          if (bulkRes.ok) {
+            const bulkData = await bulkRes.json();
+            setRelatedResults(bulkData.results || []);
           }
-        });
-
-        const relatedData = await Promise.all(relatedPromises);
-        setRelatedResults(relatedData.filter(Boolean));
+        } catch {}
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
