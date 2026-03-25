@@ -11,13 +11,24 @@ interface TrendingItem {
 export default function TrendingKeywords() {
   const [trending, setTrending] = useState<TrendingItem[]>([]);
   const [trendLoading, setTrendLoading] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
 
-  useEffect(() => {
+  const fetchTrending = () => {
     fetch("/api/trending")
       .then((res) => res.json())
-      .then((data) => setTrending(data.items || []))
+      .then((data) => {
+        setTrending(data.items || []);
+        const now = new Date();
+        setLastUpdate(`${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`);
+      })
       .catch(() => setTrending([]))
       .finally(() => setTrendLoading(false));
+  };
+
+  useEffect(() => {
+    fetchTrending();
+    const interval = setInterval(fetchTrending, 10 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -28,7 +39,9 @@ export default function TrendingKeywords() {
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <h2 className="font-bold text-gray-900 dark:text-white text-sm">실시간 인기 검색어</h2>
           </div>
-          <span className="text-xs text-gray-400 dark:text-gray-600">Google Trends</span>
+          <span className="text-xs text-gray-400 dark:text-gray-600">
+            {lastUpdate && `${lastUpdate} 업데이트 · `}Google Trends
+          </span>
         </div>
         <div className="p-4">
           {trendLoading ? (
