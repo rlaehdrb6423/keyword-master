@@ -183,18 +183,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const blogId = parseBlogId(rawInput);
-  if (!blogId) {
+  const parsed = parseBlogId(rawInput);
+  if (!parsed) {
     return NextResponse.json<ApiErrorResponse>(
-      { error: "올바른 블로그 ID 형식이 아닙니다. (예: blogId 또는 blog.naver.com/blogId)", code: "INVALID_INPUT" },
+      { error: "올바른 블로그 URL 형식이 아닙니다. (예: blog.naver.com/blogId, xxx.tistory.com, https://example.com)", code: "INVALID_INPUT" },
       { status: 400 }
     );
   }
 
-  const rssData = await fetchBlogRSS(blogId);
+  const rssData = await fetchBlogRSS(parsed.rssUrl);
   if (!rssData) {
     return NextResponse.json<ApiErrorResponse>(
-      { error: "블로그를 찾을 수 없습니다. ID를 확인해주세요.", code: "INVALID_INPUT" },
+      { error: "블로그를 찾을 수 없습니다. URL을 확인해주세요.", code: "INVALID_INPUT" },
       { status: 404 }
     );
   }
@@ -215,7 +215,7 @@ export async function POST(request: Request) {
       : 0;
 
   // 검색 노출률
-  const searchVisibility = await checkSearchVisibility(blogId, posts);
+  const searchVisibility = await checkSearchVisibility(parsed, posts);
 
   // 레벨 계산
   const { level, label, tips } = calculateBlogLevel(
@@ -239,7 +239,8 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({
-    blogId,
+    blogId: parsed.id,
+    platform: parsed.platform,
     blogTitle,
     totalPosts,
     recentPosts: posts.slice(0, 10).map((p, i) => ({

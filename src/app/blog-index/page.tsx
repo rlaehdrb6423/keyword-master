@@ -17,6 +17,7 @@ interface PostInfo {
 
 interface BlogLevelResult {
   blogId: string;
+  platform: string;
   blogTitle: string;
   totalPosts: number;
   recentPosts: PostInfo[];
@@ -89,10 +90,10 @@ export default function BlogIndexPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">블로그 지수</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          네이버 블로그의 기본 지수 확인과 함께 최근 포스팅별 SEO 상세 분석이 가능합니다.
+          블로그의 기본 지수 확인과 함께 최근 포스팅별 SEO 상세 분석이 가능합니다.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-          blog.naver.com/blogId 형식 또는 blogId만 입력 가능합니다.
+          네이버: blogId 또는 blog.naver.com/blogId &nbsp;|&nbsp; 티스토리: xxx.tistory.com &nbsp;|&nbsp; 워드프레스: https://example.com
         </p>
       </div>
 
@@ -102,7 +103,7 @@ export default function BlogIndexPage() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="블로그 ID 또는 URL (예: blog.naver.com/myBlog)"
+            placeholder="블로그 URL 입력 (네이버, 티스토리, 워드프레스 지원)"
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
             disabled={loading}
           />
@@ -155,7 +156,16 @@ export default function BlogIndexPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">{result.blogTitle}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">@{result.blogId}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  @{result.blogId}
+                  <span className={`ml-2 px-2 py-0.5 rounded text-xs font-medium ${
+                    result.platform === "naver" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                    : result.platform === "tistory" ? "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400"
+                    : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                  }`}>
+                    {result.platform === "naver" ? "네이버" : result.platform === "tistory" ? "티스토리" : "워드프레스"}
+                  </span>
+                </p>
               </div>
               <div className="text-center">
                 <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ${levelColors[result.level]}`}>

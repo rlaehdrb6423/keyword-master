@@ -20,26 +20,64 @@ export interface BlogAnalysis {
   tips: string[];
 }
 
-export function parseBlogId(input: string): string | null {
+export interface ParsedBlog {
+  id: string;
+  platform: "naver" | "tistory" | "wordpress";
+  rssUrl: string;
+  blogUrl: string;
+}
+
+export function parseBlogId(input: string): ParsedBlog | null {
   const trimmed = input.trim();
 
-  // blog.naver.com/blogId 형식
-  const urlMatch = trimmed.match(/blog\.naver\.com\/([a-zA-Z0-9_-]+)/);
-  if (urlMatch) return urlMatch[1];
+  // 네이버: blog.naver.com/blogId
+  const naverMatch = trimmed.match(/blog\.naver\.com\/([a-zA-Z0-9_-]+)/);
+  if (naverMatch) {
+    return {
+      id: naverMatch[1],
+      platform: "naver",
+      rssUrl: `https://rss.blog.naver.com/${naverMatch[1]}.xml`,
+      blogUrl: `https://blog.naver.com/${naverMatch[1]}`,
+    };
+  }
 
-  // https://blog.naver.com/blogId 형식
-  const fullUrlMatch = trimmed.match(/https?:\/\/blog\.naver\.com\/([a-zA-Z0-9_-]+)/);
-  if (fullUrlMatch) return fullUrlMatch[1];
+  // 티스토리: xxx.tistory.com (https 포함 또는 미포함)
+  const tistoryMatch = trimmed.match(/([a-zA-Z0-9_-]+)\.tistory\.com/);
+  if (tistoryMatch) {
+    return {
+      id: tistoryMatch[1],
+      platform: "tistory",
+      rssUrl: `https://${tistoryMatch[1]}.tistory.com/rss`,
+      blogUrl: `https://${tistoryMatch[1]}.tistory.com`,
+    };
+  }
 
-  // blogId만 입력한 경우 (영문, 숫자, _, - 만 허용)
-  if (/^[a-zA-Z0-9_-]+$/.test(trimmed) && trimmed.length >= 2) {
-    return trimmed;
+  // 워드프레스: 전체 URL (https://example.com) — naver/tistory 제외
+  const wpMatch = trimmed.match(/^https?:\/\/([a-zA-Z0-9._-]+\.[a-zA-Z]{2,})/);
+  if (wpMatch && !trimmed.includes("naver.com") && !trimmed.includes("tistory.com")) {
+    const domain = wpMatch[1];
+    return {
+      id: domain,
+      platform: "wordpress",
+      rssUrl: `https://${domain}/feed/`,
+      blogUrl: `https://${domain}`,
+    };
+  }
+
+  // 네이버 blogId만 입력 (기존 호환)
+  if (/^[a-zA-Z0-9_-]+$/.test(trimmed) && trimmed.length >= 2 && trimmed.length <= 30) {
+    return {
+      id: trimmed,
+      platform: "naver",
+      rssUrl: `https://rss.blog.naver.com/${trimmed}.xml`,
+      blogUrl: `https://blog.naver.com/${trimmed}`,
+    };
   }
 
   return null;
 }
 
-export async function fetchBlogRSS(blogId: string): Promise<{
+export async function fetchBlogRSS(rssUrl: string): Promise<{
   title: string;
   posts: BlogPost[];
 } | null> {
@@ -47,7 +85,7 @@ export async function fetchBlogRSS(blogId: string): Promise<{
   const timeoutId = setTimeout(() => controller.abort(), 5000);
 
   try {
-    const response = await fetch(`https://rss.blog.naver.com/${blogId}.xml`, {
+    const response = await fetch(rssUrl, {
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
@@ -56,9 +94,9 @@ export async function fetchBlogRSS(blogId: string): Promise<{
 
     const xml = await response.text();
 
-    // 블로그 제목 추출
-    const channelTitleMatch = xml.match(/<channel>[\s\S]*?<title><!\[CDATA\[(.*?)\]\]><\/title>/);
-    const blogTitle = channelTitleMatch ? channelTitleMatch[1] : blogId;
+    // 블로그 제목 추출 (CDATA 있는 경우와 없는 경우 모두 지원)
+    const channelTitleMatch = xml.match(/<channel>[\s\S]*?<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
+    const blogTitle = channelTitleMatch ? channelTitleMatch[1] : rssUrl;
 
     // 포스트 추출
     const posts: BlogPost[] = [];
@@ -67,10 +105,11 @@ export async function fetchBlogRSS(blogId: string): Promise<{
 
     while ((match = itemRegex.exec(xml)) !== null) {
       const block = match[1];
-      const titleMatch = block.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/);
+      // CDATA 있는 경우와 없는 경우 모두 지원
+      const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
       const linkMatch = block.match(/<link>(.*?)<\/link>/);
       const pubDateMatch = block.match(/<pubDate>(.*?)<\/pubDate>/);
-      const descMatch = block.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/);
+      const descMatch = block.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
 
       if (titleMatch) {
         posts.push({
@@ -112,10 +151,19 @@ export async function fetchBlogPostCount(blogId: string): Promise<number> {
 }
 
 export async function checkSearchVisibility(
-  blogId: string,
+  parsed: ParsedBlog,
   posts: BlogPost[]
 ): Promise<number> {
   if (posts.length === 0) return 0;
+
+  let siteQuery: string;
+  if (parsed.platform === "naver") {
+    siteQuery = `site:blog.naver.com/${parsed.id}`;
+  } else if (parsed.platform === "tistory") {
+    siteQuery = `site:${parsed.id}.tistory.com`;
+  } else {
+    siteQuery = `site:${parsed.id}`;
+  }
 
   // 최근 5개 포스트의 검색 노출 여부 확인
   const checkPosts = posts.slice(0, 5);
@@ -123,7 +171,7 @@ export async function checkSearchVisibility(
 
   for (const post of checkPosts) {
     try {
-      const count = await getBlogDocCount(`site:blog.naver.com/${blogId} ${post.title.slice(0, 20)}`);
+      const count = await getBlogDocCount(`${siteQuery} ${post.title.slice(0, 20)}`);
       if (count !== null && count > 0) {
         visibleCount++;
       }
