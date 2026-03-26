@@ -204,58 +204,58 @@ export default function BlogKeywordPage() {
 
           {/* 채널별 경쟁도 숫자 카드 */}
           <div className="card p-5 mb-6">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                "{result.keyword}" 종합 경쟁 현황
+                &ldquo;{result.keyword}&rdquo; 종합 경쟁 현황
               </h3>
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
                 <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-900/20">
-                  <svg className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/20">
+                  <svg className="w-3 h-3 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
-                  <span className="text-xs font-bold text-primary-700 dark:text-primary-300">
+                  <span className="text-[11px] font-bold text-primary-700 dark:text-primary-300">
                     상위 노출 확률 {result.successRate}%
                   </span>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
               <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">{result.blogDocCount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">블로그</div>
+                <div className="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400 truncate">{result.blogDocCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">블로그</div>
               </div>
               <div className="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <div className="text-lg font-bold text-red-600 dark:text-red-400">{result.newsCount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">뉴스</div>
+                <div className="text-sm sm:text-lg font-bold text-red-600 dark:text-red-400 truncate">{result.newsCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">뉴스</div>
               </div>
               <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-lg font-bold text-green-600 dark:text-green-400">{result.cafeCount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">카페</div>
+                <div className="text-sm sm:text-lg font-bold text-green-600 dark:text-green-400 truncate">{result.cafeCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">카페</div>
               </div>
               <div className="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">{result.webDocCount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">웹문서</div>
+                <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400 truncate">{result.webDocCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">웹문서</div>
               </div>
               <div className="text-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                <div className="text-lg font-bold text-orange-600 dark:text-orange-400">{result.totalCompetition.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">합계</div>
+                <div className="text-sm sm:text-lg font-bold text-orange-600 dark:text-orange-400 truncate">{result.totalCompetition.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">합계</div>
               </div>
             </div>
             {/* 광고 경쟁 데이터 */}
-            <div className="grid grid-cols-3 gap-3 mt-3">
+            <div className="grid grid-cols-3 gap-2 mt-2">
               <div className="text-center p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{result.compIdx}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">광고 경쟁</div>
+                <div className="text-sm sm:text-lg font-bold text-indigo-600 dark:text-indigo-400 truncate">{result.compIdx}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">광고 경쟁</div>
               </div>
               <div className="text-center p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
-                <div className="text-lg font-bold text-cyan-600 dark:text-cyan-400">{result.avgClickCnt.toFixed(1)}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">월 평균 클릭</div>
+                <div className="text-sm sm:text-lg font-bold text-cyan-600 dark:text-cyan-400 truncate">{result.avgClickCnt.toFixed(1)}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">월 평균 클릭</div>
               </div>
               <div className="text-center p-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
-                <div className="text-lg font-bold text-teal-600 dark:text-teal-400">{result.avgCtr}%</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">평균 클릭률</div>
+                <div className="text-sm sm:text-lg font-bold text-teal-600 dark:text-teal-400 truncate">{result.avgCtr}%</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">평균 클릭률</div>
               </div>
             </div>
           </div>
