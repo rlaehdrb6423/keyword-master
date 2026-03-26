@@ -54,46 +54,21 @@ async function fetchNaverTrends(): Promise<TrendingItem[]> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch(
-      "https://openapi.naver.com/v1/search/blog?query=오늘&display=20&sort=date",
-      {
-        headers: {
-          "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID!,
-          "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET!,
-        },
-        signal: controller.signal,
-      }
-    );
+    const response = await fetch("https://api.signal.bz/news/realtime", {
+      signal: controller.signal,
+    });
 
     clearTimeout(timeoutId);
     if (!response.ok) return [];
 
-    // 네이버 DataLab 쇼핑인사이트 대신 네이버 검색어 트렌드 사용
-    // 네이버 공식 실시간 검색어 API가 없으므로 signal.bz 활용
-    const signalRes = await fetch("https://www.signal.bz/news", {
-      signal: controller.signal,
-    });
+    const data = await response.json();
+    const top10: { rank: number; keyword: string }[] = data.top10 || [];
 
-    if (!signalRes.ok) return [];
-
-    const html = await signalRes.text();
-    const items: TrendingItem[] = [];
-
-    // signal.bz에서 실시간 검색어 파싱
-    const keywordRegex = /<span class="rank-text">\s*(.*?)\s*<\/span>/g;
-    let match;
-    let rank = 0;
-
-    while ((match = keywordRegex.exec(html)) !== null && rank < 20) {
-      rank++;
-      items.push({
-        rank,
-        keyword: match[1].trim().replace(/<[^>]*>/g, ""),
-        traffic: "",
-      });
-    }
-
-    return items;
+    return top10.map((item) => ({
+      rank: item.rank,
+      keyword: item.keyword,
+      traffic: "",
+    }));
   } catch {
     return [];
   }
