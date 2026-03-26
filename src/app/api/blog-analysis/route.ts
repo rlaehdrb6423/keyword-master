@@ -5,16 +5,12 @@ import { analyzeGap } from "@/lib/blog-gap-analyzer";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { BlogGapAnalysisResult } from "@/lib/blog-gap-analyzer";
-import { Redis } from "@upstash/redis";
+import { redis } from "@/lib/redis";
 
 const DAILY_LIMIT = 3;
 
 async function checkDailyLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
   try {
-    const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    });
 
     const today = new Date().toISOString().slice(0, 10);
     const key = `kv:blog-analysis:${userId}:${today}`;
@@ -29,7 +25,8 @@ async function checkDailyLimit(userId: string): Promise<{ allowed: boolean; rema
 
     return { allowed: true, remaining: DAILY_LIMIT - count - 1 };
   } catch {
-    return { allowed: true, remaining: DAILY_LIMIT };
+    // Redis 실패 시 차단 (보안 우선)
+    return { allowed: false, remaining: 0 };
   }
 }
 
@@ -77,6 +74,18 @@ export async function POST(request: Request) {
   const rivalBlogIds = body.rivalBlogIds
     ?.map((id) => id.trim())
     .filter((id) => id.length > 0);
+
+  // 블로그 ID 형식 검증 (영문, 숫자, 하이픈, 언더스코어만 허용)
+  const blogIdPattern = /^[a-zA-Z0-9_-]{2,30}$/;
+  const allBlogIds = [myBlogId, ...(rivalBlogIds || [])].filter(Boolean);
+  for (const id of allBlogIds) {
+    if (!blogIdPattern.test(id!)) {
+      return NextResponse.json(
+        { error: "블로그 ID 형식이 올바르지 않습니다. 영문, 숫자, 하이픈, 언더스코어만 사용 가능합니다." },
+        { status: 400 }
+      );
+    }
+  }
 
   if (!myBlogId) {
     return NextResponse.json(

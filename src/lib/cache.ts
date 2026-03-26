@@ -1,9 +1,4 @@
-import { Redis } from "@upstash/redis";
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+import { redis } from "@/lib/redis";
 
 const FULL_RESULT_TTL = 86400; // 24시간 (완전 결과)
 const PARTIAL_RESULT_TTL = 3600; // 1시간 (부분 결과 - 쿠팡 누락)

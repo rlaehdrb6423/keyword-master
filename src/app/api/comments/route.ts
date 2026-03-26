@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
-import { Redis } from "@upstash/redis";
+import { redis } from "@/lib/redis";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
 
 const COMMENTS_KEY = "kv:comments";
 const MAX_COMMENTS = 50;
