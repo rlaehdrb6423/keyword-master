@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import type { BlogGapAnalysisResult } from "@/lib/blog-gap-analyzer";
 
 export default function BlogAnalysisPage() {
+  const { data: session, status } = useSession();
   const [myBlogId, setMyBlogId] = useState("");
   const [rivalIds, setRivalIds] = useState<string[]>([""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<BlogGapAnalysisResult | null>(null);
+  const [remaining, setRemaining] = useState<number | null>(null);
 
   const addRival = () => {
     if (rivalIds.length < 3) {
@@ -57,8 +61,9 @@ export default function BlogAnalysisPage() {
         throw new Error(err.error || "분석에 실패했습니다.");
       }
 
-      const data: BlogGapAnalysisResult = await res.json();
-      setResult(data);
+      const data = await res.json();
+      if (data.remaining !== undefined) setRemaining(data.remaining);
+      setResult(data as BlogGapAnalysisResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
@@ -83,8 +88,29 @@ export default function BlogAnalysisPage() {
         </p>
       </div>
 
+      {/* 비로그인 안내 */}
+      {status !== "loading" && !session && (
+        <div className="card p-8 mb-6 text-center">
+          <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+            로그인이 필요합니다
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            블로그 분석 기능은 로그인 후 하루 3회 무료로 이용할 수 있습니다
+          </p>
+          <Link
+            href="/login"
+            className="inline-block px-6 py-2.5 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+          >
+            로그인하고 분석 시작
+          </Link>
+        </div>
+      )}
+
       {/* 입력 폼 */}
-      <div className="card p-6 mb-6">
+      {session && <div className="card p-6 mb-6">
         <div className="space-y-4">
           {/* 내 블로그 */}
           <div>
@@ -171,8 +197,13 @@ export default function BlogAnalysisPage() {
               </>
             )}
           </button>
+          {remaining !== null && (
+            <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-2">
+              오늘 남은 분석 횟수: <span className="font-bold text-primary-600 dark:text-primary-400">{remaining}회</span> / 3회
+            </p>
+          )}
         </div>
-      </div>
+      </div>}
 
       {/* 에러 */}
       {error && (

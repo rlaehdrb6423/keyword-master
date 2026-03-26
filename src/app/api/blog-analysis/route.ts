@@ -1,10 +1,59 @@
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { analyzeGap } from "@/lib/blog-gap-analyzer";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { BlogGapAnalysisResult } from "@/lib/blog-gap-analyzer";
+import { Redis } from "@upstash/redis";
+
+const DAILY_LIMIT = 3;
+
+async function checkDailyLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
+  try {
+    const redis = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL!,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    });
+
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `kv:blog-analysis:${userId}:${today}`;
+    const count = (await redis.get<number>(key)) || 0;
+
+    if (count >= DAILY_LIMIT) {
+      return { allowed: false, remaining: 0 };
+    }
+
+    await redis.incr(key);
+    await redis.expire(key, 86400);
+
+    return { allowed: true, remaining: DAILY_LIMIT - count - 1 };
+  } catch {
+    return { allowed: true, remaining: DAILY_LIMIT };
+  }
+}
 
 export async function POST(request: Request) {
+  // 로그인 체크
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    return NextResponse.json(
+      { error: "로그인이 필요합니다." },
+      { status: 401 }
+    );
+  }
+
+  const userId = (session.user as { id?: string }).id || session.user.email || "";
+
+  // 일일 사용량 체크
+  const { allowed, remaining } = await checkDailyLimit(userId);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "오늘 분석 횟수(3회)를 모두 사용했습니다. 내일 다시 이용해주세요." },
+      { status: 429 }
+    );
+  }
+
   const ip = getClientIp(request);
   const { success } = await checkRateLimit(ip);
   if (!success) {
@@ -54,7 +103,7 @@ export async function POST(request: Request) {
   const cacheKey = makeCacheKey("bloganalysis", `${myBlogId}:${rivalBlogIds.sort().join(",")}`);
   const cached = await getCached<BlogGapAnalysisResult>(cacheKey);
   if (cached) {
-    return NextResponse.json(cached);
+    return NextResponse.json({ ...cached, remaining });
   }
 
   try {
@@ -68,7 +117,7 @@ export async function POST(request: Request) {
     }
 
     await setCache(cacheKey, result);
-    return NextResponse.json(result);
+    return NextResponse.json({ ...result, remaining });
   } catch (error) {
     console.error("블로그 분석 에러:", error);
     return NextResponse.json(
