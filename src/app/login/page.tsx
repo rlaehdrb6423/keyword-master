@@ -18,21 +18,16 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-3">
-            {/* 카카오 로그인 */}
+            {/* 네이버 로그인 */}
             <button
-              onClick={() => signIn("kakao", { callbackUrl: "/blog-analysis" })}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors"
-              style={{ backgroundColor: "#FEE500", color: "#000000" }}
+              onClick={() => signIn("naver", { callbackUrl: "/blog-analysis" })}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg font-medium text-white transition-colors hover:opacity-90"
+              style={{ backgroundColor: "#03C75A" }}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M10 3C5.58 3 2 5.69 2 9C2 11.05 3.37 12.85 5.42 13.95L4.52 17.13C4.47 17.33 4.7 17.49 4.87 17.37L8.57 14.87C9.04 14.93 9.52 14.97 10 14.97C14.42 14.97 18 12.28 18 8.97C18 5.69 14.42 3 10 3Z"
-                  fill="#000000"
-                />
+                <path d="M13.5 10.5L6.5 3H3v14h3.5V9.5L13.5 17H17V3h-3.5v7.5z" fill="white"/>
               </svg>
-              카카오로 시작하기
+              네이버로 시작하기
             </button>
 
             {/* 구글 로그인 */}
