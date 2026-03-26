@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import AuthProvider from "@/components/AuthProvider";
 import {
   GoogleAnalytics,
   MicrosoftClarity,
@@ -133,13 +134,15 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <GoogleAnalytics />
-        <MicrosoftClarity />
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <GoogleAnalytics />
+          <MicrosoftClarity />
+          <Navigation />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
