@@ -188,22 +188,22 @@ export default function BlogIndexPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{result.totalPosts}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">총 포스트</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-primary-600 dark:text-primary-400 truncate">{result.totalPosts}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">총 포스트</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{result.postingFrequency}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">최근 30일 포스팅</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400 truncate">{result.postingFrequency}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">최근 30일 포스팅</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{result.avgPostLength}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">평균 글 길이</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-purple-600 dark:text-purple-400 truncate">{result.avgPostLength}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">평균 글 길이</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.searchVisibility}%</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate">{result.searchVisibility}%</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
               </div>
             </div>
           </div>

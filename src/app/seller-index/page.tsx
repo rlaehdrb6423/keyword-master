@@ -172,18 +172,18 @@ export default function SellerIndexPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{result.totalProducts}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">총 상품수</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-primary-600 dark:text-primary-400 truncate">{result.totalProducts}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">총 상품수</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.searchVisibility}%</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate">{result.searchVisibility}%</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className={`text-2xl font-bold ${seoScoreColor(result.avgSeoScore)}`}>{result.avgSeoScore}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">평균 SEO 점수</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className={`text-lg sm:text-2xl font-bold truncate ${seoScoreColor(result.avgSeoScore)}`}>{result.avgSeoScore}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">평균 SEO 점수</div>
               </div>
             </div>
           </div>
