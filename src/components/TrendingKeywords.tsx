@@ -42,7 +42,11 @@ export default function TrendingKeywords() {
   const items = tab === "naver" ? naver : google;
 
   const handleKeywordClick = (keyword: string) => {
-    router.push(`/blog-keyword?q=${encodeURIComponent(keyword)}`);
+    if (tab === "naver") {
+      window.open(`https://search.naver.com/search.naver?query=${encodeURIComponent(keyword)}`, "_blank");
+    } else {
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(keyword)}`, "_blank");
+    }
   };
 
   return (
@@ -104,11 +108,20 @@ export default function TrendingKeywords() {
                   <span className="text-sm text-gray-700 dark:text-gray-300 flex-1 truncate hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                     {item.keyword}
                   </span>
-                  {item.traffic && (
-                    <span className="text-[10px] text-gray-300 dark:text-gray-600 flex-shrink-0">
-                      {item.traffic}
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    {item.traffic && (
+                      <span className="text-[10px] text-gray-300 dark:text-gray-600 mr-1">
+                        {item.traffic}
+                      </span>
+                    )}
+                    <span
+                      onClick={(e) => { e.stopPropagation(); router.push(`/blog-keyword?q=${encodeURIComponent(item.keyword)}`); }}
+                      className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40 transition-colors cursor-pointer"
+                      title="키워드 분석"
+                    >
+                      K
                     </span>
-                  )}
+                  </div>
                 </button>
               ))}
             </div>
