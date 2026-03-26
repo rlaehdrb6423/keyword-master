@@ -124,8 +124,8 @@ export default function Home() {
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">3단계로 끝나는 키워드 분석</p>
           </div>
           <div className="p-6">
-            {/* 3단계 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* 4단계 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="flex gap-3">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold">1</div>
                 <div>
@@ -150,6 +150,15 @@ export default function Home() {
                   <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">등급으로 판단</h3>
                   <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
                     A~D 등급을 보고 키워드 전략을 바로 세울 수 있습니다.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-bold">4</div>
+                <div>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">블로그 분석 <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400">BETA</span></h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
+                    로그인 후 경쟁 블로그를 분석하고, 내 블로그에 없는 틈새 주제를 찾아보세요. 하루 3회 무료!
                   </p>
                 </div>
               </div>
@@ -216,6 +225,12 @@ export default function Home() {
                   <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
                   <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
                     <strong className="text-gray-900 dark:text-white">엑셀 저장</strong> — 분석 결과를 엑셀 파일로 다운로드해서 키워드 목록을 관리하세요.
+                  </p>
+                </div>
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-primary-50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800">
+                  <span className="text-primary-500 mt-0.5 flex-shrink-0">*</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-white">블로그 분석 <span className="text-[10px] px-1 py-0.5 rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 font-bold">BETA</span></strong> — 네이버/구글 로그인 후 경쟁 블로그를 분석하세요. 경쟁자가 쓰는데 내가 안 쓴 틈새 주제를 검색량과 함께 추천해드립니다.
                   </p>
                 </div>
               </div>
