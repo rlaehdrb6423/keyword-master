@@ -216,14 +216,9 @@ export function KeywordBubbleChart({ keywords, onKeywordClick }: KeywordBubblePr
             onClick={() => onKeywordClick?.(kw.keyword)}
           >
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${GRADE_BG[kw.grade] ?? "bg-gray-100 text-gray-600"}`}>
-                  {kw.grade}
-                </span>
-                <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                  {kw.keyword}
-                </span>
-              </div>
+              <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                {kw.keyword}
+              </span>
               <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
                 <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
                   {kw.totalVolume.toLocaleString()}
@@ -238,7 +233,7 @@ export function KeywordBubbleChart({ keywords, onKeywordClick }: KeywordBubblePr
             <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${barWidth}%`, backgroundColor: GRADE_COLORS[kw.grade] ?? "#6b7280" }}
+                style={{ width: `${barWidth}%`, backgroundColor: "#6366f1" }}
               />
             </div>
           </div>
