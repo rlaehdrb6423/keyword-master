@@ -9,8 +9,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     NaverProvider({
-      clientId: process.env.NAVER_CLIENT_ID!,
-      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      clientId: process.env.NAVER_LOGIN_CLIENT_ID!,
+      clientSecret: process.env.NAVER_LOGIN_CLIENT_SECRET!,
     }),
   ],
   pages: {
