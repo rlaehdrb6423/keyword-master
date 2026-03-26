@@ -1,6 +1,6 @@
 "use client";
 
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#a855f7", "#f97316"];
 
@@ -131,31 +131,48 @@ interface CompetitionRadarProps {
   totalVolume: number;
 }
 
-export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount, totalVolume }: CompetitionRadarProps) {
-  if (totalVolume === 0) return null;
+export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount }: CompetitionRadarProps) {
+  const total = blogCount + newsCount + cafeCount + webDocCount;
+  if (total === 0) return null;
 
-  const normalize = (count: number) => Math.min(Math.round((count / totalVolume) * 100), 100);
-
-  const data = [
-    { subject: "블로그", value: normalize(blogCount) },
-    { subject: "뉴스", value: normalize(newsCount) },
-    { subject: "카페", value: normalize(cafeCount) },
-    { subject: "웹문서", value: normalize(webDocCount) },
+  const channels = [
+    { name: "블로그", count: blogCount, color: "#3b82f6", bg: "bg-blue-50 dark:bg-blue-900/20" },
+    { name: "뉴스", count: newsCount, color: "#ef4444", bg: "bg-red-50 dark:bg-red-900/20" },
+    { name: "카페", count: cafeCount, color: "#22c55e", bg: "bg-green-50 dark:bg-green-900/20" },
+    { name: "웹문서", count: webDocCount, color: "#a855f7", bg: "bg-purple-50 dark:bg-purple-900/20" },
   ];
 
+  const maxPct = Math.max(...channels.map((c) => (c.count / total) * 100));
+
   return (
-    <div className="h-48">
-      <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data}>
-          <PolarGrid stroke="#e5e7eb" />
-          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: "#9ca3af" }} />
-          <Radar dataKey="value" stroke="#6366f1" fill="#6366f1" fillOpacity={0.3} />
-          <Tooltip
-            contentStyle={{ backgroundColor: "rgba(17,24,39,0.9)", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
-            formatter={(value: number) => [`${value}`, "경쟁도"]}
-          />
-        </RadarChart>
-      </ResponsiveContainer>
+    <div className="space-y-3">
+      {channels.map((ch) => {
+        const pct = Math.round((ch.count / total) * 100);
+        const barWidth = maxPct > 0 ? (pct / maxPct) * 100 : 0;
+        return (
+          <div key={ch.name}>
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: ch.color }} />
+                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{ch.name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">{ch.count.toLocaleString()}개</span>
+                <span className="text-xs font-bold min-w-[36px] text-right" style={{ color: ch.color }}>{pct}%</span>
+              </div>
+            </div>
+            <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${barWidth}%`, backgroundColor: ch.color }}
+              />
+            </div>
+          </div>
+        );
+      })}
+      <p className="text-[10px] text-gray-400 dark:text-gray-500 text-center pt-1">
+        {channels.sort((a, b) => b.count - a.count)[0].name} 채널의 경쟁이 가장 치열해요
+      </p>
     </div>
   );
 }
