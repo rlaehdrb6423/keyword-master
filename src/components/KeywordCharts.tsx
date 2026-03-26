@@ -184,35 +184,66 @@ const GRADE_COLORS: Record<string, string> = {
   D: "#ef4444",
 };
 
+const GRADE_BG: Record<string, string> = {
+  A: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  B: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+  C: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
+  D: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+};
+
 interface KeywordBubbleProps {
   keywords: { keyword: string; totalVolume: number; grade: string }[];
+  onKeywordClick?: (keyword: string) => void;
 }
 
-export function KeywordBubbleChart({ keywords }: KeywordBubbleProps) {
+export function KeywordBubbleChart({ keywords, onKeywordClick }: KeywordBubbleProps) {
   if (keywords.length === 0) return null;
 
-  const data = keywords.map((k, i) => ({ ...k, index: i }));
+  const maxVolume = Math.max(...keywords.map((k) => k.totalVolume));
 
   return (
-    <div className="h-48">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16, top: 4, bottom: 4 }}>
-          <XAxis type="number" tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => v.toLocaleString()} />
-          <YAxis type="category" dataKey="keyword" tick={{ fontSize: 10, fill: "#9ca3af" }} width={60} />
-          <Tooltip
-            contentStyle={{ backgroundColor: "rgba(17,24,39,0.9)", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
-            formatter={(value: number, _name: string, props: { payload?: { grade?: string } }) => [
-              value.toLocaleString(),
-              `검색량 (${props.payload?.grade ?? ""})`,
-            ]}
-          />
-          <Bar dataKey="totalVolume" radius={[0, 4, 4, 0]}>
-            {data.map((entry, i) => (
-              <Cell key={i} fill={GRADE_COLORS[entry.grade] ?? "#6b7280"} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+      {keywords.map((kw) => {
+        const barWidth = maxVolume > 0 ? (kw.totalVolume / maxVolume) * 100 : 0;
+        return (
+          <div
+            key={kw.keyword}
+            className={`group rounded-lg p-2.5 transition-all ${
+              onKeywordClick
+                ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-sm"
+                : ""
+            }`}
+            onClick={() => onKeywordClick?.(kw.keyword)}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${GRADE_BG[kw.grade] ?? "bg-gray-100 text-gray-600"}`}>
+                  {kw.grade}
+                </span>
+                <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  {kw.keyword}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                  {kw.totalVolume.toLocaleString()}
+                </span>
+                {onKeywordClick && (
+                  <svg className="w-3 h-3 text-gray-300 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${barWidth}%`, backgroundColor: GRADE_COLORS[kw.grade] ?? "#6b7280" }}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

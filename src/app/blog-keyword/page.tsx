@@ -198,6 +198,7 @@ export default function BlogKeywordPage() {
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">관련 키워드 검색량</h3>
               <KeywordBubbleChart
                 keywords={allResults.map((r) => ({ keyword: r.keyword, totalVolume: r.totalVolume, grade: r.grade }))}
+                onKeywordClick={handleSearch}
               />
             </div>
           </div>
