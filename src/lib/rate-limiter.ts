@@ -9,8 +9,13 @@ const ratelimit = new Ratelimit({
 });
 
 export async function checkRateLimit(
-  ip: string
+  ip: string,
+  request?: Request
 ): Promise<{ success: boolean; remaining: number }> {
+  // bulk API 내부 호출은 rate limit 건너뛰기
+  if (request?.headers.get("x-internal-bulk") === "true") {
+    return { success: true, remaining: 999 };
+  }
   try {
     const result = await ratelimit.limit(ip);
     return { success: result.success, remaining: result.remaining };

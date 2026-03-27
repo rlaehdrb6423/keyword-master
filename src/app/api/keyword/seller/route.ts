@@ -23,7 +23,7 @@ function calculateSuccessRate(totalVolume: number, totalCompetition: number, gra
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
-  const { success } = await checkRateLimit(ip);
+  const { success } = await checkRateLimit(ip, request);
   if (!success) {
     return NextResponse.json<ApiErrorResponse>(
       { error: "요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.", code: "API_LIMIT" },

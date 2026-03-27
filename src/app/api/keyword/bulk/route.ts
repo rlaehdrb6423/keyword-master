@@ -57,6 +57,7 @@ export async function POST(request: Request) {
           headers: {
             "Content-Type": "application/json",
             "x-forwarded-for": ip,
+            "x-internal-bulk": "true",
           },
           body: JSON.stringify({ keyword }),
         });
