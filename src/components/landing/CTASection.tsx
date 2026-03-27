@@ -79,21 +79,7 @@ export default function CTASection() {
             </button>
           </form>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-400">
-            <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full">
-              <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>신용카드 불필요</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full">
-              <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>가입 즉시 사용 가능</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full">
-              <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>첫 리포트 무료 제공</span>
-            </div>
-          </div>
+          <p className="text-sm text-gray-500 mt-2">100% 무료 · 회원가입 없이 바로 사용 가능</p>
         </div>
       </ScrollReveal>
     </section>

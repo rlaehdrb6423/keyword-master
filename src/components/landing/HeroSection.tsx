@@ -39,7 +39,7 @@ export default function HeroSection() {
             </svg>
           </a>
         </div>
-        <p className="animate-fade-up-5 mt-3 text-sm text-gray-400">신용카드 불필요 · 14일 무료 체험</p>
+        <p className="animate-fade-up-5 mt-3 text-sm text-gray-400">100% 무료 · 가입 없이 바로 분석</p>
 
         {/* Dashboard mockup */}
         <div className="animate-fade-up-5 mt-20 mx-auto max-w-5xl">

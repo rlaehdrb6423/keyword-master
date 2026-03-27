@@ -1,6 +1,16 @@
 export default function DashboardMockup() {
+  const keywords = [
+    { keyword: "다이어트 식단", pc: "5,400", mobile: "18,200", total: "23,600", blog: "342,100", ratio: "0.07", grade: "A", gradeColor: "blue", comp: "낮음", compColor: "blue" },
+    { keyword: "간헐적 단식", pc: "3,100", mobile: "12,800", total: "15,900", blog: "89,400", ratio: "0.18", grade: "A", gradeColor: "blue", comp: "낮음", compColor: "blue" },
+    { keyword: "저탄수화물 다이어트", pc: "1,200", mobile: "8,900", total: "10,100", blog: "156,200", ratio: "0.06", grade: "B", gradeColor: "green", comp: "보통", compColor: "yellow" },
+    { keyword: "다이어트 도시락", pc: "2,800", mobile: "9,400", total: "12,200", blog: "45,600", ratio: "0.27", grade: "A", gradeColor: "blue", comp: "낮음", compColor: "blue" },
+    { keyword: "다이어트 레시피", pc: "4,100", mobile: "15,600", total: "19,700", blog: "521,300", ratio: "0.04", grade: "C", gradeColor: "yellow", comp: "높음", compColor: "red" },
+    { keyword: "키토제닉 식단", pc: "890", mobile: "6,200", total: "7,090", blog: "28,100", ratio: "0.25", grade: "A", gradeColor: "blue", comp: "낮음", compColor: "blue" },
+    { keyword: "다이어트 식단 배달", pc: "1,600", mobile: "7,300", total: "8,900", blog: "12,400", ratio: "0.72", grade: "A", gradeColor: "blue", comp: "매우 낮음", compColor: "blue" },
+  ];
+
   return (
-    <div className="rounded-2xl bg-white shadow-2xl shadow-gray-200/80 border border-gray-100 overflow-hidden" style={{ height: 500, display: "flex", flexDirection: "column" }}>
+    <div className="rounded-2xl bg-white shadow-2xl shadow-gray-200/80 border border-gray-100 overflow-hidden" style={{ display: "flex", flexDirection: "column" }}>
       {/* Browser bar */}
       <div className="h-11 border-b border-gray-100 bg-gray-50 flex items-center px-4 gap-3 shrink-0">
         <div className="flex gap-1.5">
@@ -8,119 +18,89 @@ export default function DashboardMockup() {
           <div className="w-3 h-3 rounded-full bg-yellow-300" />
           <div className="w-3 h-3 rounded-full bg-green-300" />
         </div>
-        <div className="flex-1 max-w-xs mx-auto">
-          <div className="h-6 bg-white rounded border border-gray-200 flex items-center px-3 text-xs text-gray-400">
+        <div className="flex-1 max-w-sm mx-auto">
+          <div className="h-6 bg-white rounded border border-gray-200 flex items-center px-3 text-xs text-gray-500">
             <svg className="w-3 h-3 mr-1.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            키워드를 검색하세요...
+            keywordview.kr
           </div>
         </div>
       </div>
-      {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div className="hidden md:flex flex-col w-48 border-r border-gray-100 bg-gray-50/40 p-3 gap-1 shrink-0">
-          <div className="h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center px-3 gap-2">
-            <div className="w-3.5 h-3.5 rounded bg-primary-200 shrink-0" />
-            <div className="h-2.5 w-14 bg-primary-300/50 rounded" />
-          </div>
-          <div className="h-8 rounded-lg flex items-center px-3 gap-2 hover:bg-gray-100">
-            <div className="w-3.5 h-3.5 rounded bg-gray-200 shrink-0" />
-            <div className="h-2.5 w-16 bg-gray-200 rounded" />
-          </div>
-          <div className="h-8 rounded-lg flex items-center px-3 gap-2">
-            <div className="w-3.5 h-3.5 rounded bg-gray-200 shrink-0" />
-            <div className="h-2.5 w-10 bg-gray-200 rounded" />
-          </div>
-          <div className="mt-auto pt-3 border-t border-gray-200">
-            <div className="h-2 w-8 bg-gray-200 rounded mb-2 mx-3" />
-            <div className="h-8 rounded-lg flex items-center px-3 gap-2">
-              <div className="w-3.5 h-3.5 rounded bg-gray-200 shrink-0" />
-              <div className="h-2.5 w-20 bg-gray-200 rounded" />
+
+      {/* Content */}
+      <div className="p-4 sm:p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-[10px] text-gray-400 mb-0.5">블로그 키워드 분석</div>
+            <div className="text-sm sm:text-base font-bold text-gray-900 flex items-center gap-2">
+              &ldquo;다이어트 식단&rdquo;
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">A등급</span>
             </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="h-7 px-3 bg-white border border-gray-200 rounded-lg flex items-center text-[10px] text-gray-500">엑셀 저장</div>
           </div>
         </div>
-        {/* Main content */}
-        <div className="flex-1 p-5 overflow-hidden">
-          <div className="flex justify-between items-end mb-5">
-            <div>
-              <div className="h-3 w-20 bg-gray-200 rounded mb-2" />
-              <div className="h-7 w-44 bg-gray-800 rounded" />
-            </div>
-            <div className="flex gap-2">
-              <div className="h-8 w-24 bg-white border border-gray-200 rounded-lg" />
-              <div className="h-8 w-8 bg-primary-50 border border-primary-100 rounded-lg flex items-center justify-center text-primary-500">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </div>
-            </div>
+
+        {/* KPI cards */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
+          <div className="bg-gray-50 p-2.5 sm:p-3 rounded-xl">
+            <div className="text-[10px] text-gray-400 mb-1">총 검색량</div>
+            <div className="text-sm sm:text-lg font-bold text-gray-900">23,600</div>
+            <div className="text-[10px] text-gray-400">PC 5,400 / MO 18,200</div>
           </div>
-          {/* KPI cards */}
-          <div className="grid grid-cols-3 gap-3 mb-5">
-            <div className="bg-white p-3.5 rounded-xl border border-gray-100 shadow-sm">
-              <div className="h-2.5 w-14 bg-gray-200 rounded mb-2.5" />
-              <div className="h-5 w-16 bg-gray-800 rounded mb-1.5" />
-              <div className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                <div className="h-2 w-10 bg-emerald-100 rounded" />
-              </div>
-            </div>
-            <div className="bg-white p-3.5 rounded-xl border border-gray-100 shadow-sm">
-              <div className="h-2.5 w-18 bg-gray-200 rounded mb-2.5" />
-              <div className="h-5 w-20 bg-gray-800 rounded mb-1.5" />
-              <div className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                <div className="h-2 w-12 bg-emerald-100 rounded" />
-              </div>
-            </div>
-            <div className="bg-white p-3.5 rounded-xl border border-gray-100 shadow-sm">
-              <div className="h-2.5 w-12 bg-gray-200 rounded mb-2.5" />
-              <div className="h-5 w-14 bg-gray-800 rounded mb-1.5" />
-              <div className="flex items-center gap-1">
-                <svg className="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" /></svg>
-                <div className="h-2 w-8 bg-red-100 rounded" />
-              </div>
-            </div>
+          <div className="bg-gray-50 p-2.5 sm:p-3 rounded-xl">
+            <div className="text-[10px] text-gray-400 mb-1">발행 문서 수</div>
+            <div className="text-sm sm:text-lg font-bold text-gray-900">342,100</div>
+            <div className="text-[10px] text-emerald-500 font-medium">경쟁 적음</div>
           </div>
-          {/* Charts */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <div className="h-3 w-28 bg-gray-200 rounded mb-5" />
-              <div className="space-y-3.5">
-                {[80, 65, 45, 30, 15].map((w, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className="w-14 h-2.5 bg-gray-100 rounded shrink-0" />
-                    <div className="flex-1 h-2 bg-gray-50 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full animate-grow-width ${i < 3 ? "bg-primary-" + (500 - i * 100) : "bg-gray-" + (300 - (i - 3) * 100)}`}
-                        style={{ width: `${w}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="col-span-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <div className="h-3 w-20 bg-gray-200 rounded mb-3" />
-              <div className="space-y-2">
-                {[
-                  { score: 85, color: "green" },
-                  { score: 72, color: "green" },
-                  { score: 45, color: "yellow" },
-                  { score: 12, color: "red" },
-                ].map((item, i) => (
-                  <div key={i} className={`flex justify-between items-center p-2 ${i % 2 === 0 ? "bg-gray-50" : ""} rounded-lg`}>
-                    <div className={`h-2.5 ${i === 3 ? "w-24" : i === 1 ? "w-20" : i === 2 ? "w-14" : "w-16"} bg-gray-${i === 0 ? "300" : "200"} rounded`} />
-                    <div className={`text-[10px] font-bold text-${item.color}-700 bg-${item.color}-100 px-1.5 py-0.5 rounded`}>
-                      {item.score}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="bg-gray-50 p-2.5 sm:p-3 rounded-xl">
+            <div className="text-[10px] text-gray-400 mb-1">검색 비율</div>
+            <div className="text-sm sm:text-lg font-bold text-primary-600">0.07</div>
+            <div className="text-[10px] text-gray-400">상위노출 가능성 높음</div>
           </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+          <table className="w-full text-[10px] sm:text-xs">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 pr-2 font-semibold text-gray-500">키워드</th>
+                <th className="text-right py-2 px-1 font-semibold text-gray-500 hidden sm:table-cell">PC</th>
+                <th className="text-right py-2 px-1 font-semibold text-gray-500 hidden sm:table-cell">모바일</th>
+                <th className="text-right py-2 px-1 font-semibold text-gray-500">총 검색량</th>
+                <th className="text-right py-2 px-1 font-semibold text-gray-500 hidden sm:table-cell">블로그</th>
+                <th className="text-right py-2 px-1 font-semibold text-gray-500">비율</th>
+                <th className="text-center py-2 px-1 font-semibold text-gray-500">등급</th>
+                <th className="text-center py-2 pl-1 font-semibold text-gray-500">경쟁</th>
+              </tr>
+            </thead>
+            <tbody>
+              {keywords.map((row, i) => (
+                <tr key={i} className={`border-b border-gray-50 ${i === 0 ? "bg-primary-50/30" : ""}`}>
+                  <td className="py-1.5 sm:py-2 pr-2 font-medium text-gray-800 whitespace-nowrap">{row.keyword}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-right text-gray-600 hidden sm:table-cell">{row.pc}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-right text-gray-600 hidden sm:table-cell">{row.mobile}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-right font-semibold text-gray-800">{row.total}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-right text-gray-500 hidden sm:table-cell">{row.blog}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-right text-gray-600">{row.ratio}</td>
+                  <td className="py-1.5 sm:py-2 px-1 text-center">
+                    <span className={`inline-flex px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-${row.gradeColor}-100 text-${row.gradeColor}-700`}>
+                      {row.grade}
+                    </span>
+                  </td>
+                  <td className="py-1.5 sm:py-2 pl-1 text-center">
+                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium bg-${row.compColor}-50 text-${row.compColor}-600`}>
+                      {row.comp}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
