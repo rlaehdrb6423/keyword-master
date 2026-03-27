@@ -57,7 +57,7 @@ export default function AboutPage() {
       <div className="mb-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -67,21 +67,21 @@ export default function AboutPage() {
       </div>
 
       {/* 히어로 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
           KeywordView 소개
         </h1>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+        <p className="text-sm text-gray-700 leading-relaxed mb-4">
           KeywordView는 블로거와 온라인 셀러를 위한 무료 키워드 분석 도구입니다.
           네이버 검색광고 API와 네이버 검색 API의 공식 데이터를 실시간으로 분석하여
           검색량, 경쟁도, SEO 점수 등 콘텐츠 전략에 필요한 핵심 지표를 제공합니다.
         </p>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+        <p className="text-sm text-gray-700 leading-relaxed mb-4">
           복잡한 키워드 분석을 누구나 쉽게 할 수 있도록, 직관적인 A~D 등급 시스템으로
           키워드의 경쟁 난이도를 한눈에 파악할 수 있게 설계했습니다. 회원가입 없이도
           대부분의 기능을 바로 사용할 수 있습니다.
         </p>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+        <p className="text-sm text-gray-700 leading-relaxed">
           KeywordView는 데이터 기반의 콘텐츠 전략 수립을 돕는 것을 목표로 합니다.
           블로그 상위 노출을 위한 키워드 선정부터, 스마트스토어 상품 등록을 위한
           시장 분석까지 — 검색 데이터가 필요한 모든 순간에 활용할 수 있습니다.
@@ -89,17 +89,17 @@ export default function AboutPage() {
       </section>
 
       {/* 주요 기능 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">주요 기능</h2>
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-6">주요 기능</h2>
         <div className="space-y-6">
           {features.map((f) => (
             <div key={f.title} className="flex gap-4">
               <div className={`flex-shrink-0 w-2 rounded-full bg-${f.color}-500`} />
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+                <h3 className="font-semibold text-gray-900 text-sm mb-1">
                   {f.title}
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-xs text-gray-600 leading-relaxed">
                   {f.desc}
                 </p>
               </div>
@@ -109,20 +109,20 @@ export default function AboutPage() {
       </section>
 
       {/* 데이터 출처 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">데이터 출처</h2>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">데이터 출처</h2>
+        <p className="text-sm text-gray-700 leading-relaxed mb-6">
           KeywordView의 모든 분석 결과는 공식 API와 공개 데이터를 기반으로 합니다.
           자체적으로 데이터를 생성하거나 추정하지 않으며, 신뢰할 수 있는 원본 데이터를
           가공하여 제공합니다.
         </p>
         <div className="space-y-4">
           {dataSources.map((s) => (
-            <div key={s.name} className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+            <div key={s.name} className="p-4 rounded-xl bg-gray-50">
+              <h3 className="font-semibold text-gray-900 text-sm mb-1">
                 {s.name}
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              <p className="text-xs text-gray-500 leading-relaxed">
                 {s.desc}
               </p>
             </div>
@@ -131,26 +131,26 @@ export default function AboutPage() {
       </section>
 
       {/* 운영 정보 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">운영 정보</h2>
-        <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">운영 정보</h2>
+        <div className="space-y-3 text-sm text-gray-700">
           <div className="flex gap-3">
-            <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 w-20">서비스명</span>
+            <span className="text-gray-400 flex-shrink-0 w-20">서비스명</span>
             <span>KeywordView (키워드뷰)</span>
           </div>
           <div className="flex gap-3">
-            <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 w-20">운영</span>
+            <span className="text-gray-400 flex-shrink-0 w-20">운영</span>
             <span>개인 운영</span>
           </div>
           <div className="flex gap-3">
-            <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 w-20">이메일</span>
-            <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
+            <span className="text-gray-400 flex-shrink-0 w-20">이메일</span>
+            <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-900 transition-colors">
               rlaehdrb6423@gmail.com
             </a>
           </div>
           <div className="flex gap-3">
-            <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 w-20">블로그</span>
-            <a href="https://igetmindset.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
+            <span className="text-gray-400 flex-shrink-0 w-20">블로그</span>
+            <a href="https://igetmindset.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-900 transition-colors">
               igetmindset.com
             </a>
           </div>
@@ -158,10 +158,10 @@ export default function AboutPage() {
       </section>
 
       {/* 하단 링크 */}
-      <div className="flex flex-wrap gap-4 text-xs text-gray-400 dark:text-gray-500 mb-8">
-        <Link href="/terms" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">이용약관</Link>
-        <Link href="/privacy" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">개인정보처리방침</Link>
-        <Link href="/contact" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">문의하기</Link>
+      <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-8">
+        <Link href="/terms" className="hover:text-gray-600 transition-colors underline">이용약관</Link>
+        <Link href="/privacy" className="hover:text-gray-600 transition-colors underline">개인정보처리방침</Link>
+        <Link href="/contact" className="hover:text-gray-600 transition-colors underline">문의하기</Link>
       </div>
     </div>
   );

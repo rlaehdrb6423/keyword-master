@@ -7,9 +7,9 @@ const grades = [
     grade: "A",
     label: "추천",
     color: "blue",
-    bg: "bg-blue-100 dark:bg-blue-900/50",
-    text: "text-blue-800 dark:text-blue-300",
-    border: "border-blue-200 dark:border-blue-800",
+    bg: "bg-blue-100",
+    text: "text-blue-800",
+    border: "border-blue-200",
     description: "검색량 대비 경쟁이 낮아 진입하기 좋은 키워드",
     action: "바로 콘텐츠를 작성하세요",
   },
@@ -17,9 +17,9 @@ const grades = [
     grade: "B",
     label: "양호",
     color: "green",
-    bg: "bg-green-100 dark:bg-green-900/50",
-    text: "text-green-800 dark:text-green-300",
-    border: "border-green-200 dark:border-green-800",
+    bg: "bg-green-100",
+    text: "text-green-800",
+    border: "border-green-200",
     description: "적당한 경쟁률로 노력하면 상위 노출 가능",
     action: "양질의 콘텐츠로 충분히 경쟁 가능",
   },
@@ -27,9 +27,9 @@ const grades = [
     grade: "C",
     label: "보통",
     color: "yellow",
-    bg: "bg-yellow-100 dark:bg-yellow-900/50",
-    text: "text-yellow-800 dark:text-yellow-300",
-    border: "border-yellow-200 dark:border-yellow-800",
+    bg: "bg-yellow-100",
+    text: "text-yellow-800",
+    border: "border-yellow-200",
     description: "경쟁이 다소 치열하여 상위 노출이 어려울 수 있음",
     action: "롱테일 키워드로 세분화를 추천",
   },
@@ -37,9 +37,9 @@ const grades = [
     grade: "D",
     label: "경쟁 치열",
     color: "red",
-    bg: "bg-red-100 dark:bg-red-900/50",
-    text: "text-red-800 dark:text-red-300",
-    border: "border-red-200 dark:border-red-800",
+    bg: "bg-red-100",
+    text: "text-red-800",
+    border: "border-red-200",
     description: "검색량 대비 경쟁이 매우 높아 상위 노출이 힘듦",
     action: "다른 키워드를 찾아보세요",
   },
@@ -52,7 +52,7 @@ export default function GradeGuide() {
     <div className="mb-6">
       <button
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -76,10 +76,10 @@ export default function GradeGuide() {
                 </span>
                 <span className={`text-xs font-medium ${g.text}`}>{g.label}</span>
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-1">
+              <p className="text-xs text-gray-600 leading-relaxed mb-1">
                 {g.description}
               </p>
-              <p className="text-[11px] text-gray-400 dark:text-gray-500">
+              <p className="text-[11px] text-gray-400">
                 {g.action}
               </p>
             </div>

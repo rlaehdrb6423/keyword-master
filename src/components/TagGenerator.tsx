@@ -49,7 +49,7 @@ export default function TagGenerator({ keywords }: TagGeneratorProps) {
   return (
     <div className="card p-4 mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">태그 생성</h3>
+        <h3 className="text-sm font-semibold text-gray-700">태그 생성</h3>
         <div className="flex gap-1">
           {tabs.map((tab) => (
             <button
@@ -57,8 +57,8 @@ export default function TagGenerator({ keywords }: TagGeneratorProps) {
               onClick={() => setActiveTab(tab.id)}
               className={`text-xs px-3 py-1 rounded-full transition-colors ${
                 activeTab === tab.id
-                  ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
-                  : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  ? "bg-primary-100 text-primary-700"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               {tab.label}
@@ -67,15 +67,15 @@ export default function TagGenerator({ keywords }: TagGeneratorProps) {
         </div>
       </div>
       <div className="flex items-start gap-2">
-        <p className="flex-1 text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2 break-all leading-relaxed">
+        <p className="flex-1 text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2 break-all leading-relaxed">
           {formatted}
         </p>
         <button
           onClick={handleCopy}
           className={`shrink-0 text-xs px-3 py-2 rounded-lg transition-colors ${
             copied
-              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
           }`}
         >
           {copied ? "복사됨!" : "복사"}

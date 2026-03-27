@@ -9,10 +9,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="card p-8">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
               로그인
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500">
               블로그 분석 기능을 이용하려면 로그인이 필요합니다
             </p>
           </div>
@@ -33,7 +33,7 @@ export default function LoginPage() {
             {/* 구글 로그인 */}
             <button
               onClick={() => signIn("google", { callbackUrl: "/blog-analysis" })}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
             >
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path
@@ -57,7 +57,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <p className="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
+          <p className="mt-6 text-center text-xs text-gray-400">
             로그인 시{" "}
             <Link href="/terms" className="underline">
               이용약관

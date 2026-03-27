@@ -30,13 +30,13 @@ export default function KeywordInput({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base"
         disabled={loading}
       />
       <button
         type="submit"
         disabled={loading || !keyword.trim()}
-        className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors dark:disabled:bg-gray-700 dark:disabled:text-gray-500"
+        className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? (
           <span className="flex items-center gap-2">

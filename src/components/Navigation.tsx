@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import ThemeToggle from "./ThemeToggle";
 
 type NavItem = { href: string; label: string; badge?: string };
 
@@ -30,7 +29,7 @@ export default function Navigation() {
   const navItems = isHomepage ? landingNavItems : appNavItems;
 
   return (
-    <nav className={`fixed top-0 inset-x-0 z-50 ${isHomepage ? "glass border-b border-black/[0.06]" : "bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700"}`}>
+    <nav className={`fixed top-0 inset-x-0 z-50 ${isHomepage ? "glass border-b border-black/[0.06]" : "bg-white border-b border-gray-200"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5">
@@ -62,28 +61,28 @@ export default function Navigation() {
                   href={item.href}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
                     pathname === item.href
-                      ? "bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                      ? "bg-primary-50 text-primary-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
                   {item.label}
                   {item.badge && (
-                    <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400">
+                    <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600">
                       {item.badge}
                     </span>
                   )}
                 </Link>
               )
             ))}
-            {!isHomepage && <ThemeToggle />}
+
             {session ? (
               <div className="flex items-center gap-2 ml-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500">
                   {session.user?.name || session.user?.email}
                 </span>
                 <button
                   onClick={() => signOut()}
-                  className="px-3 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors"
+                  className="px-3 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                 >
                   로그아웃
                 </button>
@@ -120,10 +119,10 @@ export default function Navigation() {
 
           {/* Mobile */}
           <div className="flex items-center gap-2 md:hidden">
-            {!isHomepage && <ThemeToggle />}
+
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="p-2 rounded-lg text-gray-600 hover:bg-gray-100"
               aria-label="메뉴"
             >
               {menuOpen ? (
@@ -159,13 +158,13 @@ export default function Navigation() {
                   onClick={() => setMenuOpen(false)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     pathname === item.href
-                      ? "bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                      ? "bg-primary-50 text-primary-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
                   {item.label}
                   {item.badge && (
-                    <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400">
+                    <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-primary-100 text-primary-600">
                       {item.badge}
                     </span>
                   )}
@@ -174,12 +173,12 @@ export default function Navigation() {
             ))}
             {session ? (
               <div className="flex items-center justify-between px-3 py-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500">
                   {session.user?.name || session.user?.email}
                 </span>
                 <button
                   onClick={() => { signOut(); setMenuOpen(false); }}
-                  className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-xs text-gray-500 hover:text-gray-700"
                 >
                   로그아웃
                 </button>

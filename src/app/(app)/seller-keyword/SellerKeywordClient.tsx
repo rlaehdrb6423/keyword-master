@@ -335,7 +335,7 @@ export default function SellerKeywordPage() {
                           onClick={() => handleSearch(kw)}
                           className={`px-3 py-1 rounded-full text-sm transition-colors ${
                             isGolden
-                              ? "bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300 hover:bg-yellow-200yellow-900/30:bg-yellow-900/50 font-medium"
+                              ? "bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300 hover:bg-yellow-200yellow-900/30 font-medium"
                               : "bg-gray-100 text-gray-700 hover:bg-primary-100 hover:text-primary-700gray-800:bg-primary-900/30:text-primary-300"
                           }`}
                         >
@@ -360,7 +360,7 @@ export default function SellerKeywordPage() {
                         <button
                           key={r.keyword}
                           onClick={() => handleSearch(r.keyword)}
-                          className="px-3 py-1.5 rounded-lg bg-yellow-100 text-yellow-800 text-sm font-medium hover:bg-yellow-200yellow-900/30:bg-yellow-900/50 transition-colors flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg bg-yellow-100 text-yellow-800 text-sm font-medium hover:bg-yellow-200yellow-900/30 transition-colors flex items-center gap-1"
                         >
                           ★ {r.keyword}
                           <span className="text-[10px] text-yellow-600">

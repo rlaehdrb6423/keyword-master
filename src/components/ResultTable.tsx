@@ -99,7 +99,7 @@ export default function ResultTable({
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500 dark:text-gray-400">{emptyMessage}</div>
+      <div className="text-center py-12 text-gray-500">{emptyMessage}</div>
     );
   }
 
@@ -108,14 +108,14 @@ export default function ResultTable({
       <div className="flex justify-end px-4 py-2">
         <button
           onClick={() => handleExcelDownload(columns, sortedData)}
-          className="text-xs px-3 py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
+          className="text-xs px-3 py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200"
         >
           엑셀 다운로드
         </button>
       </div>
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-800">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
           <tr>
             {columns.map((col) => {
               const isSortable = col.sortable !== false && !col.render;
@@ -124,20 +124,20 @@ export default function ResultTable({
                 <th
                   key={col.key}
                   onClick={() => isSortable && handleSort(col.key)}
-                  className={`px-4 py-3 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider ${
+                  className={`px-4 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
                       ? "text-center"
                       : "text-left"
-                  } ${isSortable ? "cursor-pointer select-none hover:text-gray-900 dark:hover:text-white transition-colors" : ""}`}
+                  } ${isSortable ? "cursor-pointer select-none hover:text-gray-900 transition-colors" : ""}`}
                 >
                   <span className="inline-flex items-center gap-1">
                     {col.label}
                     {isSortable && (
                       <span className="inline-flex flex-col text-[8px] leading-none">
-                        <span className={isActive && sortDir === "asc" ? "text-primary-600 dark:text-primary-400" : "text-gray-300 dark:text-gray-600"}>&#9650;</span>
-                        <span className={isActive && sortDir === "desc" ? "text-primary-600 dark:text-primary-400" : "text-gray-300 dark:text-gray-600"}>&#9660;</span>
+                        <span className={isActive && sortDir === "asc" ? "text-primary-600" : "text-gray-300"}>&#9650;</span>
+                        <span className={isActive && sortDir === "desc" ? "text-primary-600" : "text-gray-300"}>&#9660;</span>
                       </span>
                     )}
                   </span>
@@ -146,13 +146,13 @@ export default function ResultTable({
             })}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="bg-white divide-y divide-gray-200">
           {sortedData.map((row, rowIdx) => (
-            <tr key={rowIdx} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+            <tr key={rowIdx} className="hover:bg-gray-50 transition-colors">
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`px-4 py-3 text-sm whitespace-nowrap text-gray-900 dark:text-gray-200 ${
+                  className={`px-4 py-3 text-sm whitespace-nowrap text-gray-900 ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"

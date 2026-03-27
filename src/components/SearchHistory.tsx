@@ -38,12 +38,12 @@ export default function SearchHistory({ type, onSelect }: SearchHistoryProps) {
 
   return (
     <div className="flex items-center gap-2 mt-2 flex-wrap">
-      <span className="text-xs text-gray-400 dark:text-gray-500">최근:</span>
+      <span className="text-xs text-gray-400">최근:</span>
       {history.map((h, i) => (
         <button
           key={i}
           onClick={() => onSelect(h.keyword)}
-          className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-primary-900/30 dark:hover:text-primary-300 transition-colors"
+          className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-primary-100 hover:text-primary-700:bg-primary-900/30:text-primary-300 transition-colors"
         >
           {h.keyword}
         </button>

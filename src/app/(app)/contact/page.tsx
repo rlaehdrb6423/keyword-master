@@ -64,7 +64,7 @@ export default function ContactPage() {
       <div className="mb-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -74,38 +74,38 @@ export default function ContactPage() {
       </div>
 
       {/* 문의 안내 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">문의하기</h1>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">문의하기</h1>
+        <p className="text-sm text-gray-700 leading-relaxed mb-6">
           KeywordView 서비스 이용 중 궁금한 점, 오류 제보, 기능 제안 등 어떤 내용이든 편하게 문의해 주세요.
           이메일로 접수된 문의는 영업일 기준 1~2일 이내에 답변드립니다.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">이메일 문의</h3>
+          <div className="p-5 rounded-xl bg-gray-50">
+            <h3 className="font-semibold text-gray-900 text-sm mb-2">이메일 문의</h3>
             <a
               href="mailto:rlaehdrb6423@gmail.com"
-              className="text-sm text-primary-600 dark:text-primary-400 underline hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+              className="text-sm text-primary-600 underline hover:text-primary-700 transition-colors"
             >
               rlaehdrb6423@gmail.com
             </a>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
               서비스 이용 문의, 오류 제보, 기능 제안, 제휴 문의 등
             </p>
           </div>
 
-          <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">운영 블로그</h3>
+          <div className="p-5 rounded-xl bg-gray-50">
+            <h3 className="font-semibold text-gray-900 text-sm mb-2">운영 블로그</h3>
             <a
               href="https://igetmindset.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-primary-600 dark:text-primary-400 underline hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+              className="text-sm text-primary-600 underline hover:text-primary-700 transition-colors"
             >
               igetmindset.com
             </a>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
               키워드 분석 활용법, 블로그 운영 팁, 서비스 업데이트 소식
             </p>
           </div>
@@ -113,15 +113,15 @@ export default function ContactPage() {
       </section>
 
       {/* 자주 묻는 질문 */}
-      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 mb-8">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">자주 묻는 질문</h2>
+      <section className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-6">자주 묻는 질문</h2>
         <div className="space-y-6">
           {faqs.map((faq, i) => (
-            <div key={i} className="pb-6 border-b border-gray-100 dark:border-gray-800 last:border-b-0 last:pb-0">
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">
+            <div key={i} className="pb-6 border-b border-gray-100 last:border-b-0 last:pb-0">
+              <h3 className="font-semibold text-gray-900 text-sm mb-2">
                 Q. {faq.q}
               </h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pl-5">
+              <p className="text-xs text-gray-600 leading-relaxed pl-5">
                 {faq.a}
               </p>
             </div>
@@ -130,10 +130,10 @@ export default function ContactPage() {
       </section>
 
       {/* 하단 링크 */}
-      <div className="flex flex-wrap gap-4 text-xs text-gray-400 dark:text-gray-500 mb-8">
-        <Link href="/about" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">서비스 소개</Link>
-        <Link href="/terms" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">이용약관</Link>
-        <Link href="/privacy" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors underline">개인정보처리방침</Link>
+      <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-8">
+        <Link href="/about" className="hover:text-gray-600 transition-colors underline">서비스 소개</Link>
+        <Link href="/terms" className="hover:text-gray-600 transition-colors underline">이용약관</Link>
+        <Link href="/privacy" className="hover:text-gray-600 transition-colors underline">개인정보처리방침</Link>
       </div>
     </div>
   );

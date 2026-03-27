@@ -30,15 +30,15 @@ const levelColors = [
 ];
 
 function seoScoreColor(score: number) {
-  if (score >= 80) return "text-green-600 dark:text-green-400";
-  if (score >= 50) return "text-yellow-600 dark:text-yellow-400";
-  return "text-red-600 dark:text-red-400";
+  if (score >= 80) return "text-green-600";
+  if (score >= 50) return "text-yellow-600";
+  return "text-red-600";
 }
 
 function seoScoreBg(score: number) {
-  if (score >= 80) return "bg-green-100 dark:bg-green-900/30";
-  if (score >= 50) return "bg-yellow-100 dark:bg-yellow-900/30";
-  return "bg-red-100 dark:bg-red-900/30";
+  if (score >= 80) return "bg-green-100";
+  if (score >= 50) return "bg-yellow-100";
+  return "bg-red-100";
 }
 
 export default function SellerIndexPage() {
@@ -81,11 +81,11 @@ export default function SellerIndexPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">셀러 지수</h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">셀러 지수</h1>
+        <p className="text-gray-600">
           네이버 스마트스토어의 기본 지수 확인과 함께 상품명 SEO 상세 분석이 가능합니다.
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-1">
           smartstore.naver.com/storeId 형식 또는 storeId만 입력 가능합니다.
         </p>
       </div>
@@ -97,13 +97,13 @@ export default function SellerIndexPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="스토어 ID 또는 URL (예: smartstore.naver.com/myStore)"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base"
             disabled={loading}
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors dark:disabled:bg-gray-700 dark:disabled:text-gray-500"
+            className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -130,7 +130,7 @@ export default function SellerIndexPage() {
 
       {/* 레벨 등급 안내 */}
       <div className="card p-4 mb-6">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">셀러 지수 등급 (11단계)</h3>
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">셀러 지수 등급 (11단계)</h3>
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: 11 }, (_, i) => (
             <div key={i} className="flex items-center gap-1">
@@ -148,23 +148,23 @@ export default function SellerIndexPage() {
           <div className="card p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{result.storeName}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">@{result.storeId}</p>
+                <h2 className="text-xl font-bold text-gray-900">{result.storeName}</h2>
+                <p className="text-sm text-gray-500">@{result.storeId}</p>
               </div>
               <div className="text-center">
                 <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ${levelColors[result.level]}`}>
                   {result.level}
                 </div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">{result.levelLabel}</p>
+                <p className="text-sm font-medium text-gray-700 mt-1">{result.levelLabel}</p>
               </div>
             </div>
 
             <div className="mb-6">
-              <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 mb-1">
+              <div className="flex justify-between text-xs text-gray-400 mb-1">
                 <span>Level 0</span>
                 <span>Level 10</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+              <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
                   className={`h-3 rounded-full transition-all ${levelColors[result.level]}`}
                   style={{ width: `${(result.level / 10) * 100}%` }}
@@ -173,27 +173,27 @@ export default function SellerIndexPage() {
             </div>
 
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
-              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-primary-600 dark:text-primary-400 truncate">{result.totalProducts}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">총 상품수</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-primary-600 truncate">{result.totalProducts}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">총 상품수</div>
               </div>
-              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate">{result.searchVisibility}%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">검색 노출률</div>
+              <div className="text-center p-2 sm:p-3 bg-gray-50 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-orange-600 truncate">{result.searchVisibility}%</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">검색 노출률</div>
               </div>
-              <div className="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="text-center p-2 sm:p-3 bg-gray-50 rounded-lg">
                 <div className={`text-lg sm:text-2xl font-bold truncate ${seoScoreColor(result.avgSeoScore)}`}>{result.avgSeoScore}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">평균 SEO 점수</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">평균 SEO 점수</div>
               </div>
             </div>
           </div>
 
           {/* 팁 */}
           <div className="card p-5 mb-6">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">분석 및 추천</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">분석 및 추천</h3>
             <ul className="space-y-2">
               {result.tips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
                   <span className="text-primary-500 mt-0.5">*</span>
                   {tip}
                 </li>
@@ -204,18 +204,18 @@ export default function SellerIndexPage() {
           {/* 상품 SEO 분석 */}
           {result.recentProducts.length > 0 && (
             <div className="card overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900 dark:text-white">상품명 SEO 분석</h3>
-                <span className="text-xs text-primary-500 dark:text-primary-400 animate-pulse flex items-center gap-1">
+              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 className="font-semibold text-gray-900">상품명 SEO 분석</h3>
+                <span className="text-xs text-primary-500 animate-pulse flex items-center gap-1">
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
                   클릭하면 SEO 개선 팁을 확인할 수 있어요
                 </span>
               </div>
-              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              <div className="divide-y divide-gray-200">
                 {result.recentProducts.map((product, i) => (
                   <div key={i} className="px-6 py-3">
                     <div
-                      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 -mx-2 px-2 py-1 rounded transition-colors"
+                      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors"
                       onClick={() => setExpandedProduct(expandedProduct === i ? null : i)}
                     >
                       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -227,13 +227,13 @@ export default function SellerIndexPage() {
                             href={product.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-gray-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 truncate flex-1"
+                            className="text-sm text-gray-800 hover:text-primary-600 truncate flex-1"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {product.title}
                           </a>
                         ) : (
-                          <span className="text-sm text-gray-800 dark:text-gray-200 truncate flex-1">
+                          <span className="text-sm text-gray-800 truncate flex-1">
                             {product.title}
                           </span>
                         )}
@@ -245,7 +245,7 @@ export default function SellerIndexPage() {
                     {expandedProduct === i && (
                       <div className="mt-2 ml-13 space-y-1">
                         {product.seoTips.map((tip, j) => (
-                          <p key={j} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-1">
+                          <p key={j} className="text-xs text-gray-500 flex items-start gap-1">
                             <span className="text-primary-500">-</span> {tip}
                           </p>
                         ))}

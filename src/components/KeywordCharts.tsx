@@ -37,13 +37,13 @@ export function PcMobileChart({ pcVolume, mobileVolume }: PcMobileChartProps) {
       <div className="space-y-1">
         <div className="flex items-center gap-2 text-sm">
           <span className="w-3 h-3 rounded-full bg-blue-500" />
-          <span className="text-gray-600 dark:text-gray-400">PC {data[0].pct}%</span>
-          <span className="font-medium text-gray-800 dark:text-gray-200">{pcVolume.toLocaleString()}</span>
+          <span className="text-gray-600">PC {data[0].pct}%</span>
+          <span className="font-medium text-gray-800">{pcVolume.toLocaleString()}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <span className="w-3 h-3 rounded-full bg-orange-500" />
-          <span className="text-gray-600 dark:text-gray-400">모바일 {data[1].pct}%</span>
-          <span className="font-medium text-gray-800 dark:text-gray-200">{mobileVolume.toLocaleString()}</span>
+          <span className="text-gray-600">모바일 {data[1].pct}%</span>
+          <span className="font-medium text-gray-800">{mobileVolume.toLocaleString()}</span>
         </div>
       </div>
     </div>
@@ -89,8 +89,8 @@ export function ChannelShareChart({ blogCount, newsCount, cafeCount, webDocCount
         {data.map((d) => (
           <div key={d.name} className="flex items-center gap-2 text-sm">
             <span className="w-3 h-3 rounded-full" style={{ backgroundColor: d.color }} />
-            <span className="text-gray-600 dark:text-gray-400 w-12">{d.name}</span>
-            <span className="font-medium text-gray-800 dark:text-gray-200">{d.value.toLocaleString()}</span>
+            <span className="text-gray-600 w-12">{d.name}</span>
+            <span className="font-medium text-gray-800">{d.value.toLocaleString()}</span>
             <span className="text-xs text-gray-400">({Math.round((d.value / total) * 100)}%)</span>
           </div>
         ))}
@@ -136,10 +136,10 @@ export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount 
   if (total === 0) return null;
 
   const channels = [
-    { name: "블로그", count: blogCount, color: "#3b82f6", bg: "bg-blue-50 dark:bg-blue-900/20" },
-    { name: "뉴스", count: newsCount, color: "#ef4444", bg: "bg-red-50 dark:bg-red-900/20" },
-    { name: "카페", count: cafeCount, color: "#22c55e", bg: "bg-green-50 dark:bg-green-900/20" },
-    { name: "웹문서", count: webDocCount, color: "#a855f7", bg: "bg-purple-50 dark:bg-purple-900/20" },
+    { name: "블로그", count: blogCount, color: "#3b82f6", bg: "bg-blue-50" },
+    { name: "뉴스", count: newsCount, color: "#ef4444", bg: "bg-red-50" },
+    { name: "카페", count: cafeCount, color: "#22c55e", bg: "bg-green-50" },
+    { name: "웹문서", count: webDocCount, color: "#a855f7", bg: "bg-purple-50" },
   ];
 
   const maxPct = Math.max(...channels.map((c) => (c.count / total) * 100));
@@ -154,14 +154,14 @@ export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount 
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: ch.color }} />
-                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{ch.name}</span>
+                <span className="text-xs font-medium text-gray-700">{ch.name}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-400">{ch.count.toLocaleString()}개</span>
                 <span className="text-xs font-bold min-w-[36px] text-right" style={{ color: ch.color }}>{pct}%</span>
               </div>
             </div>
-            <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-700 ease-out"
                 style={{ width: `${barWidth}%`, backgroundColor: ch.color }}
@@ -170,7 +170,7 @@ export function CompetitionRadar({ blogCount, newsCount, cafeCount, webDocCount 
           </div>
         );
       })}
-      <p className="text-[10px] text-gray-400 dark:text-gray-500 text-center pt-1">
+      <p className="text-[10px] text-gray-400 text-center pt-1">
         {channels.sort((a, b) => b.count - a.count)[0].name} 채널의 경쟁이 가장 치열해요
       </p>
     </div>
@@ -185,10 +185,10 @@ const GRADE_COLORS: Record<string, string> = {
 };
 
 const GRADE_BG: Record<string, string> = {
-  A: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  B: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-  C: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
-  D: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+  A: "bg-blue-100 text-blue-700",
+  B: "bg-green-100 text-green-700",
+  C: "bg-yellow-100 text-yellow-700",
+  D: "bg-red-100 text-red-700",
 };
 
 interface KeywordBubbleProps {
@@ -210,17 +210,17 @@ export function KeywordBubbleChart({ keywords, onKeywordClick }: KeywordBubblePr
             key={kw.keyword}
             className={`group rounded-lg p-2.5 transition-all ${
               onKeywordClick
-                ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-sm"
+                ? "cursor-pointer hover:bg-gray-50 hover:shadow-sm"
                 : ""
             }`}
             onClick={() => onKeywordClick?.(kw.keyword)}
           >
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-medium text-gray-800 dark:text-gray-200 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              <span className="text-xs font-medium text-gray-800 truncate group-hover:text-primary-600 transition-colors">
                 {kw.keyword}
               </span>
               <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
-                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                <span className="text-xs font-bold text-gray-700">
                   {kw.totalVolume.toLocaleString()}
                 </span>
                 {onKeywordClick && (
@@ -230,7 +230,7 @@ export function KeywordBubbleChart({ keywords, onKeywordClick }: KeywordBubblePr
                 )}
               </div>
             </div>
-            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-700 ease-out"
                 style={{ width: `${barWidth}%`, backgroundColor: "#6366f1" }}

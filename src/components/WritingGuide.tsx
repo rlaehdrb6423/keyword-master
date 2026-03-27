@@ -67,17 +67,17 @@ export default function WritingGuide({ keyword, grade, totalVolume: _totalVolume
     <div className="card mb-6 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+        className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
           <svg className="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
+          <span className="text-sm font-bold text-gray-900">
             &ldquo;{keyword}&rdquo; 글쓰기 가이드
           </span>
           {grade === "A" && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
               지금 쓰면 좋아요!
             </span>
           )}
@@ -88,17 +88,17 @@ export default function WritingGuide({ keyword, grade, totalVolume: _totalVolume
       </button>
 
       {open && (
-        <div className="px-5 pb-5 border-t border-gray-100 dark:border-gray-800 pt-4">
+        <div className="px-5 pb-5 border-t border-gray-100 pt-4">
           {/* 플랫폼 탭 */}
-          <div className="flex gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800 w-fit mb-4">
+          <div className="flex gap-1 p-1 rounded-xl bg-gray-100 w-fit mb-4">
             {(["naver", "tistory", "wordpress"] as const).map((p) => (
               <button
                 key={p}
                 onClick={() => setSelectedPlatform(p)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   selectedPlatform === p
-                    ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-500"
                 }`}
               >
                 {p === "naver" ? "네이버" : p === "tistory" ? "티스토리" : "워드프레스"}
@@ -117,8 +117,8 @@ export default function WritingGuide({ keyword, grade, totalVolume: _totalVolume
                   {i + 1}
                 </span>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white">{tip.title}</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-0.5">{tip.desc}</p>
+                  <h4 className="text-sm font-medium text-gray-900">{tip.title}</h4>
+                  <p className="text-xs text-gray-500 leading-relaxed mt-0.5">{tip.desc}</p>
                 </div>
               </div>
             ))}

@@ -51,19 +51,19 @@ export default function TrendingKeywords() {
 
   return (
     <section className="mb-10">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <h2 className="font-bold text-gray-900 dark:text-white text-sm">실시간 인기 검색어</h2>
+            <h2 className="font-bold text-gray-900 text-sm">실시간 인기 검색어</h2>
             {/* 탭 */}
-            <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+            <div className="flex bg-gray-100 rounded-lg p-0.5">
               <button
                 onClick={() => setTab("naver")}
                 className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                   tab === "naver"
-                    ? "bg-white dark:bg-gray-700 text-green-600 dark:text-green-400 shadow-sm"
-                    : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    ? "bg-white text-green-600 shadow-sm"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
                 Naver
@@ -72,15 +72,15 @@ export default function TrendingKeywords() {
                 onClick={() => setTab("google")}
                 className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                   tab === "google"
-                    ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
-                    : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
                 Google
               </button>
             </div>
           </div>
-          <span className="text-xs text-gray-400 dark:text-gray-600">
+          <span className="text-xs text-gray-400">
             {lastUpdate && `${lastUpdate} 업데이트`}
           </span>
         </div>
@@ -98,25 +98,25 @@ export default function TrendingKeywords() {
                 <button
                   key={item.rank}
                   onClick={() => handleKeywordClick(item.keyword)}
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left w-full"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-left w-full"
                 >
                   <span className={`text-xs font-bold w-5 text-center ${
-                    item.rank <= 3 ? "text-red-500" : "text-gray-300 dark:text-gray-600"
+                    item.rank <= 3 ? "text-red-500" : "text-gray-300"
                   }`}>
                     {item.rank}
                   </span>
-                  <span className="text-sm text-gray-700 dark:text-gray-300 flex-1 truncate hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  <span className="text-sm text-gray-700 flex-1 truncate hover:text-primary-600 transition-colors">
                     {item.keyword}
                   </span>
                   <div className="flex items-center gap-1 flex-shrink-0">
                     {item.traffic && (
-                      <span className="text-[10px] text-gray-300 dark:text-gray-600 mr-1">
+                      <span className="text-[10px] text-gray-300 mr-1">
                         {item.traffic}
                       </span>
                     )}
                     <span
                       onClick={(e) => { e.stopPropagation(); router.push(`/blog-keyword?q=${encodeURIComponent(item.keyword)}`); }}
-                      className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40 transition-colors cursor-pointer"
+                      className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold bg-primary-50 text-primary-600 hover:bg-primary-100 transition-colors cursor-pointer"
                       title="키워드 분석"
                     >
                       K
@@ -126,7 +126,7 @@ export default function TrendingKeywords() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-400 dark:text-gray-500 py-4 text-sm">
+            <p className="text-center text-gray-400 py-4 text-sm">
               {tab === "naver" ? "네이버" : "구글"} 트렌딩 데이터를 불러올 수 없습니다.
             </p>
           )}

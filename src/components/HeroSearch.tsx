@@ -18,14 +18,14 @@ export default function HeroSearch() {
 
   return (
     <div className="mt-8 max-w-lg mx-auto">
-      <div className="flex gap-1 mb-3 p-1 rounded-xl bg-gray-100 dark:bg-gray-800 w-fit mx-auto">
+      <div className="flex gap-1 mb-3 p-1 rounded-xl bg-gray-100 w-fit mx-auto">
         <button
           type="button"
           onClick={() => setHeroTab("blog")}
           className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
             heroTab === "blog"
-              ? "bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 shadow-sm"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              ? "bg-white text-primary-600 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
           }`}
         >
           블로그 키워드
@@ -35,8 +35,8 @@ export default function HeroSearch() {
           onClick={() => setHeroTab("seller")}
           className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
             heroTab === "seller"
-              ? "bg-white dark:bg-gray-900 text-primary-600 dark:text-primary-400 shadow-sm"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              ? "bg-white text-primary-600 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
           }`}
         >
           셀러 키워드
@@ -48,11 +48,11 @@ export default function HeroSearch() {
           value={heroQuery}
           onChange={(e) => setHeroQuery(e.target.value)}
           placeholder={heroTab === "blog" ? "블로그 키워드를 입력하세요" : "셀러 키워드를 입력하세요"}
-          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500:ring-primary-400 focus:border-transparent"
         />
         <button
           type="submit"
-          className="px-5 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-sm font-medium transition-colors flex items-center gap-2"
+          className="px-5 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           분석

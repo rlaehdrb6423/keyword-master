@@ -5,7 +5,7 @@ interface ErrorMessageProps {
 
 export default function ErrorMessage({ message, onRetry }: ErrorMessageProps) {
   return (
-    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center justify-between">
+    <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <svg className="w-5 h-5 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path
@@ -14,12 +14,12 @@ export default function ErrorMessage({ message, onRetry }: ErrorMessageProps) {
             clipRule="evenodd"
           />
         </svg>
-        <p className="text-sm text-red-700 dark:text-red-300">{message}</p>
+        <p className="text-sm text-red-700">{message}</p>
       </div>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 font-medium"
+          className="text-sm text-red-600 hover:text-red-800 font-medium"
         >
           다시 시도
         </button>
