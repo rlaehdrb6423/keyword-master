@@ -64,8 +64,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:keywordview.kr@gmail.com" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                  이메일: keywordview.kr@gmail.com
+                <a href="mailto:rlaehdrb6423@gmail.com" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  이메일: rlaehdrb6423@gmail.com
                 </a>
               </li>
             </ul>

@@ -110,7 +110,7 @@ export default function TermsPage() {
               </li>
               <li className="flex gap-2">
                 <span className="text-gray-400 dark:text-gray-500 flex-shrink-0">3.</span>
-                <span>회원 탈퇴를 원하는 경우 운영자 이메일(keywordview.kr@gmail.com)로 요청하면 처리됩니다.</span>
+                <span>회원 탈퇴를 원하는 경우 운영자 이메일(rlaehdrb6423@gmail.com)로 요청하면 처리됩니다.</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-gray-400 dark:text-gray-500 flex-shrink-0">4.</span>
@@ -234,7 +234,7 @@ export default function TermsPage() {
           <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
             <p className="text-gray-500 dark:text-gray-400">시행일: 2026년 3월 27일</p>
             <p className="text-gray-500 dark:text-gray-400 mt-1">
-              문의: <a href="mailto:keywordview.kr@gmail.com" className="underline hover:text-gray-700 dark:hover:text-gray-200 transition-colors">keywordview.kr@gmail.com</a>
+              문의: <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-700 dark:hover:text-gray-200 transition-colors">rlaehdrb6423@gmail.com</a>
             </p>
           </div>
 

@@ -85,10 +85,10 @@ export default function ContactPage() {
           <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
             <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2">이메일 문의</h3>
             <a
-              href="mailto:keywordview.kr@gmail.com"
+              href="mailto:rlaehdrb6423@gmail.com"
               className="text-sm text-primary-600 dark:text-primary-400 underline hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
             >
-              keywordview.kr@gmail.com
+              rlaehdrb6423@gmail.com
             </a>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
               서비스 이용 문의, 오류 제보, 기능 제안, 제휴 문의 등

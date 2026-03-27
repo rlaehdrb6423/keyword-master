@@ -144,8 +144,8 @@ export default function AboutPage() {
           </div>
           <div className="flex gap-3">
             <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 w-20">이메일</span>
-            <a href="mailto:keywordview.kr@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
-              keywordview.kr@gmail.com
+            <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
+              rlaehdrb6423@gmail.com
             </a>
           </div>
           <div className="flex gap-3">

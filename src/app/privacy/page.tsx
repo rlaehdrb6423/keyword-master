@@ -227,8 +227,8 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-3">
               위 권리 행사는{" "}
-              <a href="mailto:keywordview.lr@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
-                keywordview.kr@gmail.com
+              <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
+                rlaehdrb6423@gmail.com
               </a>
               으로 이메일을 통해 요청하실 수 있으며, 운영자는 지체 없이 처리합니다.
             </p>
@@ -278,8 +278,8 @@ export default function PrivacyPage() {
               <p><span className="text-gray-500 dark:text-gray-400">담당자:</span> 키워드뷰 운영자</p>
               <p>
                 <span className="text-gray-500 dark:text-gray-400">이메일:</span>{" "}
-                <a href="mailto:keywordview.kr@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
-                  keywordview.kr@gmail.com
+                <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-900 dark:hover:text-white transition-colors">
+                  rlaehdrb6423@gmail.com
                 </a>
               </p>
             </div>
@@ -322,8 +322,8 @@ export default function PrivacyPage() {
             <p className="text-gray-500 dark:text-gray-400">시행일: 2026년 3월 27일</p>
             <p className="text-gray-500 dark:text-gray-400 mt-1">
               문의:{" "}
-              <a href="mailto:keywordview.kr@gmail.com" className="underline hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
-                keywordview.kr@gmail.com
+              <a href="mailto:rlaehdrb6423@gmail.com" className="underline hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                rlaehdrb6423@gmail.com
               </a>
             </p>
           </div>
