@@ -162,6 +162,18 @@ export default function BlogKeywordPage() {
 
       {result && (
         <>
+          {/* 검색 키워드 sticky 바 */}
+          <div className="sticky top-16 z-40 -mx-4 px-4 py-3 mb-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-500 dark:text-gray-400">분석 키워드</span>
+              <span className="text-lg font-bold text-primary-600 dark:text-primary-400">&ldquo;{result.keyword}&rdquo;</span>
+              <GradeBadge grade={result.grade} />
+              <span className="text-sm text-gray-500 dark:text-gray-400 ml-auto">
+                총 검색량 {result.totalVolume.toLocaleString()}
+              </span>
+            </div>
+          </div>
+
           {/* 시각화 카드 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {/* PC/모바일 비율 */}
