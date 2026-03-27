@@ -133,10 +133,10 @@ export default function SellerKeywordPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
           셀러 키워드 분석
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-600">
           네이버쇼핑 상품수 대비 검색량과 채널별 경쟁도를 종합 분석합니다.
         </p>
       </div>
@@ -161,12 +161,12 @@ export default function SellerKeywordPage() {
       {result && (
         <>
           {/* 검색 키워드 sticky 바 */}
-          <div className="sticky top-16 z-40 -mx-4 px-4 py-3 mb-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+          <div className="sticky top-16 z-40 -mx-4 px-4 py-3 mb-4 bg-white/90gray-900/90 backdrop-blur-sm border-b border-gray-200">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-500 dark:text-gray-400">분석 키워드</span>
-              <span className="text-lg font-bold text-primary-600 dark:text-primary-400">&ldquo;{result.keyword}&rdquo;</span>
+              <span className="text-sm text-gray-500">분석 키워드</span>
+              <span className="text-lg font-bold text-primary-600">&ldquo;{result.keyword}&rdquo;</span>
               <GradeBadge grade={result.grade} />
-              <span className="text-sm text-gray-500 dark:text-gray-400 ml-auto">
+              <span className="text-sm text-gray-500 ml-auto">
                 검색량 {result.totalVolume.toLocaleString()} · 상품수 {result.naverProductCount.toLocaleString()}
               </span>
             </div>
@@ -175,11 +175,11 @@ export default function SellerKeywordPage() {
           {/* 시각화 카드 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="card p-5">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">PC / 모바일 비율</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">PC / 모바일 비율</h3>
               <PcMobileChart pcVolume={result.pcVolume} mobileVolume={result.mobileVolume} />
             </div>
             <div className="card p-5">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">채널별 콘텐츠 점유율</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">채널별 콘텐츠 점유율</h3>
               <ChannelShareChart
                 blogCount={result.blogCount}
                 newsCount={result.newsCount}
@@ -192,7 +192,7 @@ export default function SellerKeywordPage() {
           {/* 추가 시각화 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="card p-5">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">채널별 경쟁도</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">채널별 경쟁도</h3>
               <CompetitionRadar
                 blogCount={result.blogCount}
                 newsCount={result.newsCount}
@@ -202,7 +202,7 @@ export default function SellerKeywordPage() {
               />
             </div>
             <div className="card p-5">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">관련 키워드 검색량</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">관련 키워드 검색량</h3>
               <KeywordBubbleChart
                 keywords={allResults.map((r) => ({ keyword: r.keyword, totalVolume: r.totalVolume, grade: r.grade }))}
               />
@@ -212,57 +212,57 @@ export default function SellerKeywordPage() {
           {/* 채널별 경쟁도 숫자 카드 */}
           <div className="card p-5 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <h3 className="text-sm font-semibold text-gray-700">
                 &ldquo;{result.keyword}&rdquo; 종합 경쟁 현황
               </h3>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs text-gray-600 dark:text-gray-400">종합 경쟁도:</span>
+                <span className="text-xs text-gray-600">종합 경쟁도:</span>
                 <GradeBadge grade={result.competitionGrade as Grade} label={result.competitionLabel} />
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/20">
-                  <svg className="w-3 h-3 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary-50primary-900/20">
+                  <svg className="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
-                  <span className="text-[11px] font-bold text-primary-700 dark:text-primary-300">
+                  <span className="text-[11px] font-bold text-primary-700">
                     상위 노출 확률 {result.successRate}%
                   </span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-              <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-green-600 dark:text-green-400 truncate">{result.naverProductCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">쇼핑 상품</div>
+              <div className="text-center p-2 bg-green-50green-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-green-600 truncate">{result.naverProductCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">쇼핑 상품</div>
               </div>
-              <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400 truncate">{result.blogCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">블로그</div>
+              <div className="text-center p-2 bg-blue-50blue-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-blue-600 truncate">{result.blogCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">블로그</div>
               </div>
-              <div className="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-red-600 dark:text-red-400 truncate">{result.newsCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">뉴스</div>
+              <div className="text-center p-2 bg-red-50red-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-red-600 truncate">{result.newsCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">뉴스</div>
               </div>
-              <div className="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400 truncate">{result.cafeCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">카페</div>
+              <div className="text-center p-2 bg-purple-50purple-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-purple-600 truncate">{result.cafeCount.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">카페</div>
               </div>
-              <div className="text-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-orange-600 dark:text-orange-400 truncate">{result.totalCompetition.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">합계</div>
+              <div className="text-center p-2 bg-orange-50orange-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-orange-600 truncate">{result.totalCompetition.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">합계</div>
               </div>
             </div>
             {/* 광고 경쟁 데이터 */}
             <div className="grid grid-cols-3 gap-2 mt-2">
-              <div className="text-center p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-indigo-600 dark:text-indigo-400 truncate">{result.compIdx}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">광고 경쟁</div>
+              <div className="text-center p-2 bg-indigo-50indigo-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-indigo-600 truncate">{result.compIdx}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">광고 경쟁</div>
               </div>
-              <div className="text-center p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-cyan-600 dark:text-cyan-400 truncate">{result.avgClickCnt.toFixed(1)}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">월 평균 클릭</div>
+              <div className="text-center p-2 bg-cyan-50cyan-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-cyan-600 truncate">{result.avgClickCnt.toFixed(1)}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">월 평균 클릭</div>
               </div>
-              <div className="text-center p-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-teal-600 dark:text-teal-400 truncate">{result.avgCtr}%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">평균 클릭률</div>
+              <div className="text-center p-2 bg-teal-50teal-900/20 rounded-lg">
+                <div className="text-sm sm:text-lg font-bold text-teal-600 truncate">{result.avgCtr}%</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">평균 클릭률</div>
               </div>
             </div>
           </div>
@@ -270,13 +270,13 @@ export default function SellerKeywordPage() {
           {/* 키워드 비교 */}
           <div className="card p-5 mb-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">키워드 비교</h3>
+              <h3 className="text-sm font-semibold text-gray-700">키워드 비교</h3>
               <button
                 onClick={() => setCompareMode(!compareMode)}
                 className={`text-xs px-3 py-1 rounded-full transition-colors ${
                   compareMode
-                    ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
-                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                    ? "bg-primary-100 text-primary-700primary-900/30"
+                    : "bg-gray-100 text-gray-600gray-800"
                 }`}
               >
                 {compareMode ? "비교 닫기" : "비교하기"}
@@ -318,9 +318,9 @@ export default function SellerKeywordPage() {
               <>
                 <div className="card p-4 mb-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">관련 키워드</h3>
+                    <h3 className="text-sm font-semibold text-gray-700 mb-2">관련 키워드</h3>
                     {goldenKeywords.size > 0 && (
-                      <span className="text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
+                      <span className="text-xs text-yellow-600 flex items-center gap-1">
                         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         황금 키워드 {goldenKeywords.size}개 발견
                       </span>
@@ -335,8 +335,8 @@ export default function SellerKeywordPage() {
                           onClick={() => handleSearch(kw)}
                           className={`px-3 py-1 rounded-full text-sm transition-colors ${
                             isGolden
-                              ? "bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:ring-yellow-700 dark:hover:bg-yellow-900/50 font-medium"
-                              : "bg-gray-100 text-gray-700 hover:bg-primary-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+                              ? "bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300 hover:bg-yellow-200yellow-900/30:bg-yellow-900/50 font-medium"
+                              : "bg-gray-100 text-gray-700 hover:bg-primary-100 hover:text-primary-700gray-800:bg-primary-900/30:text-primary-300"
                           }`}
                         >
                           {isGolden && "★ "}{kw}
@@ -347,12 +347,12 @@ export default function SellerKeywordPage() {
                 </div>
 
                 {goldenKeywords.size > 0 && (
-                  <div className="card p-4 mb-6 border-yellow-200 dark:border-yellow-800 bg-yellow-50/50 dark:bg-yellow-900/10">
+                  <div className="card p-4 mb-6 border-yellow-200 bg-yellow-50/50yellow-900/10">
                     <div className="flex items-center gap-2 mb-2">
                       <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                      <h3 className="text-sm font-bold text-yellow-800 dark:text-yellow-300">황금 키워드 추천</h3>
+                      <h3 className="text-sm font-bold text-yellow-800">황금 키워드 추천</h3>
                     </div>
-                    <p className="text-xs text-yellow-700 dark:text-yellow-400 mb-3">
+                    <p className="text-xs text-yellow-700 mb-3">
                       검색량 대비 경쟁이 낮아 상위 노출 가능성이 높은 키워드입니다. 바로 글을 쓰거나 상품을 등록해보세요!
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -360,10 +360,10 @@ export default function SellerKeywordPage() {
                         <button
                           key={r.keyword}
                           onClick={() => handleSearch(r.keyword)}
-                          className="px-3 py-1.5 rounded-lg bg-yellow-100 text-yellow-800 text-sm font-medium hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:hover:bg-yellow-900/50 transition-colors flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg bg-yellow-100 text-yellow-800 text-sm font-medium hover:bg-yellow-200yellow-900/30:bg-yellow-900/50 transition-colors flex items-center gap-1"
                         >
                           ★ {r.keyword}
-                          <span className="text-[10px] text-yellow-600 dark:text-yellow-500">
+                          <span className="text-[10px] text-yellow-600">
                             ({r.totalVolume.toLocaleString()})
                           </span>
                         </button>
@@ -380,9 +380,9 @@ export default function SellerKeywordPage() {
           <GradeGuide />
 
           <div className="card overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">분석 결과</h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">분석 결과</h2>
+              <p className="text-xs text-gray-500 mt-1">
                 종합경쟁 = 쇼핑상품+블로그+뉴스+카페 대비 검색량 비율
               </p>
             </div>
@@ -392,8 +392,8 @@ export default function SellerKeywordPage() {
             />
           </div>
 
-          <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-whitegray-900 border border-gray-100">
+            <span className="text-sm text-gray-500">
               &ldquo;{result.keyword}&rdquo; 분석 결과 공유하기
             </span>
             <ShareButtons
