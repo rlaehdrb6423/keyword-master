@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100;
+    word-break: keep-all;
   }
 }
 
@@ -20,5 +21,66 @@
 
   .card {
     @apply bg-white rounded-xl shadow-sm border border-gray-200 dark:bg-gray-900 dark:border-gray-700;
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #2563eb, #0d9488);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Scroll reveal */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hover card */
+  .card-hover {
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+    transform: translateY(-2px);
+  }
+
+  /* Blob background */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  /* Bar animation delays */
+  .bar-delay-1 { animation-delay: 0.08s; }
+  .bar-delay-2 { animation-delay: 0.16s; }
+  .bar-delay-3 { animation-delay: 0.24s; }
+  .bar-delay-4 { animation-delay: 0.32s; }
+}
+
+@layer utilities {
+  /* Pulse animation for badges */
+  @keyframes pulse-opacity {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .animate-pulse-opacity {
+    animation: pulse-opacity 2s infinite;
   }
 }

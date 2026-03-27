@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        jakarta: ["var(--font-jakarta)", "sans-serif"],
+        noto: ["var(--font-noto)", "sans-serif"],
+      },
       colors: {
         primary: {
           50: "#eff6ff",
@@ -22,6 +26,41 @@ const config: Config = {
           800: "#1e40af",
           900: "#1e3a8a",
         },
+        accent: {
+          50: "#f0fdfa",
+          100: "#ccfbf1",
+          200: "#99f6e4",
+          300: "#5eead4",
+          400: "#2dd4bf",
+          500: "#14b8a6",
+          600: "#0d9488",
+          700: "#0f766e",
+          800: "#115e59",
+          900: "#134e4a",
+        },
+      },
+      keyframes: {
+        fadeUp: {
+          from: { opacity: "0", transform: "translateY(24px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        growWidth: {
+          from: { width: "0" },
+        },
+        dashDraw: {
+          from: { strokeDasharray: "0, 100" },
+          to: { strokeDasharray: "85, 100" },
+        },
+      },
+      animation: {
+        "fade-up": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both",
+        "fade-up-1": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.05s both",
+        "fade-up-2": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s both",
+        "fade-up-3": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both",
+        "fade-up-4": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s both",
+        "fade-up-5": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.45s both",
+        "grow-width": "growWidth 1.2s cubic-bezier(0.16,1,0.3,1) forwards",
+        "dash-draw": "dashDraw 1.4s 0.5s cubic-bezier(0.16,1,0.3,1) both",
       },
     },
   },

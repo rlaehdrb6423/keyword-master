@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Noto_Sans_KR, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import AuthProvider from "@/components/AuthProvider";
-
-const notoSansKR = Noto_Sans_KR({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
 import {
   GoogleAnalytics,
   MicrosoftClarity,
   NaverVerification,
 } from "@/components/Analytics";
 import Footer from "@/components/Footer";
+
+const notoSansKR = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-noto",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
 
 const SITE_URL = "https://keywordview.kr";
 const SITE_NAME = "KeywordView";
@@ -131,6 +139,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                if (window.location.pathname === '/') return;
                 var theme = localStorage.getItem('theme');
                 if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                   document.documentElement.classList.add('dark');
@@ -165,14 +174,12 @@ export default function RootLayout({
           />
         </noscript>
       </head>
-      <body className={notoSansKR.className}>
+      <body className={`${notoSansKR.variable} ${plusJakartaSans.variable} ${notoSansKR.className}`}>
         <AuthProvider>
           <GoogleAnalytics />
           <MicrosoftClarity />
           <Navigation />
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {children}
-          </main>
+          {children}
           <Footer />
         </AuthProvider>
       </body>
