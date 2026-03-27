@@ -32,16 +32,9 @@ export default function Navigation() {
     <nav className={`fixed top-0 inset-x-0 z-50 ${isHomepage ? "glass border-b border-black/[0.06]" : "bg-white border-b border-gray-200"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center shadow-sm shadow-primary-500/40">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </div>
-            <span className="font-extrabold text-xl tracking-tight">
-              <span className="text-primary-600">Keyword</span>
-              <span className="text-accent-600">View</span>
-            </span>
+          <Link href="/" className="font-extrabold text-xl tracking-tight">
+            <span className="text-primary-600">Keyword</span>
+            <span className="text-accent-600">View</span>
           </Link>
 
           {/* Desktop nav */}
@@ -88,32 +81,12 @@ export default function Navigation() {
                 </button>
               </div>
             ) : (
-              isHomepage ? (
-                <a
-                  href="#"
-                  className="ml-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  로그인
-                </a>
-              ) : (
-                <Link
-                  href="/login"
-                  className="ml-2 px-4 py-1.5 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-colors"
-                >
-                  로그인
-                </Link>
-              )
-            )}
-            {isHomepage && (
-              <a
-                href="#cta"
-                className="ml-3 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors shadow-sm"
+              <Link
+                href="/login"
+                className={`ml-2 ${isHomepage ? "text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" : "px-4 py-1.5 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-colors"}`}
               >
-                무료 시작하기
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
+                로그인
+              </Link>
             )}
           </div>
 
@@ -184,23 +157,13 @@ export default function Navigation() {
                 </button>
               </div>
             ) : (
-              isHomepage ? (
-                <a
-                  href="#cta"
-                  onClick={() => setMenuOpen(false)}
-                  className="block mx-3 mt-2 px-4 py-2 rounded-md text-sm font-medium text-center bg-gray-900 text-white hover:bg-gray-800 transition-colors"
-                >
-                  무료 시작하기
-                </a>
-              ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className="block mx-3 mt-2 px-4 py-2 rounded-md text-sm font-medium text-center bg-primary-600 text-white hover:bg-primary-700 transition-colors"
-                >
-                  로그인
-                </Link>
-              )
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="block mx-3 mt-2 px-4 py-2 rounded-md text-sm font-medium text-center bg-primary-600 text-white hover:bg-primary-700 transition-colors"
+              >
+                로그인
+              </Link>
             )}
           </div>
         )}

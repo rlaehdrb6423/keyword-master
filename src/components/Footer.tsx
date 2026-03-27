@@ -5,13 +5,8 @@ export default function Footer() {
     <footer className="bg-gray-50 border-t border-gray-200 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-5">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-primary-600 flex items-center justify-center">
-              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </div>
-            <span className="font-extrabold text-gray-700">KeywordView</span>
+          <Link href="/" className="font-extrabold text-gray-700">
+            <span className="text-primary-600">Keyword</span><span className="text-accent-600">View</span>
           </Link>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
             <Link href="/terms" className="hover:text-gray-700 transition-colors">이용약관</Link>
