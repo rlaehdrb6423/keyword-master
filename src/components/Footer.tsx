@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* 브랜드 */}
           <div>
             <div className="text-lg font-bold mb-2">
@@ -48,11 +48,15 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">안내</h4>
             <ul className="space-y-2">
-              <li className="text-xs text-gray-400 dark:text-gray-500">
-                회원가입 없이 모든 기능 무료
+              <li>
+                <Link href="/about" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  서비스 소개
+                </Link>
               </li>
-              <li className="text-xs text-gray-400 dark:text-gray-500">
-                개인정보를 수집하지 않습니다
+              <li>
+                <Link href="/contact" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  문의하기
+                </Link>
               </li>
               <li>
                 <a href="https://igetmindset.com" target="_blank" rel="noopener noreferrer" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
@@ -61,8 +65,25 @@ export default function Footer() {
               </li>
               <li>
                 <a href="mailto:keywordview.kr@gmail.com" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                  문의: keywordview.kr@gmail.com
+                  이메일: keywordview.kr@gmail.com
                 </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* 법적 고지 */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">법적 고지</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/privacy" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  개인정보처리방침
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                  이용약관
+                </Link>
               </li>
             </ul>
           </div>
