@@ -81,20 +81,30 @@ export default function SellerKeywordPage() {
       setLoadingStatus("관련 키워드 분석 중");
 
       if (data.relatedKeywords && data.relatedKeywords.length > 0) {
-        try {
-          const bulkRes = await fetch("/api/keyword/bulk", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              keywords: data.relatedKeywords.slice(0, 10),
-              type: "seller",
-            }),
-          });
-          if (bulkRes.ok) {
-            const bulkData = await bulkRes.json();
-            setRelatedResults(bulkData.results || []);
+        await new Promise(r => setTimeout(r, 500));
+        const keywords = data.relatedKeywords.slice(0, 10);
+        for (let attempt = 0; attempt < 2; attempt++) {
+          try {
+            const bulkRes = await fetch("/api/keyword/bulk", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ keywords, type: "seller" }),
+            });
+            if (bulkRes.ok) {
+              const bulkData = await bulkRes.json();
+              setRelatedResults(bulkData.results || []);
+              break;
+            }
+            if (bulkRes.status === 429 && attempt === 0) {
+              await new Promise(r => setTimeout(r, 2000));
+              continue;
+            }
+          } catch {
+            if (attempt === 0) {
+              await new Promise(r => setTimeout(r, 1000));
+            }
           }
-        } catch {}
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.");
@@ -124,6 +134,8 @@ export default function SellerKeywordPage() {
   const allResults = result ? [result, ...relatedResults] : [];
 
   const compareData = result && compareResult ? [
+    { label: "PC 검색량", value1: result.pcVolume, value2: compareResult.pcVolume },
+    { label: "모바일 검색량", value1: result.mobileVolume, value2: compareResult.mobileVolume },
     { label: "총 검색량", value1: result.totalVolume, value2: compareResult.totalVolume },
     { label: "상품수", value1: result.naverProductCount, value2: compareResult.naverProductCount },
     { label: "블로그", value1: result.blogCount, value2: compareResult.blogCount },

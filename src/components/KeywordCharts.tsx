@@ -107,13 +107,14 @@ interface CompareBarChartProps {
 
 export function CompareBarChart({ data, name1, name2 }: CompareBarChartProps) {
   return (
-    <div className="h-48">
+    <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#9ca3af" }} />
-          <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} />
+          <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v: number) => v >= 1000000 ? `${(v/1000000).toFixed(1)}M` : v >= 1000 ? `${(v/1000).toFixed(0)}K` : String(v)} />
           <Tooltip
             contentStyle={{ backgroundColor: "rgba(17,24,39,0.9)", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
+            formatter={(value: number) => value.toLocaleString("ko-KR")}
           />
           <Bar dataKey="value1" name={name1} fill="#3b82f6" radius={[4, 4, 0, 0]} />
           <Bar dataKey="value2" name={name2} fill="#f97316" radius={[4, 4, 0, 0]} />
