@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSearchVolume, getShoppingProductCount, getBlogDocCount, getNewsCount, getCafeCount } from "@/lib/naver-api";
+import { getSearchVolume, getShoppingProductCount, getBlogDocCount, getNewsCount, getCafeCount, getShoppingRelatedKeywords } from "@/lib/naver-api";
 import { calculateSellerIndex } from "@/lib/index-calculator";
 import { getCached, setCache, makeCacheKey } from "@/lib/cache";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
@@ -110,7 +110,9 @@ export async function POST(request: Request) {
     naverRatio: Math.round(naverRatio * 100) / 100,
     grade: indexResult.grade,
     gradeLabel: indexResult.label,
-    relatedKeywords: volumeData.relatedKeywords,
+    relatedKeywords: volumeData.relatedKeywords.length > 0
+      ? volumeData.relatedKeywords
+      : await getShoppingRelatedKeywords(keyword),
     successRate: calculateSuccessRate(totalVolume, totalCompetition, competitionGrade),
     compIdx: volumeData.compIdx,
     avgClickCnt: volumeData.avgClickCnt,
