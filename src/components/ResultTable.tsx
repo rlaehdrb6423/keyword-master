@@ -114,9 +114,9 @@ export default function ResultTable({
         </button>
       </div>
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
+      <table className="min-w-full border-collapse">
+        <thead>
+          <tr className="bg-gray-50 border-b-2 border-gray-200">
             {columns.map((col) => {
               const isSortable = col.sortable !== false && !col.render;
               const isActive = sortKey === col.key;
@@ -124,13 +124,13 @@ export default function ResultTable({
                 <th
                   key={col.key}
                   onClick={() => isSortable && handleSort(col.key)}
-                  className={`px-4 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider ${
+                  className={`px-4 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider border-r border-gray-100 last:border-r-0 ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
                       ? "text-center"
                       : "text-left"
-                  } ${isSortable ? "cursor-pointer select-none hover:text-gray-900 transition-colors" : ""}`}
+                  } ${isSortable ? "cursor-pointer select-none hover:text-gray-900 hover:bg-gray-100 transition-colors" : ""}`}
                 >
                   <span className="inline-flex items-center gap-1">
                     {col.label}
@@ -146,19 +146,19 @@ export default function ResultTable({
             })}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody>
           {sortedData.map((row, rowIdx) => (
-            <tr key={rowIdx} className="hover:bg-gray-50 transition-colors">
-              {columns.map((col) => (
+            <tr key={rowIdx} className={`border-b border-gray-100 hover:bg-primary-50/30 transition-colors ${rowIdx === 0 ? "bg-primary-50/20" : ""}`}>
+              {columns.map((col, colIdx) => (
                 <td
                   key={col.key}
-                  className={`px-4 py-3 text-sm whitespace-nowrap text-gray-900 ${
+                  className={`px-4 py-3.5 text-sm whitespace-nowrap border-r border-gray-50 last:border-r-0 ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
                       ? "text-center"
                       : "text-left"
-                  }`}
+                  } ${colIdx === 0 ? "font-semibold text-gray-900" : col.key === "totalVolume" || col.key === "naverProductCount" ? "font-bold text-gray-900" : "text-gray-600"}`}
                 >
                   {col.render
                     ? col.render(row[col.key], row)
