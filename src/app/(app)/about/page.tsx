@@ -6,6 +6,23 @@ export const metadata: Metadata = {
   description:
     "KeywordView는 네이버 검색광고 API와 검색 API 데이터를 기반으로 블로거와 셀러에게 키워드 검색량, 경쟁도, SEO 점수를 무료로 분석해주는 키워드 분석 도구입니다.",
   alternates: { canonical: "https://keywordview.kr/about" },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://keywordview.kr/about",
+    siteName: "KeywordView",
+    title: "서비스 소개 — KeywordView란?",
+    description:
+      "KeywordView는 네이버 검색광고 API와 검색 API 데이터를 기반으로 블로거와 셀러에게 키워드 검색량, 경쟁도, SEO 점수를 무료로 분석해주는 키워드 분석 도구입니다.",
+    images: [
+      {
+        url: "https://keywordview.kr/api/og",
+        width: 1200,
+        height: 630,
+        alt: "서비스 소개 | KeywordView",
+      },
+    ],
+  },
 };
 
 const features = [

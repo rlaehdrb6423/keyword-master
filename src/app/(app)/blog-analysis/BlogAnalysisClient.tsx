@@ -88,6 +88,16 @@ export default function BlogAnalysisPage() {
         </p>
       </div>
 
+      {/* 비로그인 배너 */}
+      {status !== "loading" && !session && (
+        <div className="flex items-center gap-3 px-4 py-3 mb-6 rounded-lg bg-amber-50 border border-amber-200 text-sm text-amber-800">
+          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>로그인 후 이용 가능한 기능입니다. 하루 3회 무료로 분석할 수 있습니다.</span>
+        </div>
+      )}
+
       {/* 비로그인 안내 */}
       {status !== "loading" && !session && (
         <div className="card p-8 mb-6 text-center">
@@ -126,6 +136,7 @@ export default function BlogAnalysisPage() {
                 value={myBlogId}
                 onChange={(e) => setMyBlogId(e.target.value)}
                 placeholder="myblog123"
+                aria-label="내 블로그 ID"
                 className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
             </div>
@@ -157,6 +168,7 @@ export default function BlogAnalysisPage() {
                     value={id}
                     onChange={(e) => updateRival(index, e.target.value)}
                     placeholder={`경쟁 블로그 ${index + 1}`}
+                    aria-label={`경쟁 블로그 ${index + 1} ID`}
                     className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                   />
                   {rivalIds.length > 1 && (

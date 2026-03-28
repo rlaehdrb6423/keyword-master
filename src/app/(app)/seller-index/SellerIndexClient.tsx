@@ -81,7 +81,7 @@ export default function SellerIndexPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">셀러 지수</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">셀러 지수 분석</h1>
         <p className="text-gray-600">
           네이버 스마트스토어의 기본 지수 확인과 함께 상품명 SEO 상세 분석이 가능합니다.
         </p>

@@ -30,6 +30,7 @@ export default function KeywordInput({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         placeholder={placeholder}
+        aria-label="키워드 입력"
         className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base"
         disabled={loading}
       />

@@ -88,7 +88,7 @@ export default function BlogIndexPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">블로그 지수</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">블로그 지수 분석</h1>
         <p className="text-gray-600">
           블로그의 기본 지수 확인과 함께 최근 포스팅별 SEO 상세 분석이 가능합니다.
         </p>
@@ -104,6 +104,7 @@ export default function BlogIndexPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="블로그 URL 입력 (네이버, 티스토리, 워드프레스 지원)"
+            aria-label="블로그 URL 입력"
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-base"
             disabled={loading}
           />
