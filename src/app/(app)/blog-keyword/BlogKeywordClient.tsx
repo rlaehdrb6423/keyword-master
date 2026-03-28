@@ -26,12 +26,26 @@ const columns = [
   { key: "ratio", label: "비율", align: "right" as const },
   gradeColumn,
   {
-    key: "competitionGrade",
+    key: "competitionLabel",
     label: "종합경쟁",
     align: "center" as const,
-    render: (value: unknown, row: Record<string, unknown>) => (
-      <GradeBadge grade={value as Grade} label={row.competitionLabel as string} />
-    ),
+    sortable: false,
+    render: (value: unknown) => {
+      const label = value as string;
+      const colorMap: Record<string, string> = {
+        "매우낮음": "text-blue-600 bg-blue-50",
+        "낮음": "text-green-600 bg-green-50",
+        "보통": "text-yellow-600 bg-yellow-50",
+        "높음": "text-orange-600 bg-orange-50",
+        "매우높음": "text-red-600 bg-red-50",
+      };
+      const style = colorMap[label] || "text-gray-600 bg-gray-50";
+      return (
+        <span className={`px-2 py-1 rounded-md text-xs font-semibold ${style}`}>
+          {label}
+        </span>
+      );
+    },
   },
 ];
 
@@ -286,47 +300,6 @@ export default function BlogKeywordPage() {
 
           <TagGenerator keywords={result.relatedKeywords} />
 
-          {/* 상세 분석 */}
-          <div className="card p-5 mb-6">
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">채널별 경쟁 현황</h3>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-              <div className="text-center p-2 bg-blue-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-blue-600 truncate">{result.blogDocCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">블로그</div>
-              </div>
-              <div className="text-center p-2 bg-red-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-red-600 truncate">{result.newsCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">뉴스</div>
-              </div>
-              <div className="text-center p-2 bg-green-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-green-600 truncate">{result.cafeCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">카페</div>
-              </div>
-              <div className="text-center p-2 bg-purple-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-purple-600 truncate">{result.webDocCount.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">웹문서</div>
-              </div>
-              <div className="text-center p-2 bg-orange-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-orange-600 truncate">{result.totalCompetition.toLocaleString()}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">합계</div>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2 mt-2">
-              <div className="text-center p-2 bg-indigo-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-indigo-600 truncate">{result.compIdx}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">광고 경쟁</div>
-              </div>
-              <div className="text-center p-2 bg-cyan-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-cyan-600 truncate">{result.avgClickCnt.toFixed(1)}</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">월 평균 클릭</div>
-              </div>
-              <div className="text-center p-2 bg-teal-50 rounded-lg">
-                <div className="text-sm sm:text-lg font-bold text-teal-600 truncate">{result.avgCtr}%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">평균 클릭률</div>
-              </div>
-            </div>
-          </div>
-
           {/* 시각화 차트 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="card p-5">
@@ -341,36 +314,6 @@ export default function BlogKeywordPage() {
                 cafeCount={result.cafeCount}
                 webDocCount={result.webDocCount}
               />
-            </div>
-          </div>
-
-          {/* 플랫폼별 노출 현황 */}
-          <div className="card p-5 mb-6">
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
-              플랫폼별 노출 현황 <span className="text-xs font-normal text-gray-400">(상위 20개 결과 기준)</span>
-            </h3>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="text-center p-3 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{result.platformCount.naver}</div>
-                <div className="text-xs text-gray-500">네이버 블로그</div>
-                <div className="mt-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-green-500 rounded-full" style={{ width: `${(result.platformCount.naver / 20) * 100}%` }} />
-                </div>
-              </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600">{result.platformCount.tistory}</div>
-                <div className="text-xs text-gray-500">티스토리</div>
-                <div className="mt-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-orange-500 rounded-full" style={{ width: `${(result.platformCount.tistory / 20) * 100}%` }} />
-                </div>
-              </div>
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{result.platformCount.wordpress}</div>
-                <div className="text-xs text-gray-500">워드프레스/기타</div>
-                <div className="mt-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: `${(result.platformCount.wordpress / 20) * 100}%` }} />
-                </div>
-              </div>
             </div>
           </div>
 

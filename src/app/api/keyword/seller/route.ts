@@ -92,13 +92,14 @@ export async function POST(request: Request) {
   let competitionLabel: string;
   if (totalCompetition === 0) {
     competitionGrade = "A";
-    competitionLabel = "경쟁 없음";
+    competitionLabel = "매우낮음";
   } else {
     const compRatio = totalVolume / totalCompetition;
-    if (compRatio >= 30) { competitionGrade = "A"; competitionLabel = "매우 낮음"; }
+    if (compRatio >= 30) { competitionGrade = "A"; competitionLabel = "매우낮음"; }
     else if (compRatio >= 10) { competitionGrade = "B"; competitionLabel = "낮음"; }
     else if (compRatio >= 3) { competitionGrade = "C"; competitionLabel = "보통"; }
-    else { competitionGrade = "D"; competitionLabel = "높음"; }
+    else if (compRatio >= 1) { competitionGrade = "D"; competitionLabel = "높음"; }
+    else { competitionGrade = "E"; competitionLabel = "매우높음"; }
   }
 
   const result: SellerKeywordResult = {

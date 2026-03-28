@@ -24,12 +24,26 @@ const columns = [
   { key: "naverRatio", label: "비율", align: "right" as const },
   gradeColumn,
   {
-    key: "competitionGrade",
+    key: "competitionLabel",
     label: "종합경쟁",
     align: "center" as const,
-    render: (value: unknown, row: Record<string, unknown>) => (
-      <GradeBadge grade={value as Grade} label={row.competitionLabel as string} />
-    ),
+    sortable: false,
+    render: (value: unknown) => {
+      const label = value as string;
+      const colorMap: Record<string, string> = {
+        "매우낮음": "text-blue-600 bg-blue-50",
+        "낮음": "text-green-600 bg-green-50",
+        "보통": "text-yellow-600 bg-yellow-50",
+        "높음": "text-orange-600 bg-orange-50",
+        "매우높음": "text-red-600 bg-red-50",
+      };
+      const style = colorMap[label] || "text-gray-600 bg-gray-50";
+      return (
+        <span className={`px-2 py-1 rounded-md text-xs font-semibold ${style}`}>
+          {label}
+        </span>
+      );
+    },
   },
 ];
 
