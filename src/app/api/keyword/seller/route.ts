@@ -48,6 +48,12 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
+  if (keyword.length > 100) {
+    return NextResponse.json<ApiErrorResponse>(
+      { error: "키워드는 100자 이내로 입력해주세요.", code: "INVALID_INPUT" },
+      { status: 400 }
+    );
+  }
 
   const cacheKey = makeCacheKey("seller2", keyword);
   const cached = await getCached<SellerKeywordResult>(cacheKey);

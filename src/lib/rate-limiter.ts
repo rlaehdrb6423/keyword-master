@@ -12,8 +12,12 @@ export async function checkRateLimit(
   ip: string,
   request?: Request
 ): Promise<{ success: boolean; remaining: number }> {
-  // bulk API 내부 호출은 rate limit 건너뛰기
-  if (request?.headers.get("x-internal-bulk") === "true") {
+  // bulk API 내부 호출은 서버 시크릿으로 검증
+  const internalSecret = process.env.INTERNAL_API_SECRET;
+  if (
+    internalSecret &&
+    request?.headers.get("x-internal-secret") === internalSecret
+  ) {
     return { success: true, remaining: 999 };
   }
   try {

@@ -6,6 +6,7 @@ import {
   calculateStoreLevel,
 } from "@/lib/store-analyzer";
 import { getSearchVolume } from "@/lib/naver-api";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { ApiErrorResponse } from "@/types/keyword";
 
 // 상품명 SEO 분석
@@ -85,6 +86,15 @@ async function analyzeProductSEO(
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { success } = await checkRateLimit(ip);
+  if (!success) {
+    return NextResponse.json<ApiErrorResponse>(
+      { error: "요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.", code: "API_LIMIT" },
+      { status: 429 }
+    );
+  }
+
   let body: { storeId?: string };
   try {
     body = await request.json();

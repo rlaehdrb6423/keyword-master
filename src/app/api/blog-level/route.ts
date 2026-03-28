@@ -6,6 +6,7 @@ import {
   calculateBlogLevel,
 } from "@/lib/blog-analyzer";
 import { getSearchVolume } from "@/lib/naver-api";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 import type { ApiErrorResponse } from "@/types/keyword";
 
 // 포스트 제목에서 주요 키워드 추출 (2글자 이상 단어)
@@ -165,6 +166,15 @@ async function analyzePostSEO(
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { success } = await checkRateLimit(ip);
+  if (!success) {
+    return NextResponse.json<ApiErrorResponse>(
+      { error: "요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.", code: "API_LIMIT" },
+      { status: 429 }
+    );
+  }
+
   let body: { blogId?: string };
   try {
     body = await request.json();
