@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import GradeBadge from "./GradeBadge";
 import type { Grade } from "@/types/keyword";
 
@@ -37,27 +37,36 @@ function getSortValue(value: unknown): number | string {
   return 0;
 }
 
-function handleExcelDownload(columns: Column[], data: Record<string, unknown>[]) {
-  const headers = columns.map((col) => col.label);
-  const rows = data.map((row) =>
-    columns.map((col) => {
-      const val = row[col.key];
-      if (val === null || val === undefined) return "";
-      if (typeof val === "number") return val;
-      return String(val);
-    })
-  );
+async function handleExcelDownload(columns: Column[], data: Record<string, unknown>[]) {
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet("분석결과");
 
-  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "분석결과");
+  ws.addRow(columns.map((col) => col.label));
+  for (const row of data) {
+    ws.addRow(
+      columns.map((col) => {
+        const val = row[col.key];
+        if (val === null || val === undefined) return "";
+        if (typeof val === "number") return val;
+        return String(val);
+      })
+    );
+  }
 
   const today = new Date();
   const dateStr =
     String(today.getFullYear()) +
     String(today.getMonth() + 1).padStart(2, "0") +
     String(today.getDate()).padStart(2, "0");
-  XLSX.writeFile(wb, `keywordview_분석결과_${dateStr}.xlsx`);
+
+  const buffer = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `keywordview_분석결과_${dateStr}.xlsx`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function ResultTable({
