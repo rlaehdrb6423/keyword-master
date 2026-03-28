@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
+import { analyzeBlogKeyword, analyzeSellerKeyword } from "@/lib/keyword-analyzer";
 import type { BulkRequest, BulkResponse, ApiErrorResponse } from "@/types/keyword";
 
 const BULK_MAX = 10;
@@ -40,52 +41,28 @@ export async function POST(request: Request) {
   }
 
   const type = body.type || "blog";
-  const apiUrl = type === "seller"
-    ? `${getBaseUrl(request)}/api/keyword/seller`
-    : `${getBaseUrl(request)}/api/keyword/blog`;
+  const analyzeFn = type === "seller" ? analyzeSellerKeyword : analyzeBlogKeyword;
 
-  // p-limit 스타일 동시성 제한
   const results: BulkResponse = { results: [], errors: [] };
   const keywords = body.keywords.map((k) => k.trim()).filter(Boolean);
 
   for (let i = 0; i < keywords.length; i += CONCURRENCY) {
     const batch = keywords.slice(i, i + CONCURRENCY);
     const batchResults = await Promise.allSettled(
-      batch.map(async (keyword) => {
-        const res = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-forwarded-for": ip,
-            "x-internal-secret": process.env.INTERNAL_API_SECRET || "",
-          },
-          body: JSON.stringify({ keyword }),
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || "API 호출 실패");
-        }
-        return res.json();
-      })
+      batch.map((keyword) => analyzeFn(keyword))
     );
 
     batchResults.forEach((result, idx) => {
-      if (result.status === "fulfilled") {
+      if (result.status === "fulfilled" && result.value) {
         results.results.push(result.value);
       } else {
         results.errors.push({
           keyword: batch[idx],
-          error: result.reason?.message || "알 수 없는 오류",
+          error: result.status === "rejected" ? (result.reason?.message || "알 수 없는 오류") : "검색량 데이터 없음",
         });
       }
     });
   }
 
   return NextResponse.json(results);
-}
-
-function getBaseUrl(request: Request): string {
-  const host = request.headers.get("host") || "localhost:3000";
-  const protocol = host.includes("localhost") ? "http" : "https";
-  return `${protocol}://${host}`;
 }

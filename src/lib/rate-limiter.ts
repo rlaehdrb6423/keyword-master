@@ -9,17 +9,8 @@ const ratelimit = new Ratelimit({
 });
 
 export async function checkRateLimit(
-  ip: string,
-  request?: Request
+  ip: string
 ): Promise<{ success: boolean; remaining: number }> {
-  // bulk API 내부 호출은 서버 시크릿으로 검증
-  const internalSecret = process.env.INTERNAL_API_SECRET;
-  if (
-    internalSecret &&
-    request?.headers.get("x-internal-secret") === internalSecret
-  ) {
-    return { success: true, remaining: 999 };
-  }
   try {
     const result = await ratelimit.limit(ip);
     return { success: result.success, remaining: result.remaining };
@@ -35,5 +26,6 @@ export function getClientIp(request: Request): string {
   if (vercelIp) {
     return vercelIp.split(",")[0].trim();
   }
-  return request.headers.get("x-real-ip") || "unknown";
+  // Vercel 헤더가 없으면 단일 버킷으로 제한 (스푸핑 방지)
+  return "unknown-client";
 }

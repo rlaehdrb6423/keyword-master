@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { randomBytes, timingSafeEqual } from "crypto";
 import { redis } from "@/lib/redis";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 
@@ -21,6 +22,14 @@ function sanitize(input: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;")
     .replace(/\//g, "&#x2F;");
+}
+
+function safeCompare(a: string, b: string): boolean {
+  if (!a || !b) return false;
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
 }
 
 // 댓글 목록 조회
@@ -65,10 +74,10 @@ export async function POST(request: Request) {
   }
 
   const message = sanitize(rawMessage.slice(0, 500));
-  const isAdmin = !!ADMIN_CODE && body.adminCode === ADMIN_CODE;
+  const isAdmin = !!ADMIN_CODE && safeCompare(body.adminCode || "", ADMIN_CODE);
 
   const comment: Comment = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    id: randomBytes(8).toString("hex"),
     message,
     isAdmin,
     createdAt: new Date().toISOString(),
@@ -85,6 +94,15 @@ export async function POST(request: Request) {
 
 // 댓글 삭제/수정 (운영자 전용)
 export async function PATCH(request: Request) {
+  const ip = getClientIp(request);
+  const { success } = await checkRateLimit(ip);
+  if (!success) {
+    return NextResponse.json(
+      { error: "너무 많은 요청입니다. 잠시 후 다시 시도해주세요." },
+      { status: 429 }
+    );
+  }
+
   let body: { id?: string; adminCode?: string; action?: string; message?: string };
   try {
     body = await request.json();
@@ -92,7 +110,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
   }
 
-  if (!ADMIN_CODE || body.adminCode !== ADMIN_CODE) {
+  if (!ADMIN_CODE || !safeCompare(body.adminCode || "", ADMIN_CODE)) {
     return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
   }
 
