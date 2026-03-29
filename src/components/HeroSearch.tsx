@@ -48,7 +48,7 @@ export default function HeroSearch() {
           value={heroQuery}
           onChange={(e) => setHeroQuery(e.target.value)}
           placeholder={heroTab === "blog" ? "블로그 키워드를 입력하세요" : "셀러 키워드를 입력하세요"}
-          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500:ring-primary-400 focus:border-transparent"
+          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
         />
         <button
           type="submit"

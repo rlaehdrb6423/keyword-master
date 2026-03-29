@@ -126,14 +126,14 @@ export default function ResultTable({
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="bg-gray-50 border-b-2 border-gray-200">
-            {columns.map((col) => {
+            {columns.map((col, colIdx) => {
               const isSortable = col.sortable !== false && !col.render;
               const isActive = sortKey === col.key;
               return (
                 <th
                   key={col.key}
                   onClick={() => isSortable && handleSort(col.key)}
-                  className={`px-4 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider border-r border-gray-100 last:border-r-0 ${
+                  className={`px-4 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wider border-r border-gray-100 last:border-r-0 ${colIdx === 0 ? "sticky left-0 bg-gray-50 z-10" : ""} ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
@@ -167,7 +167,7 @@ export default function ResultTable({
                       : col.align === "center"
                       ? "text-center"
                       : "text-left"
-                  } ${colIdx === 0 ? "font-semibold text-gray-900" : col.key === "totalVolume" || col.key === "naverProductCount" ? "font-bold text-gray-900" : "text-gray-600"}`}
+                  } ${colIdx === 0 ? "font-semibold text-gray-900 sticky left-0 bg-white z-10" : col.key === "totalVolume" || col.key === "naverProductCount" ? "font-bold text-gray-900" : "text-gray-600"}`}
                 >
                   {col.render
                     ? col.render(row[col.key], row)

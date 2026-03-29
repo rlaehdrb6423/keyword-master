@@ -1,3 +1,17 @@
+const gradeStyles: Record<string, string> = {
+  blue: "bg-blue-100 text-blue-700",
+  green: "bg-green-100 text-green-700",
+  yellow: "bg-yellow-100 text-yellow-700",
+  red: "bg-red-100 text-red-700",
+};
+
+const compStyles: Record<string, string> = {
+  blue: "bg-blue-50 text-blue-600",
+  green: "bg-green-50 text-green-600",
+  yellow: "bg-yellow-50 text-yellow-600",
+  red: "bg-red-50 text-red-600",
+};
+
 export default function DashboardMockup() {
   const keywords = [
     { keyword: "다이어트 식단", pc: "5,400", mobile: "18,200", total: "23,600", blog: "342,100", ratio: "0.07", grade: "A", gradeColor: "blue", comp: "낮음", compColor: "blue" },
@@ -88,12 +102,12 @@ export default function DashboardMockup() {
                   <td className="py-1.5 sm:py-2 px-1 text-right text-gray-500 hidden sm:table-cell">{row.blog}</td>
                   <td className="py-1.5 sm:py-2 px-1 text-right text-gray-600">{row.ratio}</td>
                   <td className="py-1.5 sm:py-2 px-1 text-center">
-                    <span className={`inline-flex px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-${row.gradeColor}-100 text-${row.gradeColor}-700`}>
+                    <span className={`inline-flex px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold ${gradeStyles[row.gradeColor]}`}>
                       {row.grade}
                     </span>
                   </td>
                   <td className="py-1.5 sm:py-2 pl-1 text-center">
-                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium bg-${row.compColor}-50 text-${row.compColor}-600`}>
+                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium ${compStyles[row.compColor]}`}>
                       {row.comp}
                     </span>
                   </td>

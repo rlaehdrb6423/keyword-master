@@ -195,7 +195,7 @@ export default function BlogKeywordPage() {
               <div>
                 <div className="text-xs text-gray-400 mb-1">블로그 키워드 분석</div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-all">&ldquo;{result.keyword}&rdquo;</h2>
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-words">&ldquo;{result.keyword}&rdquo;</h2>
                   <GradeBadge grade={result.grade} />
                 </div>
               </div>
@@ -353,7 +353,7 @@ export default function BlogKeywordPage() {
           />
 
           <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-4 rounded-2xl bg-white border border-gray-100">
-            <span className="text-sm text-gray-500 break-all">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
+            <span className="text-sm text-gray-500 break-words">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
             <ShareButtons
               title={`"${result.keyword}" 블로그 키워드 분석 - KeywordView`}
               description={`검색량 ${result.totalVolume.toLocaleString()} · 종합경쟁 ${result.competitionLabel}`}

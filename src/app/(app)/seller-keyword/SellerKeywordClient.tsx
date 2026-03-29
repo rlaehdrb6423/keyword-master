@@ -192,7 +192,7 @@ export default function SellerKeywordPage() {
               <div>
                 <div className="text-xs text-gray-400 mb-1">셀러 키워드 분석</div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-all">&ldquo;{result.keyword}&rdquo;</h2>
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-words">&ldquo;{result.keyword}&rdquo;</h2>
                   <GradeBadge grade={result.grade} />
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function SellerKeywordPage() {
 
           {/* 분석 결과 테이블 */}
           <div className="card overflow-hidden mb-6">
-            <div className="px-6 py-4 border-b border-gray-100">
+            <div className="px-4 sm:px-6 py-4 border-b border-gray-100">
               <h2 className="text-sm font-semibold text-gray-900">키워드 분석 결과</h2>
               <p className="text-xs text-gray-400 mt-0.5">종합경쟁 = 쇼핑상품+블로그+뉴스+카페 대비 검색량 비율</p>
             </div>
@@ -325,7 +325,7 @@ export default function SellerKeywordPage() {
           <GradeGuide />
 
           <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-4 rounded-2xl bg-white border border-gray-100">
-            <span className="text-sm text-gray-500 break-all">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
+            <span className="text-sm text-gray-500 break-words">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
             <ShareButtons
               title={`"${result.keyword}" 셀러 키워드 분석 - KeywordView`}
               description={`검색량 ${result.totalVolume.toLocaleString()} · 종합경쟁 ${result.competitionLabel}`}

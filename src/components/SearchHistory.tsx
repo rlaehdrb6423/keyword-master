@@ -43,7 +43,7 @@ export default function SearchHistory({ type, onSelect }: SearchHistoryProps) {
         <button
           key={i}
           onClick={() => onSelect(h.keyword)}
-          className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-primary-100 hover:text-primary-700:bg-primary-900/30:text-primary-300 transition-colors"
+          className="px-3 py-1.5 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-primary-100 hover:text-primary-700 transition-colors"
         >
           {h.keyword}
         </button>

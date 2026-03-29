@@ -90,7 +90,7 @@ export default function ShareButtons({
   }, [shareUrl]);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
       {/* 카카오톡 공유 */}
       {kakaoReady && (
         <button

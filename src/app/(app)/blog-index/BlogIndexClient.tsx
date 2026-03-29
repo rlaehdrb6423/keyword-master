@@ -297,7 +297,7 @@ export default function BlogIndexPage() {
                       </svg>
                     </div>
                     {expandedPost === i && (
-                      <div className="mt-2 ml-13 pl-13 space-y-1">
+                      <div className="mt-2 ml-[52px] space-y-1">
                         {post.seoTips.map((tip, j) => (
                           <p key={j} className="text-xs text-gray-500 flex items-start gap-1">
                             <span className="text-primary-500">-</span> {tip}
