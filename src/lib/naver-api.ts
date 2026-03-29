@@ -65,8 +65,7 @@ export async function getSearchVolume(
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const errorBody = await response.text().catch(() => "");
-      console.error(`네이버 검색광고 API 에러: ${response.status}`, errorBody);
+      console.error(`네이버 검색광고 API 에러: status=${response.status}`);
       return null;
     }
 
@@ -74,7 +73,7 @@ export async function getSearchVolume(
     const items: RelKwdStatItem[] = data.keywordList || [];
 
     if (items.length === 0) {
-      console.error(`네이버 검색광고 API 결과 없음: keyword="${keyword}"`, JSON.stringify(data).slice(0, 500));
+      console.error(`네이버 검색광고 API 결과 없음: keyword="${keyword.slice(0, 20)}", itemCount=${items.length}`);
       return null;
     }
 

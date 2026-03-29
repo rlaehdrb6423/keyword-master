@@ -57,7 +57,7 @@ export function parseBlogId(input: string): ParsedBlog | null {
   if (wpMatch && !trimmed.includes("naver.com") && !trimmed.includes("tistory.com")) {
     const domain = wpMatch[1];
     // SSRF 방지: 내부 네트워크/메타데이터 도메인 차단
-    const blockedPatterns = /^(localhost|127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|169\.254\.|0\.|metadata\.google|instance-data)/i;
+    const blockedPatterns = /^(localhost|127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|169\.254\.|0\.|0\.0\.0\.0|metadata\.google|instance-data|\[)/i;
     const blockedTlds = /\.(local|internal|corp|lan|test)$/i;
     if (blockedPatterns.test(domain) || blockedTlds.test(domain)) {
       return null;

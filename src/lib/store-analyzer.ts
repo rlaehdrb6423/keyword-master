@@ -27,8 +27,8 @@ export function parseStoreId(input: string): string | null {
   const brandMatch = trimmed.match(/brand\.naver\.com\/([a-zA-Z0-9_-]+)/);
   if (brandMatch) return brandMatch[1];
 
-  // storeId만 입력
-  if (/^[a-zA-Z0-9_-]+$/.test(trimmed) && trimmed.length >= 2) {
+  // storeId만 입력 (길이 제한 추가)
+  if (/^[a-zA-Z0-9_-]+$/.test(trimmed) && trimmed.length >= 2 && trimmed.length <= 50) {
     return trimmed;
   }
 

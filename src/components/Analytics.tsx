@@ -1,7 +1,10 @@
 import Script from "next/script";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+// 환경변수 형식 검증 (인라인 JS 인젝션 방지)
+const RAW_GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const RAW_CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+const GA_ID = RAW_GA_ID && /^G-[A-Z0-9]+$/.test(RAW_GA_ID) ? RAW_GA_ID : null;
+const CLARITY_ID = RAW_CLARITY_ID && /^[a-z0-9]+$/i.test(RAW_CLARITY_ID) ? RAW_CLARITY_ID : null;
 const NAVER_VERIFICATION = process.env.NEXT_PUBLIC_NAVER_VERIFICATION;
 
 export function GoogleAnalytics() {

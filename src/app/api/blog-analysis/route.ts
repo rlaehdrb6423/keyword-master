@@ -128,7 +128,7 @@ export async function POST(request: Request) {
     await setCache(cacheKey, result);
     return NextResponse.json({ ...result, remaining });
   } catch (error) {
-    console.error("블로그 분석 에러:", error);
+    console.error("블로그 분석 에러:", error instanceof Error ? error.message : "unknown");
     return NextResponse.json(
       { error: "분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." },
       { status: 500 }

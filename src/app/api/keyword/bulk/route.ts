@@ -7,6 +7,19 @@ const BULK_MAX = 10;
 const CONCURRENCY = 5;
 
 export async function POST(request: Request) {
+  // 내부 호출 인증: Referer 확인 또는 INTERNAL_API_SECRET 검증
+  const referer = request.headers.get("referer") || "";
+  const apiSecret = request.headers.get("x-api-secret");
+  const isInternal = referer.includes("keywordview.kr") || referer.includes("localhost");
+  const isAuthorized = apiSecret === process.env.INTERNAL_API_SECRET;
+
+  if (!isInternal && !isAuthorized) {
+    return NextResponse.json<ApiErrorResponse>(
+      { error: "인증이 필요합니다.", code: "SERVER_ERROR" },
+      { status: 401 }
+    );
+  }
+
   const ip = getClientIp(request);
   const { success } = await checkRateLimit(ip);
   if (!success) {
