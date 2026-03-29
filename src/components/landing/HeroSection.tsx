@@ -15,7 +15,7 @@ export default function HeroSection() {
         </div>
 
         {/* H1 */}
-        <h1 className="animate-fade-up-2 text-5xl md:text-6xl font-extrabold font-jakarta tracking-tight text-gray-900 leading-[1.15] mb-6">
+        <h1 className="animate-fade-up-2 text-3xl sm:text-5xl md:text-6xl font-extrabold font-jakarta tracking-tight text-gray-900 leading-[1.15] mb-6">
           키워드 분석,<br className="hidden md:block" />
           이제 <span className="gradient-text">클릭 한 번으로</span> 끝납니다
         </h1>

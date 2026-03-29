@@ -48,14 +48,14 @@ export default function TagGenerator({ keywords }: TagGeneratorProps) {
 
   return (
     <div className="card p-4 mb-6">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
         <h3 className="text-sm font-semibold text-gray-700">태그 생성</h3>
         <div className="flex gap-1">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`text-xs px-3 py-1 rounded-full transition-colors ${
+              className={`text-xs px-2 sm:px-3 py-1 rounded-full transition-colors ${
                 activeTab === tab.id
                   ? "bg-primary-100 text-primary-700"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"

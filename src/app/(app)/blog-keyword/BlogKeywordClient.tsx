@@ -191,11 +191,11 @@ export default function BlogKeywordPage() {
         <>
           {/* 헤더: 키워드 + 등급 */}
           <div className="rounded-2xl bg-gradient-to-r from-gray-50 to-white border border-gray-100 p-6 mb-6">
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
               <div>
                 <div className="text-xs text-gray-400 mb-1">블로그 키워드 분석</div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">&ldquo;{result.keyword}&rdquo;</h2>
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-all">&ldquo;{result.keyword}&rdquo;</h2>
                   <GradeBadge grade={result.grade} />
                 </div>
               </div>
@@ -205,23 +205,23 @@ export default function BlogKeywordPage() {
             </div>
 
             {/* KPI 3개 */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">총 검색량</div>
-                <div className="text-xl sm:text-2xl font-bold text-gray-900">{result.totalVolume.toLocaleString()}</div>
-                <div className="text-xs text-gray-400 mt-1">PC {result.pcVolume.toLocaleString()} / MO {result.mobileVolume.toLocaleString()}</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">총 검색량</div>
+                <div className="text-base sm:text-2xl font-bold text-gray-900 truncate">{result.totalVolume.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-400 mt-1 truncate">PC {result.pcVolume.toLocaleString()} / MO {result.mobileVolume.toLocaleString()}</div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">발행 문서 수</div>
-                <div className="text-xl sm:text-2xl font-bold text-gray-900">{result.blogDocCount.toLocaleString()}</div>
-                <div className={`text-xs font-medium mt-1 ${result.competitionGrade === "A" || result.competitionGrade === "B" ? "text-primary-600" : result.competitionGrade === "C" ? "text-yellow-600" : "text-red-500"}`}>
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">발행 문서 수</div>
+                <div className="text-base sm:text-2xl font-bold text-gray-900 truncate">{result.blogDocCount.toLocaleString()}</div>
+                <div className={`text-[10px] sm:text-xs font-medium mt-1 ${result.competitionGrade === "A" || result.competitionGrade === "B" ? "text-primary-600" : result.competitionGrade === "C" ? "text-yellow-600" : "text-red-500"}`}>
                   {result.competitionLabel}
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">검색 비율</div>
-                <div className="text-xl sm:text-2xl font-bold text-primary-600">{result.ratio}</div>
-                <div className="text-xs text-gray-400 mt-1">
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">검색 비율</div>
+                <div className="text-base sm:text-2xl font-bold text-primary-600 truncate">{result.ratio}</div>
+                <div className="text-[10px] sm:text-xs text-gray-400 mt-1 truncate">
                   {Number(result.ratio) >= 0.1 ? "상위노출 가능성 높음" : Number(result.ratio) >= 0.05 ? "보통" : "경쟁 치열"}
                 </div>
               </div>
@@ -230,13 +230,11 @@ export default function BlogKeywordPage() {
 
           {/* 분석 결과 테이블 */}
           <div className="card overflow-hidden mb-6">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div>
-                <h2 className="text-sm font-semibold text-gray-900">키워드 분석 결과</h2>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  종합경쟁 = 블로그+뉴스+카페+웹문서 대비 검색량 비율
-                </p>
-              </div>
+            <div className="px-4 sm:px-6 py-4 border-b border-gray-100">
+              <h2 className="text-sm font-semibold text-gray-900">키워드 분석 결과</h2>
+              <p className="text-xs text-gray-400 mt-0.5">
+                종합경쟁 = 블로그+뉴스+카페+웹문서 대비 검색량 비율
+              </p>
             </div>
             <ResultTable
               columns={columns}
@@ -354,8 +352,8 @@ export default function BlogKeywordPage() {
             platformCount={result.platformCount}
           />
 
-          <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-white border border-gray-100">
-            <span className="text-sm text-gray-500">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
+          <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-4 rounded-2xl bg-white border border-gray-100">
+            <span className="text-sm text-gray-500 break-all">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
             <ShareButtons
               title={`"${result.keyword}" 블로그 키워드 분석 - KeywordView`}
               description={`검색량 ${result.totalVolume.toLocaleString()} · 종합경쟁 ${result.competitionLabel}`}

@@ -188,11 +188,11 @@ export default function SellerKeywordPage() {
         <>
           {/* 헤더: 키워드 + 등급 */}
           <div className="rounded-2xl bg-gradient-to-r from-gray-50 to-white border border-gray-100 p-6 mb-6">
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
               <div>
                 <div className="text-xs text-gray-400 mb-1">셀러 키워드 분석</div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">&ldquo;{result.keyword}&rdquo;</h2>
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-all">&ldquo;{result.keyword}&rdquo;</h2>
                   <GradeBadge grade={result.grade} />
                 </div>
               </div>
@@ -200,23 +200,23 @@ export default function SellerKeywordPage() {
                 <span className="text-xs text-gray-400">상위노출 {result.successRate}%</span>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">총 검색량</div>
-                <div className="text-xl sm:text-2xl font-bold text-gray-900">{result.totalVolume.toLocaleString()}</div>
-                <div className="text-xs text-gray-400 mt-1">PC {result.pcVolume.toLocaleString()} / MO {result.mobileVolume.toLocaleString()}</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">총 검색량</div>
+                <div className="text-base sm:text-2xl font-bold text-gray-900 truncate">{result.totalVolume.toLocaleString()}</div>
+                <div className="text-[10px] sm:text-xs text-gray-400 mt-1 truncate">PC {result.pcVolume.toLocaleString()} / MO {result.mobileVolume.toLocaleString()}</div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">쇼핑 상품수</div>
-                <div className="text-xl sm:text-2xl font-bold text-gray-900">{result.naverProductCount.toLocaleString()}</div>
-                <div className={`text-xs font-medium mt-1 ${result.competitionGrade === "A" || result.competitionGrade === "B" ? "text-primary-600" : result.competitionGrade === "C" ? "text-yellow-600" : "text-red-500"}`}>
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">쇼핑 상품수</div>
+                <div className="text-base sm:text-2xl font-bold text-gray-900 truncate">{result.naverProductCount.toLocaleString()}</div>
+                <div className={`text-[10px] sm:text-xs font-medium mt-1 ${result.competitionGrade === "A" || result.competitionGrade === "B" ? "text-primary-600" : result.competitionGrade === "C" ? "text-yellow-600" : "text-red-500"}`}>
                   {result.competitionLabel}
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-gray-100">
-                <div className="text-xs text-gray-400 mb-1">검색 비율</div>
-                <div className="text-xl sm:text-2xl font-bold text-primary-600">{result.naverRatio}</div>
-                <div className="text-xs text-gray-400 mt-1">
+              <div className="text-center p-2 sm:p-4 bg-white rounded-xl border border-gray-100">
+                <div className="text-[10px] sm:text-xs text-gray-400 mb-1">검색 비율</div>
+                <div className="text-base sm:text-2xl font-bold text-primary-600 truncate">{result.naverRatio}</div>
+                <div className="text-[10px] sm:text-xs text-gray-400 mt-1 truncate">
                   {Number(result.naverRatio) >= 1 ? "수요 > 공급" : Number(result.naverRatio) >= 0.5 ? "보통" : "공급 > 수요"}
                 </div>
               </div>
@@ -324,8 +324,8 @@ export default function SellerKeywordPage() {
 
           <GradeGuide />
 
-          <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-white border border-gray-100">
-            <span className="text-sm text-gray-500">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
+          <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-4 rounded-2xl bg-white border border-gray-100">
+            <span className="text-sm text-gray-500 break-all">&ldquo;{result.keyword}&rdquo; 분석 결과 공유하기</span>
             <ShareButtons
               title={`"${result.keyword}" 셀러 키워드 분석 - KeywordView`}
               description={`검색량 ${result.totalVolume.toLocaleString()} · 종합경쟁 ${result.competitionLabel}`}
